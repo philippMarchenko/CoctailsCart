@@ -2,62 +2,109 @@ package com.devphill.coctails.data.repository
 
 import com.devphill.coctails.domain.model.Cocktail
 import com.devphill.coctails.domain.repository.CocktailRepository
+import com.devphill.coctails.data.datasource.CocktailsDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class CocktailRepositoryImpl : CocktailRepository {
+class CocktailRepositoryImpl(context: Any? = null) : CocktailRepository {
 
-    // Mock data for demonstration - replace with actual data source later
-    private val mockCocktails = listOf(
-        Cocktail(
-            id = "1",
-            name = "Mojito",
-            description = "A refreshing Cuban cocktail with mint and lime",
-            imageUrl = "",
-            ingredients = listOf("White rum", "Fresh lime juice", "Sugar", "Mint leaves", "Soda water"),
-            instructions = "Muddle mint leaves with sugar and lime juice. Add rum and ice, top with soda water.",
-            category = "Refreshing",
-            isAlcoholic = true,
-            difficulty = com.devphill.coctails.domain.model.DifficultyLevel.EASY,
-            preparationTime = 5,
-            rating = 4.5f
-        ),
-        Cocktail(
-            id = "2",
-            name = "Virgin Mojito",
-            description = "Non-alcoholic version of the classic mojito",
-            imageUrl = "",
-            ingredients = listOf("Fresh lime juice", "Sugar", "Mint leaves", "Soda water"),
-            instructions = "Muddle mint leaves with sugar and lime juice. Add ice and top with soda water.",
-            category = "Non-alcoholic",
-            isAlcoholic = false,
-            difficulty = com.devphill.coctails.domain.model.DifficultyLevel.EASY,
-            preparationTime = 3,
-            rating = 4.2f
-        )
-    )
-
+    private val dataSource = CocktailsDataSource(context)
     private val favorites = mutableSetOf<String>()
+    private var isInitialized = false
+
+    /**
+     * Initialize the repository by loading data from DataSource
+     */
+    suspend fun initialize(): Result<Unit> {
+        return try {
+            val result = dataSource.loadCocktailsDatabase()
+            result.fold(
+                onSuccess = {
+                    isInitialized = true
+                    println("✅ Repository initialized with cocktails data")
+                    Result.success(Unit)
+                },
+                onFailure = { error ->
+                    println("❌ Repository initialization failed: ${error.message}")
+                    Result.failure(error)
+                }
+            )
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 
     override suspend fun getAllCocktails(): Flow<List<Cocktail>> = flow {
-        emit(mockCocktails)
+        println("🏪 CocktailRepository: getAllCocktails() called")
+        if (!isInitialized) {
+            println("🔧 CocktailRepository: Not initialized, calling initialize()...")
+            val initResult = initialize()
+            initResult.onFailure { error ->
+                println("❌ CocktailRepository: Initialization failed: ${error.message}")
+                throw error
+            }
+        }
+
+        println("📦 CocktailRepository: Getting cocktails from data source...")
+        val result = dataSource.getAllCocktails()
+        result.fold(
+            onSuccess = { cocktails ->
+                println("✅ CocktailRepository: Successfully loaded ${cocktails.size} cocktails from data source")
+                emit(cocktails.map { cocktail ->
+                    cocktail.copy(isFavorite = favorites.contains(cocktail.id))
+                })
+            },
+            onFailure = { error ->
+                println("❌ CocktailRepository: Failed to get cocktails: ${error.message}")
+                emit(emptyList())
+            }
+        )
     }
 
     override suspend fun getCocktailById(id: String): Cocktail? {
-        return mockCocktails.find { it.id == id }
+        if (!isInitialized) {
+            initialize()
+        }
+
+        return dataSource.getCocktailById(id).getOrNull()?.copy(
+            isFavorite = favorites.contains(id)
+        )
     }
 
     override suspend fun searchCocktails(query: String): Flow<List<Cocktail>> = flow {
-        val filtered = mockCocktails.filter {
-            it.name.contains(query, ignoreCase = true) ||
-            it.ingredients.any { ingredient -> ingredient.contains(query, ignoreCase = true) }
+        if (!isInitialized) {
+            initialize()
         }
-        emit(filtered)
+
+        val result = dataSource.searchCocktails(query)
+        result.fold(
+            onSuccess = { cocktails ->
+                emit(cocktails.map { cocktail ->
+                    cocktail.copy(isFavorite = favorites.contains(cocktail.id))
+                })
+            },
+            onFailure = {
+                emit(emptyList())
+            }
+        )
     }
 
     override suspend fun getFavoriteCocktails(): Flow<List<Cocktail>> = flow {
-        val favoriteCocktails = mockCocktails.filter { it.id in favorites }
-        emit(favoriteCocktails)
+        if (!isInitialized) {
+            initialize()
+        }
+
+        val result = dataSource.getAllCocktails()
+        result.fold(
+            onSuccess = { cocktails ->
+                val favoriteCocktails = cocktails.filter { favorites.contains(it.id) }
+                    .map { it.copy(isFavorite = true) }
+                emit(favoriteCocktails)
+            },
+            onFailure = {
+                emit(emptyList())
+            }
+        )
     }
 
     override suspend fun addToFavorites(cocktail: Cocktail) {
@@ -69,7 +116,21 @@ class CocktailRepositoryImpl : CocktailRepository {
     }
 
     override suspend fun getCocktailsByCategory(category: String): Flow<List<Cocktail>> = flow {
-        val filtered = mockCocktails.filter { it.category == category }
-        emit(filtered)
+        if (!isInitialized) {
+            initialize()
+        }
+
+        val result = dataSource.getCocktailsByCategory(category)
+        result.fold(
+            onSuccess = { cocktails ->
+                emit(cocktails.map { cocktail ->
+                    cocktail.copy(isFavorite = favorites.contains(cocktail.id))
+                })
+            },
+            onFailure = {
+                emit(emptyList())
+            }
+        )
     }
 }
+
