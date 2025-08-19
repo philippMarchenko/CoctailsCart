@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -131,16 +132,15 @@ fun CocktailImageCard(
     ) {
         Box(
             modifier = Modifier
-                .height(220.dp)
-                .fillMaxWidth()
+                .fillMaxSize()
                 .background(MaterialTheme.colorScheme.surfaceVariant)
         ) {
-            println("Loading image for cocktail: ${cocktail.title} from URL: ${cocktail.imageUrl}")
             if (cocktail.imageUrl != null) {
                 KamelImage(
                     resource = asyncPainterResource(cocktail.imageUrl),
                     contentDescription = cocktail.title,
-                    modifier = Modifier.matchParentSize()
+                    modifier = Modifier.matchParentSize(),
+                    contentScale = ContentScale.Crop
                 )
             }
 
@@ -159,25 +159,25 @@ fun CocktailImageCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomStart)
-                    .padding(16.dp)
+                    .padding(12.dp)
             ) {
                 Text(
                     text = cocktail.title,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    tags.take(5).forEach { tag ->
+                    tags.take(3).forEach { tag ->
                         TagChip(text = tag)
                     }
                 }
@@ -187,12 +187,12 @@ fun CocktailImageCard(
                 Box(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(10.dp)
+                        .padding(8.dp)
                         .clip(CircleShape)
                         .background(Color.Black.copy(alpha = 0.35f))
-                        .padding(8.dp)
+                        .padding(6.dp)
                 ) {
-                    Text("❤️", color = Color.White)
+                    Text("❤️", color = Color.White, style = MaterialTheme.typography.labelSmall)
                 }
             }
         }

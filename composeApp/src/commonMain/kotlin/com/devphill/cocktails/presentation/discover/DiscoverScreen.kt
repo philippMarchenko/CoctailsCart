@@ -1,10 +1,13 @@
 package com.devphill.cocktails.presentation.discover
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -90,7 +93,35 @@ private fun DiscoverSuccessContent(
 
         if (uiState.cocktails.isNotEmpty()) {
             item {
-                AllCocktailsSection(cocktails = uiState.cocktails)
+                Text(
+                    text = "All Cocktails",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+            }
+            
+            item {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 800.dp) // Prevent infinite height
+                ) {
+                    items(uiState.cocktails.size) { index ->
+                        val cocktail = uiState.cocktails[index]
+                        CocktailImageCard(
+                            cocktail = cocktail,
+                            tags = listOf(cocktail.category) + cocktail.ingredients.take(2),
+                            onClick = { /* Handle cocktail click */ },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .aspectRatio(0.65f)
+                        )
+                    }
+                }
             }
         }
     }
@@ -131,32 +162,16 @@ private fun CocktailOfDaySection(cocktail: com.devphill.cocktails.domain.model.C
                 cocktail.complexity.name
             ),
             onClick = { /* Handle cocktail click */ },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(280.dp) // Fixed height for better appearance
         )
     }
 }
 
 @Composable
 private fun AllCocktailsSection(cocktails: List<com.devphill.cocktails.domain.model.Cocktail>) {
-    Column {
-        Text(
-            text = "All Cocktails",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(bottom = 12.dp)
-        )
-
-        cocktails.forEach { cocktail ->
-            CocktailImageCard(
-                cocktail = cocktail,
-                tags = listOf(cocktail.category) + cocktail.ingredients.take(3),
-                onClick = { /* Handle cocktail click */ },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 6.dp)
-            )
-        }
-    }
+    // This function is no longer needed as we moved the grid logic above
 }
 
 @Composable

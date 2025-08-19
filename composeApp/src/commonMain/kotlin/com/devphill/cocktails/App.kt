@@ -1,11 +1,8 @@
 package com.devphill.cocktails
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import org.jetbrains.compose.ui.tooling.preview.Preview
-
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.NavigationBar
@@ -18,6 +15,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Explore
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.ui.graphics.vector.ImageVector
 
 import com.devphill.cocktails.di.DIContainer
@@ -29,6 +27,7 @@ import com.devphill.cocktails.presentation.tutorials.TutorialsScreen
 import com.devphill.cocktails.presentation.profile.ProfileScreen
 import com.devphill.cocktails.presentation.splash.SplashScreen
 import com.devphill.cocktails.ui.theme.CocktailsTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 sealed class BottomNavScreen(val title: String, val icon: ImageVector) {
     object Discover : BottomNavScreen("Discover", Icons.Filled.Explore)

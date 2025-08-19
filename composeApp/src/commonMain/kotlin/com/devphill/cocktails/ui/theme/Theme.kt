@@ -5,7 +5,7 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.Shapes
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -34,6 +34,9 @@ private val DarkColors: ColorScheme = darkColorScheme(
     surfaceVariant = Color(0xFF20242B),
     onSurfaceVariant = Color(0xFFB6BCC6),
     outline = Color(0xFF3B3F46),
+    
+    // Light status bar for better visibility
+    surfaceBright = Color(0xFF2A2D35),
 )
 
 private val LightColors: ColorScheme = lightColorScheme(

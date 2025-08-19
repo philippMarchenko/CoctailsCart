@@ -12,7 +12,7 @@ androidx-testExt = "1.2.1"
 composeMultiplatform = "1.8.2"
 junit = "4.13.2"
 kotlin = "2.2.0"
-kamel = "0.9.5"
+kamel = "1.0.7"
 
 # Firebase
 firebase-bom = "34.1.0"
@@ -53,7 +53,7 @@ kotlinx_serialization_json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credential-manager" }
 androidx-credentials-play-services = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credential-manager" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version = "1.1.1" }
-kamel_image = { module = "media.kamel:kamel-image", version.ref = "kamel" }
+kamel_image = { module = "media.kamel:kamel-image-default", version.ref = "kamel" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
