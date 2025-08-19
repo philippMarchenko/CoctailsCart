@@ -2,6 +2,7 @@ package com.devphill.cocktails
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -27,6 +28,8 @@ import com.devphill.cocktails.presentation.tutorials.TutorialsScreen
 import com.devphill.cocktails.presentation.profile.ProfileScreen
 import com.devphill.cocktails.presentation.splash.SplashScreen
 import com.devphill.cocktails.ui.theme.CocktailsTheme
+import com.devphill.cocktails.ui.theme.GlobalThemeManager
+import com.devphill.cocktails.ui.theme.ThemeMode
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 sealed class BottomNavScreen(val title: String, val icon: ImageVector) {
@@ -49,8 +52,16 @@ enum class AppState {
 fun App() {
     var appState by remember { mutableStateOf(AppState.SPLASH) }
     val userPreferencesManager = remember { DIContainer.provideUserPreferencesManager() }
+    val themeManager = remember { GlobalThemeManager.getThemeManager() }
+    val currentTheme by themeManager.currentTheme.collectAsState()
 
-    CocktailsTheme(useDarkTheme = true) {
+    // Update status bar when theme changes
+    LaunchedEffect(currentTheme) {
+        // This will trigger a recomposition and update the status bar
+        // The actual status bar update happens in the theme
+    }
+
+    CocktailsTheme(useDarkTheme = currentTheme == ThemeMode.SYSTEM) {
         when (appState) {
             AppState.SPLASH -> {
                 SplashScreen(

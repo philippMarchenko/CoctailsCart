@@ -79,7 +79,34 @@ fun CocktailsTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (useDarkTheme) DarkColors else LightColors
+    val themeManager = GlobalThemeManager.getThemeManager()
+    val currentTheme by themeManager.currentTheme.collectAsState()
+    
+    val shouldUseDarkTheme = when (currentTheme) {
+        ThemeMode.LIGHT -> false
+        ThemeMode.DARK -> true
+        ThemeMode.SYSTEM -> useDarkTheme
+    }
+    
+    val colorScheme = if (shouldUseDarkTheme) DarkColors else LightColors
+
+    // Update status bar when theme changes
+    LaunchedEffect(currentTheme) {
+        when (currentTheme) {
+            ThemeMode.LIGHT -> {
+                // Light theme: use dark status bar icons
+                updateStatusBarAppearance(isLight = true)
+            }
+            ThemeMode.DARK -> {
+                // Dark theme: use light status bar icons
+                updateStatusBarAppearance(isLight = false)
+            }
+            ThemeMode.SYSTEM -> {
+                // System theme: let system decide
+                updateStatusBarAppearance(isLight = !shouldUseDarkTheme)
+            }
+        }
+    }
 
     MaterialTheme(
         colorScheme = colorScheme,

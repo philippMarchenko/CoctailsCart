@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,6 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.devphill.cocktails.presentation.common.LoadingIndicator
 import com.devphill.cocktails.presentation.common.ErrorMessage
+import com.devphill.cocktails.ui.theme.ThemeSettingsDialog
+import com.devphill.cocktails.ui.theme.ThemeMode
+import com.devphill.cocktails.ui.theme.GlobalThemeManager
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
@@ -67,6 +71,9 @@ private fun ProfileMainContent(
     modifier: Modifier = Modifier
 ) {
     var showSignOutDialog by remember { mutableStateOf(false) }
+    var showThemeDialog by remember { mutableStateOf(false) }
+    val themeManager = GlobalThemeManager.getThemeManager()
+    val currentTheme by themeManager.currentTheme.collectAsState()
 
     Column(
         modifier = modifier
@@ -87,7 +94,9 @@ private fun ProfileMainContent(
 
         QuickActionsCard()
 
-        AppSettingsCard()
+        AppSettingsCard(
+            onThemeClick = { showThemeDialog = true }
+        )
 
         AccountActionsCard(
             onSignOutClick = { showSignOutDialog = true }
@@ -103,6 +112,20 @@ private fun ProfileMainContent(
             },
             onDismiss = {
                 showSignOutDialog = false
+            }
+        )
+    }
+
+    // Theme Settings Dialog
+    if (showThemeDialog) {
+        ThemeSettingsDialog(
+            currentTheme = currentTheme,
+            onThemeSelected = { theme ->
+                themeManager.setTheme(theme)
+                showThemeDialog = false
+            },
+            onDismiss = {
+                showThemeDialog = false
             }
         )
     }
@@ -357,7 +380,9 @@ private fun QuickActionsCard() {
 }
 
 @Composable
-private fun AppSettingsCard() {
+private fun AppSettingsCard(
+    onThemeClick: () -> Unit
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
@@ -392,7 +417,7 @@ private fun AppSettingsCard() {
             SettingItem(
                 icon = Icons.Default.Palette,
                 label = "Change Theme",
-                onClick = { /* TODO: Implement theme selection */ }
+                onClick = { onThemeClick() }
             )
 
             SettingItem(

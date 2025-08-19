@@ -8,8 +8,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,6 +23,9 @@ import com.devphill.cocktails.presentation.common.CocktailCard
 import com.devphill.cocktails.presentation.common.CocktailImageCard
 import com.devphill.cocktails.presentation.common.LoadingIndicator
 import com.devphill.cocktails.presentation.common.ErrorMessage
+import com.devphill.cocktails.ui.theme.GlobalThemeManager
+import com.devphill.cocktails.ui.theme.ThemeMode
+import com.devphill.cocktails.ui.theme.ThemeSettingsDialog
 
 @Composable
 fun DiscoverScreen(
@@ -42,12 +47,18 @@ private fun DiscoverContent(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var showThemeDialog by remember { mutableStateOf(false) }
+    val themeManager = remember { GlobalThemeManager.getThemeManager() }
+    val currentTheme by themeManager.currentTheme.collectAsState()
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        DiscoverTopBar()
+        DiscoverTopBar(
+            onThemeClick = { showThemeDialog = true }
+        )
         Spacer(modifier = Modifier.height(12.dp))
         when {
             uiState.isLoading -> {
@@ -71,6 +82,20 @@ private fun DiscoverContent(
                 )
             }
         }
+    }
+
+    // Theme Settings Dialog
+    if (showThemeDialog) {
+        ThemeSettingsDialog(
+            currentTheme = currentTheme,
+            onThemeSelected = { theme ->
+                themeManager.setTheme(theme)
+                showThemeDialog = false
+            },
+            onDismiss = {
+                showThemeDialog = false
+            }
+        )
     }
 }
 
@@ -175,7 +200,9 @@ private fun AllCocktailsSection(cocktails: List<com.devphill.cocktails.domain.mo
 }
 
 @Composable
-private fun DiscoverTopBar() {
+private fun DiscoverTopBar(
+    onThemeClick: () -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -191,6 +218,9 @@ private fun DiscoverTopBar() {
         )
         IconButton(onClick = { /* search */ }) {
             Icon(Icons.Default.Search, contentDescription = "Search")
+        }
+        IconButton(onClick = onThemeClick) {
+            Icon(Icons.Default.Palette, contentDescription = "Theme")
         }
     }
 }

@@ -9,18 +9,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.devphill.cocktails.di.DIContainer
 import androidx.core.view.WindowCompat
 import com.devphill.cocktails.ui.theme.StatusBarController
+import com.devphill.cocktails.ui.theme.GlobalThemeManager
+import com.devphill.cocktails.ui.theme.ThemeMode
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         
-        // Configure status bar for dark theme
+        // Configure status bar
         WindowCompat.setDecorFitsSystemWindows(window, false)
         
-        // Set status bar text/icons to light (white) for dark theme
+        // Create and register status bar controller
         val statusBarController = StatusBarController(this)
-        statusBarController.setStatusBarAppearance(isLight = false) // false = light icons (white)
+      //  StatusBarControllerHolder.setController(statusBarController)
+        
+        // Set initial status bar appearance for dark theme
+        statusBarController.setStatusBarAppearance(isLight = false) // Start with light icons for dark theme
         
         DIContainer.initialize(applicationContext)
         setContent {
