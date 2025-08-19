@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "453421500962",
+    "project_id": "cocktailsapp-27c68",
+    "storage_bucket": "cocktailsapp-27c68.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453421500962:android:09031dbd89067cac35987b",
+        "android_client_info": {
+          "package_name": "com.devphill.cocktails"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "453421500962-8vmqle3carfinvamlo53347vjh6c6859.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.devphill.cocktails",
+            "certificate_hash": "79bc728c1762a6b30927b3b4975dc7324f50eb20"
+          }
+        },
+        {
+          "client_id": "453421500962-dvi8u094na4fmef59k300ub8rb9b1re5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNpdn5R3xFoPzoVo8cB8w1mTYrcfCFDJ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453421500962-dvi8u094na4fmef59k300ub8rb9b1re5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

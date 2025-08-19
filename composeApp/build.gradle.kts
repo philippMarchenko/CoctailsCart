@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -7,7 +6,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    kotlin("plugin.serialization") version "1.9.10"
+    alias(libs.plugins.google.services)
 }
 
 kotlin {
@@ -33,6 +32,15 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            // Firebase dependencies - using libs references
+            implementation(libs.firebase.bom)
+            implementation(libs.firebase.auth)
+            implementation(libs.firebase.firestore)
+            implementation(libs.firebase.analytics)
+            // Modern Google Sign-In using Credential Manager API
+            implementation(libs.androidx.credentials)
+            implementation(libs.androidx.credentials.play.services)
+            implementation(libs.googleid)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -45,7 +53,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             // JSON Serialization for parsing cocktails data
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+            implementation(libs.kotlinx.serialization.json)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -54,11 +62,11 @@ kotlin {
 }
 
 android {
-    namespace = "com.devphill.coctails"
+    namespace = "com.devphill.cocktails"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.devphill.coctails"
+        applicationId = "com.devphill.cocktails"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
@@ -83,4 +91,5 @@ android {
 dependencies {
     debugImplementation(compose.uiTooling)
 }
+
 
