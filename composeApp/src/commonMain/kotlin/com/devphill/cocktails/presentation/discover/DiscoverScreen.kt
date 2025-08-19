@@ -1,15 +1,21 @@
 package com.devphill.cocktails.presentation.discover
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.devphill.cocktails.presentation.common.CocktailCard
+import com.devphill.cocktails.presentation.common.CocktailImageCard
 import com.devphill.cocktails.presentation.common.LoadingIndicator
 import com.devphill.cocktails.presentation.common.ErrorMessage
 
@@ -38,6 +44,8 @@ private fun DiscoverContent(
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        DiscoverTopBar()
+        Spacer(modifier = Modifier.height(12.dp))
         when {
             uiState.isLoading -> {
                 LoadingIndicator(
@@ -77,9 +85,7 @@ private fun DiscoverSuccessContent(
         }
 
         uiState.cocktailOfDay?.let { cocktailOfDay ->
-            item {
-                CocktailOfDaySection(cocktail = cocktailOfDay)
-            }
+            item { CocktailOfDaySection(cocktail = cocktailOfDay) }
         }
 
         if (uiState.cocktails.isNotEmpty()) {
@@ -117,8 +123,13 @@ private fun CocktailOfDaySection(cocktail: com.devphill.cocktails.domain.model.C
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
-        CocktailCard(
+        CocktailImageCard(
             cocktail = cocktail,
+            tags = listOf(
+                cocktail.category,
+                cocktail.alcoholStrength.name,
+                cocktail.complexity.name
+            ),
             onClick = { /* Handle cocktail click */ },
             modifier = Modifier.fillMaxWidth()
         )
@@ -136,13 +147,35 @@ private fun AllCocktailsSection(cocktails: List<com.devphill.cocktails.domain.mo
         )
 
         cocktails.forEach { cocktail ->
-            CocktailCard(
+            CocktailImageCard(
                 cocktail = cocktail,
+                tags = listOf(cocktail.category) + cocktail.ingredients.take(3),
                 onClick = { /* Handle cocktail click */ },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 4.dp)
+                    .padding(vertical = 6.dp)
             )
+        }
+    }
+}
+
+@Composable
+private fun DiscoverTopBar() {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(onClick = { /* menu */ }) {
+            Icon(Icons.Default.Menu, contentDescription = "Menu")
+        }
+        Text(
+            text = "All drinks",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.SemiBold
+        )
+        IconButton(onClick = { /* search */ }) {
+            Icon(Icons.Default.Search, contentDescription = "Search")
         }
     }
 }

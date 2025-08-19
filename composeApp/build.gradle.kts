@@ -54,6 +54,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             // JSON Serialization for parsing cocktails data
             implementation(libs.kotlinx.serialization.json)
+            // Multiplatform image loading
+            implementation(libs.kamel.image)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -91,8 +91,8 @@ class CocktailsJsonParserImpl : CocktailsJsonParser {
                 val cocktailObj = cocktailElement.jsonObject
                 CocktailDetail(
                     title = cocktailObj["title"]?.jsonPrimitive?.content ?: "",
-                    imageUrl = cocktailObj["imageUrl"]?.jsonPrimitive?.content,
-                    cocktailUrl = cocktailObj["cocktailUrl"]?.jsonPrimitive?.content,
+                    imageUrl = (cocktailObj["image_url"] ?: cocktailObj["imageUrl"])?.jsonPrimitive?.content,
+                    cocktailUrl = (cocktailObj["cocktail_url"] ?: cocktailObj["cocktailUrl"])?.jsonPrimitive?.content,
                     category = cocktailObj["category"]?.jsonPrimitive?.content ?: "",
                     views = cocktailObj["views"]?.jsonPrimitive?.content,
                     ingredients = cocktailObj["ingredients"]?.jsonArray?.map {
@@ -101,14 +101,17 @@ class CocktailsJsonParserImpl : CocktailsJsonParser {
                     method = cocktailObj["method"]?.jsonPrimitive?.content ?: "",
                     garnish = cocktailObj["garnish"]?.jsonPrimitive?.content,
                     glass = cocktailObj["glass"]?.jsonPrimitive?.content,
-                    videoUrl = cocktailObj["videoUrl"]?.jsonPrimitive?.content,
-                    categoryEnum = cocktailObj["categoryEnum"]?.jsonPrimitive?.content ?: "",
-                    ingredientsEnums = cocktailObj["ingredientsEnums"]?.jsonArray?.map {
+                    videoUrl = (cocktailObj["video_url"] ?: cocktailObj["videoUrl"])?.jsonPrimitive?.content,
+                    categoryEnum = (cocktailObj["category_enum"] ?: cocktailObj["categoryEnum"])?.jsonPrimitive?.content
+                        ?: "",
+                    ingredientsEnums = (cocktailObj["ingredients_enums"] ?: cocktailObj["ingredientsEnums"])?.jsonArray?.map {
                         it.jsonPrimitive.content
                     } ?: emptyList(),
                     complexity = cocktailObj["complexity"]?.jsonPrimitive?.content ?: "medium",
-                    alcoholStrength = cocktailObj["alcoholStrength"]?.jsonPrimitive?.content ?: "medium",
-                    searchText = cocktailObj["searchText"]?.jsonPrimitive?.content ?: ""
+                    alcoholStrength = (cocktailObj["alcohol_strength"] ?: cocktailObj["alcoholStrength"])?.jsonPrimitive?.content
+                        ?: "medium",
+                    searchText = (cocktailObj["search_text"] ?: cocktailObj["searchText"])?.jsonPrimitive?.content
+                        ?: ""
                 )
             }
         } catch (e: Exception) {
@@ -134,8 +137,10 @@ class CocktailsJsonParserImpl : CocktailsJsonParser {
     private fun parseIngredientsFromJson(jsonString: String): IngredientsStructure {
         return try {
             val jsonObject = json.parseToJsonElement(jsonString).jsonObject
-            val allIngredients = parseIngredientList(jsonObject["allIngredients"]?.jsonArray?.toString() ?: "[]")
-            val byCategory = jsonObject["byCategory"]?.jsonObject
+            val allIngredients = parseIngredientList(
+                (jsonObject["all_ingredients"] ?: jsonObject["allIngredients"])?.jsonArray?.toString() ?: "[]"
+            )
+            val byCategory = (jsonObject["by_category"] ?: jsonObject["byCategory"])?.jsonObject
 
             IngredientsStructure(
                 allIngredients = allIngredients,

@@ -28,6 +28,7 @@ import com.devphill.cocktails.presentation.favorites.FavoritesScreen
 import com.devphill.cocktails.presentation.tutorials.TutorialsScreen
 import com.devphill.cocktails.presentation.profile.ProfileScreen
 import com.devphill.cocktails.presentation.splash.SplashScreen
+import com.devphill.cocktails.ui.theme.CocktailsTheme
 
 sealed class BottomNavScreen(val title: String, val icon: ImageVector) {
     object Discover : BottomNavScreen("Discover", Icons.Filled.Explore)
@@ -50,7 +51,7 @@ fun App() {
     var appState by remember { mutableStateOf(AppState.SPLASH) }
     val userPreferencesManager = remember { DIContainer.provideUserPreferencesManager() }
 
-    MaterialTheme {
+    CocktailsTheme(useDarkTheme = true) {
         when (appState) {
             AppState.SPLASH -> {
                 SplashScreen(
