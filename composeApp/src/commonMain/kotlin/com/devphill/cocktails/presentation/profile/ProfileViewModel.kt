@@ -9,7 +9,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ProfileViewModel(userPreferencesManager: UserPreferencesManager, authManager: AuthManager) : ViewModel() {
+class ProfileViewModel(
+    private val userPreferencesManager: UserPreferencesManager,
+    private val authManager: AuthManager
+) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
@@ -22,15 +25,16 @@ class ProfileViewModel(userPreferencesManager: UserPreferencesManager, authManag
 
         viewModelScope.launch {
             try {
-                // TODO: Replace with actual data loading from repository
+                val displayName = userPreferencesManager.getUserDisplayName() ?: "Anonymous"
+                val email = userPreferencesManager.getUserEmail() ?: ""
+                val photoUrl = userPreferencesManager.getUserPhotoUrl()
+
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    userName = "John Doe",
-                    userEmail = "john.doe@example.com",
-                    experienceLevel = "Intermediate",
-                    favoriteCategory = "Classic Cocktails",
-                    totalFavorites = 12,
-                    totalCocktailsMade = 25
+                    userName = displayName,
+                    userEmail = email,
+                    userPhotoUrl = photoUrl,
+                    isLoggedIn = userPreferencesManager.isUserLoggedIn()
                 )
             } catch (exception: Exception) {
                 _uiState.value = _uiState.value.copy(
@@ -46,10 +50,9 @@ class ProfileViewModel(userPreferencesManager: UserPreferencesManager, authManag
 
         viewModelScope.launch {
             try {
-                // Clear user preferences and data
-                clearUserData()
-
-                // Navigate to login/splash screen
+                authManager.signOut()
+                userPreferencesManager.clearUserData()
+                _uiState.value = ProfileUiState(isSigningOut = false)
                 onSignOutComplete()
             } catch (exception: Exception) {
                 _uiState.value = _uiState.value.copy(
@@ -58,17 +61,5 @@ class ProfileViewModel(userPreferencesManager: UserPreferencesManager, authManag
                 )
             }
         }
-    }
-
-    private suspend fun clearUserData() {
-        // TODO: Implement actual user data clearing
-        // This would typically include:
-        // - Clearing authentication tokens
-        // - Clearing user preferences
-        // - Clearing cached data
-        // - Logging out from remote services
-
-        // Simulate logout delay
-        kotlinx.coroutines.delay(1000)
     }
 }

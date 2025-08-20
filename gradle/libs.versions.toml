@@ -8,7 +8,7 @@ androidx-activity = "1.10.1"
 androidx-lifecycle = "2.9.1"
 composeMultiplatform = "1.8.2"
 kotlin = "2.2.0"
-kamel = "1.0.7"
+coil = "3.3.0"
 
 # Firebase
 firebase-bom = "34.1.0"
@@ -43,7 +43,9 @@ kotlinx_serialization_json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credential-manager" }
 androidx-credentials-play-services = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credential-manager" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version = "1.1.1" }
-kamel_image = { module = "media.kamel:kamel-image-default", version.ref = "kamel" }
+
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+
 # Koin
 koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devphill.cocktails.auth.AuthManager
 import com.devphill.cocktails.auth.User
+import com.devphill.cocktails.data.preferences.UserPreferencesManager
 import kotlinx.coroutines.launch
 
 sealed class AuthState {
@@ -18,7 +19,8 @@ sealed class AuthState {
 }
 
 class AuthViewModel(
-    private val authManager: AuthManager
+    private val authManager: AuthManager,
+    private val userPreferencesManager: UserPreferencesManager
 ) : ViewModel() {
 
     var authState by mutableStateOf<AuthState>(
@@ -30,6 +32,14 @@ class AuthViewModel(
     )
         private set
 
+    private suspend fun saveUserData(user: User) {
+        userPreferencesManager.setUserLoggedIn(true)
+        userPreferencesManager.setUserEmail(user.email)
+        userPreferencesManager.setUserDisplayName(user.displayName)
+        userPreferencesManager.setUserPhotoUrl(user.photoUrl)
+        userPreferencesManager.setUserUid(user.uid)
+    }
+
     fun signInWithEmailAndPassword(email: String, password: String) {
         viewModelScope.launch {
             authState = AuthState.Loading
@@ -37,6 +47,7 @@ class AuthViewModel(
                 val result = authManager.signInWithEmailAndPassword(email, password)
                 result.fold(
                     onSuccess = { user ->
+                        saveUserData(user)
                         authState = AuthState.Authenticated(user)
                     },
                     onFailure = { exception ->
@@ -56,6 +67,7 @@ class AuthViewModel(
                 val result = authManager.signInWithGoogle()
                 result.fold(
                     onSuccess = { user ->
+                        saveUserData(user)
                         authState = AuthState.Authenticated(user)
                     },
                     onFailure = { exception ->
@@ -80,6 +92,7 @@ class AuthViewModel(
                 val result = authManager.signInWithGoogleToken(idToken)
                 result.fold(
                     onSuccess = { user ->
+                        saveUserData(user)
                         authState = AuthState.Authenticated(user)
                     },
                     onFailure = { exception ->
@@ -88,6 +101,19 @@ class AuthViewModel(
                 )
             } catch (e: Exception) {
                 authState = AuthState.Error(e.message ?: "Google sign in with token failed")
+            }
+        }
+    }
+
+    fun signOut() {
+        viewModelScope.launch {
+            authState = AuthState.Loading
+            try {
+                authManager.signOut()
+                userPreferencesManager.clearUserData()
+                authState = AuthState.Unauthenticated
+            } catch (e: Exception) {
+                authState = AuthState.Error(e.message ?: "Sign out failed")
             }
         }
     }

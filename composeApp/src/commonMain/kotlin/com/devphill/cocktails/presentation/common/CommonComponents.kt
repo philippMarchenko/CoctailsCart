@@ -16,10 +16,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.domain.model.ComplexityLevel
-import io.kamel.image.KamelImage
-import io.kamel.image.asyncPainterResource
 
 @Composable
 fun CocktailCard(
@@ -136,11 +135,14 @@ fun CocktailImageCard(
                 .background(MaterialTheme.colorScheme.surfaceVariant)
         ) {
             if (cocktail.imageUrl != null) {
-                KamelImage(
-                    resource = asyncPainterResource(cocktail.imageUrl),
+                AsyncImage(
+                    model = cocktail.imageUrl,
                     contentDescription = cocktail.title,
-                    modifier = Modifier.matchParentSize(),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .clip(RoundedCornerShape(20.dp))
                 )
             }
 

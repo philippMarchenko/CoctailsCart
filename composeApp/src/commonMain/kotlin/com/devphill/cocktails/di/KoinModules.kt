@@ -27,7 +27,7 @@ val useCaseModule = module {
  * ViewModels module - Presentation layer
  */
 val viewModelModule = module {
-    viewModel { AuthViewModel(get()) }
+    viewModel { AuthViewModel(get(),get()) }
     viewModel { DiscoverViewModel(get()) }
     viewModel { SearchViewModel(get()) }
     viewModel { FavoritesViewModel(get(), get()) }

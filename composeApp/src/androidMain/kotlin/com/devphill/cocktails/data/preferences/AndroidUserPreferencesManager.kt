@@ -40,7 +40,7 @@ class AndroidUserPreferencesManager(private val context: Context) : UserPreferen
     override suspend fun getUserEmail(): String? = withContext(Dispatchers.IO) {
         sharedPreferences.getString(KEY_USER_EMAIL, null)
     }
-    
+
     override suspend fun clearUserData() = withContext(Dispatchers.IO) {
         sharedPreferences.edit()
             .remove(KEY_IS_LOGGED_IN)
@@ -48,7 +48,9 @@ class AndroidUserPreferencesManager(private val context: Context) : UserPreferen
             .remove(KEY_USER_EMAIL)
             .apply()
     }
-    
+
+
+
     companion object {
         private const val PREFS_NAME = "cocktails_user_prefs"
         private const val KEY_IS_LOGGED_IN = "is_logged_in"
@@ -56,4 +58,16 @@ class AndroidUserPreferencesManager(private val context: Context) : UserPreferen
         private const val KEY_USER_EMAIL = "user_email"
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 

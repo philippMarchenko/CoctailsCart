@@ -131,6 +131,7 @@ private fun DiscoverSuccessContent(
                     columns = GridCells.Fixed(2),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
+                    userScrollEnabled = false, // Disable scrolling for the cocktails grid
                     modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(max = 800.dp) // Prevent infinite height

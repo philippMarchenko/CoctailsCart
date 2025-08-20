@@ -1,28 +1,28 @@
 package com.devphill.cocktails.presentation.profile
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.background
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.devphill.cocktails.presentation.common.LoadingIndicator
+import coil3.compose.AsyncImage
 import com.devphill.cocktails.presentation.common.ErrorMessage
-import com.devphill.cocktails.ui.theme.ThemeSettingsDialog
-import com.devphill.cocktails.ui.theme.ThemeMode
+import com.devphill.cocktails.presentation.common.LoadingIndicator
 import com.devphill.cocktails.ui.theme.GlobalThemeManager
+import com.devphill.cocktails.ui.theme.ThemeSettingsDialog
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
@@ -156,97 +156,88 @@ private fun ProfileHeader() {
 
 @Composable
 private fun AvatarSection(uiState: ProfileUiState) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            // Avatar Circle
-            Box(
-                modifier = Modifier
-                    .size(80.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = uiState.userName.take(2).uppercase(),
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-            }
+        // Profile Image
+        AsyncImage(
+            model = uiState.userPhotoUrl,
+            contentDescription = "User Avatar",
+            modifier = Modifier
+                .size(80.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+        )
 
-            Text(
-                text = uiState.userName,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface
-            )
+        Spacer(modifier = Modifier.height(16.dp))
 
-            OutlinedButton(
-                onClick = { /* TODO: Implement avatar change */ },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Change Avatar")
-            }
-        }
+        // User Name
+        Text(
+            text = uiState.userName,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold
+        )
+
+        // User Email
+        Text(
+            text = uiState.userEmail,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }
 
 @Composable
 private fun UserInfoCard(uiState: ProfileUiState) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+    if (!uiState.isLoggedIn) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.errorContainer
+            )
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            Column(
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(24.dp)
+                Text(
+                    text = "Not Logged In",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onErrorContainer
                 )
                 Text(
-                    text = "User Information",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
+                    text = "Please log in to see your profile",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
+                    textAlign = TextAlign.Center
                 )
             }
+        }
+        return
+    }
 
+    Card(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = "Profile Information",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(8.dp))
             ProfileInfoRow(
-                icon = Icons.Default.AccountCircle,
+                icon = Icons.Default.Person,
                 label = "Name",
                 value = uiState.userName
             )
-
             ProfileInfoRow(
                 icon = Icons.Default.Email,
                 label = "Email",
                 value = uiState.userEmail
-            )
-
-            ProfileInfoRow(
-                icon = Icons.Default.Star,
-                label = "Experience Level",
-                value = uiState.experienceLevel
             )
         }
     }
@@ -552,23 +543,24 @@ private fun SettingsCard() {
 
 @Composable
 private fun ProfileInfoRow(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     label: String,
     value: String
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(20.dp)
+            modifier = Modifier.size(24.dp),
+            tint = MaterialTheme.colorScheme.primary
         )
-
-        Column(modifier = Modifier.weight(1f)) {
+        Spacer(modifier = Modifier.width(8.dp))
+        Column {
             Text(
                 text = label,
                 style = MaterialTheme.typography.bodySmall,
@@ -576,9 +568,7 @@ private fun ProfileInfoRow(
             )
             Text(
                 text = value,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }

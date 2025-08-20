@@ -5,6 +5,8 @@ data class ProfileUiState(
     val errorMessage: String? = null,
     val userName: String = "",
     val userEmail: String = "",
+    val userPhotoUrl: String? = null,
+    val isLoggedIn: Boolean = false,
     val experienceLevel: String = "",
     val favoriteCategory: String = "",
     val totalFavorites: Int = 0,

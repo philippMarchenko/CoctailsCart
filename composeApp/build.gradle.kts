@@ -57,8 +57,10 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             // JSON Serialization for parsing cocktails data
             implementation(libs.kotlinx.serialization.json)
+
             // Multiplatform image loading
-            implementation(libs.kamel.image)
+            implementation(libs.coil.compose)
+
             // Koin core for dependency injection
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
@@ -99,8 +101,3 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 }
-
-dependencies {
-    debugImplementation(compose.uiTooling)
-}
-

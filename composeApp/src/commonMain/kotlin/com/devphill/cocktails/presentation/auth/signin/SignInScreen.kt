@@ -149,11 +149,6 @@ fun SignInScreen(
                     viewModel.signInWithGoogle()
                 }
             )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Skip Sign In Option
-            SkipSignInSection(onSkipSignIn = onSkipSignIn)
         }
     }
 }
@@ -351,50 +346,5 @@ private fun SignInForm(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun SkipSignInSection(onSkipSignIn: () -> Unit) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Divider(modifier = Modifier.weight(1f))
-            Text(
-                text = "OR",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-            Divider(modifier = Modifier.weight(1f))
-        }
-
-        OutlinedButton(
-            onClick = onSkipSignIn,
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.ExploreOff,
-                contentDescription = null,
-                modifier = Modifier.size(18.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("Continue as Guest")
-        }
-
-        Text(
-            text = "You can always sign in later to save your favorites",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = 32.dp)
-        )
     }
 }

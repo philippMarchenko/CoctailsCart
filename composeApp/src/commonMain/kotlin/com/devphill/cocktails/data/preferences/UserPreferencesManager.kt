@@ -11,5 +11,11 @@ interface UserPreferencesManager {
     suspend fun setUserEmail(email: String?)
     suspend fun getUserEmail(): String?
     suspend fun clearUserData()
+    suspend fun setUserDisplayName(displayName: String?)
+    suspend fun getUserDisplayName(): String?
+    suspend fun setUserPhotoUrl(photoUrl: String?)
+    suspend fun getUserPhotoUrl(): String?
+    suspend fun setUserUid(uid: String?)
+    suspend fun getUserUid(): String?
 }
 
