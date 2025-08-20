@@ -3,20 +3,17 @@ package com.devphill.cocktails.presentation.auth.signin
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.devphill.cocktails.di.DIContainer
 import com.devphill.cocktails.presentation.auth.AuthViewModel
 import com.devphill.cocktails.presentation.auth.AuthState
 import com.devphill.cocktails.presentation.auth.GoogleSignInHandler
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AndroidSignInScreen(
     onSignInSuccess: () -> Unit,
     onSkipSignIn: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: AuthViewModel = viewModel {
-        DIContainer.provideAuthManager()?.let { AuthViewModel(it) }
-            ?: throw IllegalStateException("AuthManager not available")
-    }
+    viewModel: AuthViewModel = koinViewModel()
 ) {
     // Handle Google sign-in state
     when (viewModel.authState) {

@@ -19,7 +19,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.ui.graphics.vector.ImageVector
 
-import com.devphill.cocktails.di.DIContainer
 import com.devphill.cocktails.presentation.auth.signin.PlatformSignInScreen
 import com.devphill.cocktails.presentation.discover.DiscoverScreen
 import com.devphill.cocktails.presentation.search.SearchScreen
@@ -30,7 +29,15 @@ import com.devphill.cocktails.presentation.splash.SplashScreen
 import com.devphill.cocktails.ui.theme.CocktailsTheme
 import com.devphill.cocktails.ui.theme.GlobalThemeManager
 import com.devphill.cocktails.ui.theme.ThemeMode
+import com.devphill.cocktails.data.preferences.UserPreferencesManager
+import com.devphill.cocktails.presentation.discover.DiscoverViewModel
+import com.devphill.cocktails.presentation.search.SearchViewModel
+import com.devphill.cocktails.presentation.favorites.FavoritesViewModel
+import com.devphill.cocktails.presentation.tutorials.TutorialsViewModel
+import com.devphill.cocktails.presentation.profile.ProfileViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 sealed class BottomNavScreen(val title: String, val icon: ImageVector) {
     object Discover : BottomNavScreen("Discover", Icons.Filled.Explore)
@@ -51,7 +58,7 @@ enum class AppState {
 @Preview
 fun App() {
     var appState by remember { mutableStateOf(AppState.SPLASH) }
-    val userPreferencesManager = remember { DIContainer.provideUserPreferencesManager() }
+    val userPreferencesManager: UserPreferencesManager = koinInject()
     val themeManager = remember { GlobalThemeManager.getThemeManager() }
     val currentTheme by themeManager.currentTheme.collectAsState()
 
@@ -83,74 +90,72 @@ fun App() {
                 )
             }
             AppState.MAIN_APP -> {
-                MainApp(
-                    onNavigateToAuth = { appState = AppState.SIGN_IN }
-                )
+                MainApp()
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainApp(onNavigateToAuth: () -> Unit) {
+private fun MainApp() {
     var selectedScreen by remember { mutableStateOf<BottomNavScreen>(BottomNavScreen.Discover) }
 
     Scaffold(
         bottomBar = {
             NavigationBar {
-                listOf(
+                val screens = listOf(
                     BottomNavScreen.Discover,
                     BottomNavScreen.Tutorials,
                     BottomNavScreen.Search,
                     BottomNavScreen.Favorites,
                     BottomNavScreen.Profile
-                ).forEach { screen ->
+                )
+
+                screens.forEach { screen ->
                     NavigationBarItem(
-                        icon = { Icon(screen.icon, contentDescription = screen.title) },
-                        label = { Text(screen.title) },
                         selected = selectedScreen == screen,
-                        onClick = { selectedScreen = screen }
+                        onClick = { selectedScreen = screen },
+                        icon = { Icon(screen.icon, contentDescription = screen.title) },
+                        label = { Text(screen.title) }
                     )
                 }
             }
         }
-    ) { innerPadding ->
+    ) { paddingValues ->
         when (selectedScreen) {
-            is BottomNavScreen.Discover -> {
-                val viewModel = remember { DIContainer.provideDiscoverViewModel() }
+            BottomNavScreen.Discover -> {
+                val viewModel: DiscoverViewModel = koinViewModel()
                 DiscoverScreen(
-                    viewModel = viewModel,
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.padding(paddingValues),
+                    viewModel = viewModel
                 )
             }
-            is BottomNavScreen.Tutorials -> {
-                val viewModel = remember { DIContainer.provideTutorialsViewModel() }
+            BottomNavScreen.Tutorials -> {
+                val viewModel: TutorialsViewModel = koinViewModel()
                 TutorialsScreen(
-                    viewModel = viewModel,
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.padding(paddingValues),
+                    viewModel = viewModel
                 )
             }
-            is BottomNavScreen.Search -> {
-                val viewModel = remember { DIContainer.provideSearchViewModel() }
+            BottomNavScreen.Search -> {
+                val viewModel: SearchViewModel = koinViewModel()
                 SearchScreen(
-                    viewModel = viewModel,
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.padding(paddingValues),
+                    viewModel = viewModel
                 )
             }
-            is BottomNavScreen.Favorites -> {
-                val viewModel = remember { DIContainer.provideFavoritesViewModel() }
+            BottomNavScreen.Favorites -> {
+                val viewModel: FavoritesViewModel = koinViewModel()
                 FavoritesScreen(
-                    viewModel = viewModel,
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.padding(paddingValues),
+                    viewModel = viewModel
                 )
             }
-            is BottomNavScreen.Profile -> {
-                val viewModel = remember { DIContainer.provideProfileViewModel() }
+            BottomNavScreen.Profile -> {
+                val viewModel: ProfileViewModel = koinViewModel()
                 ProfileScreen(
-                    viewModel = viewModel,
-                    onNavigateToAuth = onNavigateToAuth,
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.padding(paddingValues),
+                    viewModel = viewModel
                 )
             }
         }

@@ -6,11 +6,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.devphill.cocktails.di.DIContainer
 import androidx.core.view.WindowCompat
 import com.devphill.cocktails.ui.theme.StatusBarController
 import com.devphill.cocktails.ui.theme.GlobalThemeManager
 import com.devphill.cocktails.ui.theme.ThemeMode
+import com.devphill.cocktails.di.appModules
+import com.devphill.cocktails.di.platformModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +30,12 @@ class MainActivity : ComponentActivity() {
         // Set initial status bar appearance for dark theme
         statusBarController.setStatusBarAppearance(isLight = false) // Start with light icons for dark theme
         
-        DIContainer.initialize(applicationContext)
+        // Initialize Koin
+        startKoin {
+            androidContext(this@MainActivity)
+            modules(appModules + platformModule)
+        }
+
         setContent {
             App()
         }
@@ -39,3 +47,4 @@ class MainActivity : ComponentActivity() {
 fun AppAndroidPreview() {
     App()
 }
+

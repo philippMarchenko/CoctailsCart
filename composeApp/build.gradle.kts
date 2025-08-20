@@ -41,6 +41,9 @@ kotlin {
             implementation(libs.androidx.credentials)
             implementation(libs.androidx.credentials.play.services)
             implementation(libs.googleid)
+            // Koin for Android
+            implementation(libs.koin.android)
+            implementation(libs.koin.compose)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -56,6 +59,13 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             // Multiplatform image loading
             implementation(libs.kamel.image)
+            // Koin core for dependency injection
+            implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.koin.compose.viewmodel.navigation)
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -93,5 +103,4 @@ android {
 dependencies {
     debugImplementation(compose.uiTooling)
 }
-
 
