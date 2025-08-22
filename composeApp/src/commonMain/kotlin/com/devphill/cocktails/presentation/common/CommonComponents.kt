@@ -140,9 +140,7 @@ fun CocktailImageCard(
                     contentDescription = cocktail.title,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .clip(RoundedCornerShape(20.dp))
+                        .fillMaxSize()
                 )
             }
 

@@ -22,11 +22,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.devphill.cocktails.presentation.common.ErrorMessage
 import com.devphill.cocktails.presentation.common.LoadingIndicator
+import com.devphill.cocktails.ui.theme.CocktailsTheme
 import com.devphill.cocktails.ui.theme.GlobalThemeManager
 import com.devphill.cocktails.ui.theme.ThemeSettingsDialog
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@Preview
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel,
@@ -88,10 +88,6 @@ private fun ProfileMainContent(
         AvatarSection(uiState = uiState)
 
         UserInfoCard(uiState = uiState)
-
-        StatsCard(uiState = uiState)
-
-        PreferencesCard(uiState = uiState)
 
         QuickActionsCard()
 
@@ -245,91 +241,6 @@ private fun UserInfoCard(uiState: ProfileUiState) {
 }
 
 @Composable
-private fun StatsCard(uiState: ProfileUiState) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Analytics,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(24.dp)
-                )
-                Text(
-                    text = "Your Statistics",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                StatItem(
-                    icon = Icons.Default.Favorite,
-                    label = "Favorites",
-                    value = uiState.totalFavorites.toString(),
-                    modifier = Modifier.weight(1f)
-                )
-
-                StatItem(
-                    icon = Icons.Default.LocalBar,
-                    label = "Made",
-                    value = uiState.totalCocktailsMade.toString(),
-                    modifier = Modifier.weight(1f)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun PreferencesCard(uiState: ProfileUiState) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Tune,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(24.dp)
-                )
-                Text(
-                    text = "Preferences",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-
-            ProfileInfoRow(
-                icon = Icons.Default.Category,
-                label = "Favorite Category",
-                value = uiState.favoriteCategory
-            )
-        }
-    }
-}
-
-@Composable
 private fun QuickActionsCard() {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -337,7 +248,6 @@ private fun QuickActionsCard() {
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -355,6 +265,8 @@ private fun QuickActionsCard() {
                     fontWeight = FontWeight.SemiBold
                 )
             }
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             SettingItem(
                 icon = Icons.Default.BookmarkBorder,
@@ -381,7 +293,6 @@ private fun AppSettingsCard(
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -399,6 +310,8 @@ private fun AppSettingsCard(
                     fontWeight = FontWeight.SemiBold
                 )
             }
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             SettingItem(
                 icon = Icons.Default.Language,
@@ -431,7 +344,6 @@ private fun AccountActionsCard(
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -576,7 +488,7 @@ private fun SettingItem(
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(8.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.1f),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0f),
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
@@ -655,4 +567,23 @@ private fun SignOutConfirmationDialog(
     )
 }
 
+// Preview
+@Preview
+@Composable
+private fun ProfileMainContentPreview() {
+    CocktailsTheme(useDarkTheme = true) {
+        ProfileMainContent(
+            uiState = ProfileUiState(
+                userName = "John Doe",
+                userEmail = "john.doe@example.com",
+                userPhotoUrl = null,
+                isLoggedIn = true,
+                favoriteCategory = "Whiskey Cocktails",
+                totalFavorites = 12,
+                totalCocktailsMade = 45
+            ),
+            onSignOut = { }
+        )
+    }
+}
 
