@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.devphill.cocktails.auth.AuthManager
-import com.devphill.cocktails.auth.User
+import com.devphill.cocktails.data.auth.AuthManager
+import com.devphill.cocktails.data.auth.User
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
 import kotlinx.coroutines.launch
 
@@ -30,14 +30,10 @@ class AuthViewModel(
             AuthState.Unauthenticated
         }
     )
-        private set
 
     private suspend fun saveUserData(user: User) {
+        userPreferencesManager.saveUser(user)
         userPreferencesManager.setUserLoggedIn(true)
-        userPreferencesManager.setUserEmail(user.email)
-        userPreferencesManager.setUserDisplayName(user.displayName)
-        userPreferencesManager.setUserPhotoUrl(user.photoUrl)
-        userPreferencesManager.setUserUid(user.uid)
     }
 
     fun signInWithEmailAndPassword(email: String, password: String) {
@@ -60,6 +56,26 @@ class AuthViewModel(
         }
     }
 
+    fun signUpWithEmailAndPassword(email: String, password: String) {
+        viewModelScope.launch {
+            authState = AuthState.Loading
+            try {
+                val result = authManager.createUserWithEmailAndPassword(email, password)
+                result.fold(
+                    onSuccess = { user ->
+                        saveUserData(user)
+                        authState = AuthState.Authenticated(user)
+                    },
+                    onFailure = { exception ->
+                        authState = AuthState.Error(exception.message ?: "Sign up failed")
+                    }
+                )
+            } catch (e: Exception) {
+                authState = AuthState.Error(e.message ?: "Sign up failed")
+            }
+        }
+    }
+
     fun signInWithGoogle() {
         viewModelScope.launch {
             authState = AuthState.Loading
@@ -71,12 +87,8 @@ class AuthViewModel(
                         authState = AuthState.Authenticated(user)
                     },
                     onFailure = { exception ->
-                        // Check if this is the special case requiring UI interaction
-                        if (exception.message == "GOOGLE_SIGNIN_REQUIRED") {
-                            authState = AuthState.GoogleSignInRequired
-                        } else {
-                            authState = AuthState.Error(exception.message ?: "Google sign in failed")
-                        }
+                        println("Google sign-in failed: ${exception.message}")
+                        authState = AuthState.Error(exception.message ?: "Google sign in failed")
                     }
                 )
             } catch (e: Exception) {

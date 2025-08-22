@@ -1,4 +1,4 @@
-package com.devphill.cocktails.auth
+package com.devphill.cocktails.data.auth
 
 import android.content.Context
 import androidx.credentials.CredentialManager
@@ -30,9 +30,23 @@ class AndroidAuthManager(private val context: Context) : AuthManager {
 
     override suspend fun signInWithGoogle(): Result<User> {
         return try {
-            // For Credential Manager API, we need to return a special result
-            // that tells the UI to handle the credential request
-            Result.failure(Exception("GOOGLE_SIGNIN_REQUIRED"))
+            val googleIdOption = GetGoogleIdOption.Builder()
+                .setFilterByAuthorizedAccounts(false)
+                .setServerClientId(WEB_CLIENT_ID)
+                .build()
+
+            val request = GetCredentialRequest.Builder()
+                .addCredentialOption(googleIdOption)
+                .build()
+
+            val result = credentialManager.getCredential(
+                request = request,
+                context = context
+            )
+
+            handleSignIn(result)
+        } catch (e: GetCredentialException) {
+            Result.failure(Exception("Google Sign-In failed: ${e.message}"))
         } catch (e: Exception) {
             Result.failure(Exception("Authentication error: ${e.message}"))
         }

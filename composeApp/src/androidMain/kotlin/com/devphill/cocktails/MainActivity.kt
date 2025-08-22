@@ -20,9 +20,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         
-        // Configure status bar
+        // Configure window for proper keyboard handling
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        
+
         // Create and register status bar controller
         val statusBarController = StatusBarController(this)
       //  StatusBarControllerHolder.setController(statusBarController)

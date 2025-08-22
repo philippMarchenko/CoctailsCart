@@ -1,6 +1,5 @@
 package com.devphill.cocktails
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -20,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.graphics.vector.ImageVector
 
 import com.devphill.cocktails.presentation.auth.signin.PlatformSignInScreen
+import com.devphill.cocktails.presentation.auth.signup.PlatformSignUpScreen
 import com.devphill.cocktails.presentation.discover.DiscoverScreen
 import com.devphill.cocktails.presentation.search.SearchScreen
 import com.devphill.cocktails.presentation.favorites.FavoritesScreen
@@ -50,6 +50,7 @@ sealed class BottomNavScreen(val title: String, val icon: ImageVector) {
 enum class AppState {
     SPLASH,
     SIGN_IN,
+    SIGN_UP,
     MAIN_APP
 }
 
@@ -68,7 +69,7 @@ fun App() {
         // The actual status bar update happens in the theme
     }
 
-    CocktailsTheme(useDarkTheme = currentTheme == ThemeMode.SYSTEM) {
+    CocktailsTheme(useDarkTheme = currentTheme == ThemeMode.DARK) {
         when (appState) {
             AppState.SPLASH -> {
                 SplashScreen(
@@ -83,21 +84,35 @@ fun App() {
                         // Save login state
                         appState = AppState.MAIN_APP
                     },
-                    onSkipSignIn = {
-                        // For now, just continue to main app (you can add sign up screen later)
+                    onNavigateToSignUp = {
+                        appState = AppState.SIGN_UP
+                    }
+                )
+            }
+            AppState.SIGN_UP -> {
+                PlatformSignUpScreen(
+                    onSignUpSuccess = {
+                        // Save login state and navigate to main app
                         appState = AppState.MAIN_APP
+                    },
+                    onNavigateToSignIn = {
+                        appState = AppState.SIGN_IN
                     }
                 )
             }
             AppState.MAIN_APP -> {
-                MainApp()
+                MainApp(
+                    onNavigateToAuth = {
+                        appState = AppState.SIGN_IN
+                    }
+                )
             }
         }
     }
 }
 
 @Composable
-private fun MainApp() {
+private fun MainApp(onNavigateToAuth: () -> Unit) {
     var selectedScreen by remember { mutableStateOf<BottomNavScreen>(BottomNavScreen.Discover) }
 
     Scaffold(
@@ -155,7 +170,8 @@ private fun MainApp() {
                 val viewModel: ProfileViewModel = koinViewModel()
                 ProfileScreen(
                     modifier = Modifier.padding(paddingValues),
-                    viewModel = viewModel
+                    viewModel = viewModel,
+                    onNavigateToAuth = onNavigateToAuth
                 )
             }
         }

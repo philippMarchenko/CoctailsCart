@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -29,7 +30,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel,
-    onNavigateToAuth: () -> Unit = {},
+    onNavigateToAuth: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -450,7 +451,7 @@ private fun AccountActionsCard(
             }
 
             SettingItem(
-                icon = Icons.Default.Logout,
+                icon = Icons.AutoMirrored.Filled.Logout,
                 label = "Sign Out",
                 onClick = onSignOutClick
             )
@@ -494,54 +495,6 @@ private fun AccountActionsCard(
 }
 
 @Composable
-private fun SettingsCard() {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Settings,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(24.dp)
-                )
-                Text(
-                    text = "Settings",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-
-            SettingItem(
-                icon = Icons.Default.Notifications,
-                label = "Notifications",
-                onClick = { /* TODO: Implement */ }
-            )
-
-            SettingItem(
-                icon = Icons.Default.Palette,
-                label = "Theme",
-                onClick = { /* TODO: Implement */ }
-            )
-
-            SettingItem(
-                icon = Icons.Default.Info,
-                label = "About",
-                onClick = { /* TODO: Implement */ }
-            )
-        }
-    }
-}
-
-@Composable
 private fun ProfileInfoRow(
     icon: ImageVector,
     label: String,
@@ -576,7 +529,7 @@ private fun ProfileInfoRow(
 
 @Composable
 private fun StatItem(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     label: String,
     value: String,
     modifier: Modifier = Modifier
@@ -616,7 +569,7 @@ private fun StatItem(
 
 @Composable
 private fun SettingItem(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     label: String,
     onClick: () -> Unit
 ) {
@@ -664,7 +617,7 @@ private fun SignOutConfirmationDialog(
         onDismissRequest = onDismiss,
         icon = {
             Icon(
-                imageVector = Icons.Default.Logout,
+                imageVector = Icons.AutoMirrored.Filled.Logout,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(24.dp)
@@ -701,4 +654,5 @@ private fun SignOutConfirmationDialog(
         }
     )
 }
+
 

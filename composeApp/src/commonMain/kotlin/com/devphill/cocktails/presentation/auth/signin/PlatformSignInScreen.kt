@@ -6,6 +6,6 @@ import androidx.compose.ui.Modifier
 @Composable
 expect fun PlatformSignInScreen(
     onSignInSuccess: () -> Unit,
-    onSkipSignIn: () -> Unit,
+    onNavigateToSignUp: () -> Unit,
     modifier: Modifier = Modifier
 )

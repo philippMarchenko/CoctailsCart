@@ -17,32 +17,6 @@ class IOSUserPreferencesManager : UserPreferencesManager {
         userDefaults.boolForKey(KEY_IS_LOGGED_IN)
     }
 
-    override suspend fun setUserToken(token: String?) = withContext(Dispatchers.Main) {
-        if (token != null) {
-            userDefaults.setObject(token, KEY_USER_TOKEN)
-        } else {
-            userDefaults.removeObjectForKey(KEY_USER_TOKEN)
-        }
-        userDefaults.synchronize()
-    }
-
-    override suspend fun getUserToken(): String? = withContext(Dispatchers.Main) {
-        userDefaults.objectForKey(KEY_USER_TOKEN) as? String
-    }
-
-    override suspend fun setUserEmail(email: String?) = withContext(Dispatchers.Main) {
-        if (email != null) {
-            userDefaults.setObject(email, KEY_USER_EMAIL)
-        } else {
-            userDefaults.removeObjectForKey(KEY_USER_EMAIL)
-        }
-        userDefaults.synchronize()
-    }
-
-    override suspend fun getUserEmail(): String? = withContext(Dispatchers.Main) {
-        userDefaults.objectForKey(KEY_USER_EMAIL) as? String
-    }
-
     override suspend fun clearUserData() = withContext(Dispatchers.Main) {
         userDefaults.removeObjectForKey(KEY_IS_LOGGED_IN)
         userDefaults.removeObjectForKey(KEY_USER_TOKEN)
@@ -56,4 +30,6 @@ class IOSUserPreferencesManager : UserPreferencesManager {
         private const val KEY_USER_EMAIL = "user_email"
     }
 }
+
+
 

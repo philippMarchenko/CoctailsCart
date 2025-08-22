@@ -2,8 +2,9 @@ package com.devphill.cocktails.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.devphill.cocktails.auth.AuthManager
+import com.devphill.cocktails.data.auth.AuthManager
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,15 +26,14 @@ class ProfileViewModel(
 
         viewModelScope.launch {
             try {
-                val displayName = userPreferencesManager.getUserDisplayName() ?: "Anonymous"
-                val email = userPreferencesManager.getUserEmail() ?: ""
-                val photoUrl = userPreferencesManager.getUserPhotoUrl()
+                val user = userPreferencesManager.getUser()
+                println("User from prefs: $user")
 
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    userName = displayName,
-                    userEmail = email,
-                    userPhotoUrl = photoUrl,
+                    userName = user?.displayName ?: "Guest",
+                    userEmail = user?.email ?: "Not logged in",
+                    userPhotoUrl = user?.photoUrl,
                     isLoggedIn = userPreferencesManager.isUserLoggedIn()
                 )
             } catch (exception: Exception) {
@@ -46,20 +46,17 @@ class ProfileViewModel(
     }
 
     fun signOut(onSignOutComplete: () -> Unit) {
-        _uiState.value = _uiState.value.copy(isSigningOut = true)
+        _uiState.value = _uiState.value.copy(isLoading = true)
 
         viewModelScope.launch {
-            try {
-                authManager.signOut()
-                userPreferencesManager.clearUserData()
-                _uiState.value = ProfileUiState(isSigningOut = false)
-                onSignOutComplete()
-            } catch (exception: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    isSigningOut = false,
-                    errorMessage = exception.message ?: "Failed to sign out"
-                )
-            }
+            delay(1000)
+            authManager.signOut()
+            userPreferencesManager.clearUserData()
+            onSignOutComplete()
         }
     }
 }
+
+
+
+

@@ -1,4 +1,6 @@
-package com.devphill.cocktails.auth
+package com.devphill.cocktails.data.auth
+
+import kotlinx.serialization.Serializable
 
 expect fun createAuthManager(context: Any?): AuthManager
 
@@ -12,6 +14,7 @@ interface AuthManager {
     fun signOut()
 }
 
+@Serializable
 data class User(
     val uid: String,
     val email: String?,

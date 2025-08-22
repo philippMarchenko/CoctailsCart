@@ -1,7 +1,9 @@
-package com.devphill.cocktails.auth
+package com.devphill.cocktails.data.auth
 
 import android.content.Context
 import android.util.Log
+import androidx.credentials.CredentialManager
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 
 /**
  * Helper class to test Google Sign-In configuration
@@ -23,7 +25,7 @@ object GoogleSignInTester {
 
         // Test 2: Check if Credential Manager is available
         try {
-            val credentialManager = androidx.credentials.CredentialManager.create(context)
+            val credentialManager = CredentialManager.create(context)
             Log.d("GoogleSignIn", "✅ Credential Manager created successfully")
         } catch (e: Exception) {
             Log.e("GoogleSignIn", "❌ Credential Manager failed: ${e.message}")
@@ -31,7 +33,7 @@ object GoogleSignInTester {
 
         // Test 3: Check if Google ID option can be built
         try {
-            val googleIdOption = com.google.android.libraries.identity.googleid.GetGoogleIdOption.Builder()
+            val googleIdOption = GetGoogleIdOption.Builder()
                 .setFilterByAuthorizedAccounts(false)
                 .setServerClientId(clientId)
                 .build()

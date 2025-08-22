@@ -2,7 +2,6 @@ package com.devphill.cocktails.presentation.auth.signin
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.devphill.cocktails.presentation.auth.AuthViewModel
 import com.devphill.cocktails.presentation.auth.AuthState
 import com.devphill.cocktails.presentation.auth.GoogleSignInHandler
@@ -11,7 +10,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun AndroidSignInScreen(
     onSignInSuccess: () -> Unit,
-    onSkipSignIn: () -> Unit,
+    onNavigateToSignUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AuthViewModel = koinViewModel()
 ) {
@@ -31,15 +30,20 @@ fun AndroidSignInScreen(
                     )
                 }
             ) { onClick ->
-                // This will be triggered automatically when GoogleSignInRequired state is set
-                onClick()
+                // Use the common SignInScreen but with Google sign-in triggered
+                SignInScreen(
+                    onSignInSuccess = onSignInSuccess,
+                    onNavigateToSignUp = onNavigateToSignUp,
+                    modifier = modifier,
+                    viewModel = viewModel
+                )
             }
         }
         else -> {
             // Use the common SignInScreen for all other states
             SignInScreen(
                 onSignInSuccess = onSignInSuccess,
-                onSkipSignIn = onSkipSignIn,
+                onNavigateToSignUp = onNavigateToSignUp,
                 modifier = modifier,
                 viewModel = viewModel
             )

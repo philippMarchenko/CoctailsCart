@@ -1,4 +1,4 @@
-package com.devphill.cocktails.auth
+package com.devphill.cocktails.data.auth
 
 object AuthConstants {
     // Web client ID from google-services.json (client_type: 3)

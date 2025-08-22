@@ -1,4 +1,4 @@
-package com.devphill.cocktails.auth
+package com.devphill.cocktails.data.auth
 
 import android.content.Context
 

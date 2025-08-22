@@ -10,11 +10,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.Shapes
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Typography
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.rememberScrollState
 
 private val DarkColors: ColorScheme = darkColorScheme(
-    primary = Color(0xFFFFB86C),
+    primary = Color(0xFFFCCA38F),
     onPrimary = Color(0xFF2B1700),
-    primaryContainer = Color(0xFF3C2A1C),
+    primaryContainer = Color(0xFF332117),
     onPrimaryContainer = Color(0xFFFFDDB8),
 
     secondary = Color(0xFF9AD18B),
@@ -27,7 +37,7 @@ private val DarkColors: ColorScheme = darkColorScheme(
     tertiaryContainer = Color(0xFF1B3A3F),
     onTertiaryContainer = Color(0xFFBEEAF0),
 
-    background = Color(0xFF0F1115),
+    background = Color(0xFF24170F),
     onBackground = Color(0xFFE6E6E6),
     surface = Color(0xFF15181E),
     onSurface = Color(0xFFE6E6E6),
@@ -79,16 +89,14 @@ fun CocktailsTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val themeManager = GlobalThemeManager.getThemeManager()
-    val currentTheme by themeManager.currentTheme.collectAsState()
-    
-    val shouldUseDarkTheme = when (currentTheme) {
-        ThemeMode.LIGHT -> false
-        ThemeMode.DARK -> true
-        ThemeMode.SYSTEM -> useDarkTheme
+
+    val currentTheme = if(useDarkTheme){
+        ThemeMode.DARK
+    } else {
+        ThemeMode.LIGHT
     }
     
-    val colorScheme = if (shouldUseDarkTheme) DarkColors else LightColors
+    val colorScheme = if (useDarkTheme) DarkColors else LightColors
 
     // Update status bar when theme changes
     LaunchedEffect(currentTheme) {
@@ -103,7 +111,7 @@ fun CocktailsTheme(
             }
             ThemeMode.SYSTEM -> {
                 // System theme: let system decide
-                updateStatusBarAppearance(isLight = !shouldUseDarkTheme)
+                updateStatusBarAppearance(isLight = !useDarkTheme)
             }
         }
     }
@@ -114,5 +122,141 @@ fun CocktailsTheme(
         shapes = CocktailsShapes,
         content = content
     )
+}
+
+@Preview
+@Composable
+fun LightColorPalettePreview() {
+    MaterialTheme(
+        colorScheme = LightColors,
+        typography = CocktailsTypography,
+        shapes = CocktailsShapes
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .background(color = Color.White),
+        ) {
+            Text(
+                "Light Theme",
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+            ColorSchemeDisplay(LightColors)
+        }
+    }
+}
+
+@Preview
+@Composable
+fun DarkColorPalettePreview() {
+    MaterialTheme(
+        colorScheme = DarkColors,
+        typography = CocktailsTypography,
+        shapes = CocktailsShapes
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .background(color = Color(0xFF0F1115)), // Use actual dark background
+        ) {
+            Text(
+                "Dark Theme",
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = 16.dp),
+                color = Color(0xFFE6E6E6) // Light text for dark background
+            )
+            ColorSchemeDisplay(DarkColors)
+        }
+    }
+}
+
+@Preview
+@Composable
+fun ColorPalettePreview() {
+    // Neutral background for comparison
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .background(color = Color(0xFFF5F5F5)), // Light gray background
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        // Light Theme Column
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight()
+                .verticalScroll(rememberScrollState())
+        ) {
+            Text(
+                "Light Theme",
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = 16.dp),
+                color = Color.Black
+            )
+            ColorSchemeDisplay(LightColors)
+        }
+
+        // Dark Theme Column
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight()
+                .verticalScroll(rememberScrollState())
+        ) {
+            Text(
+                "Dark Theme",
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = 16.dp),
+                color = Color.Black
+            )
+            ColorSchemeDisplay(DarkColors)
+        }
+    }
+}
+
+@Composable
+private fun ColorSchemeDisplay(colorScheme: ColorScheme) {
+    Column {
+        ColorItem("Primary", colorScheme.primary, colorScheme.onPrimary)
+        ColorItem("Primary Container", colorScheme.primaryContainer, colorScheme.onPrimaryContainer)
+        ColorItem("Secondary", colorScheme.secondary, colorScheme.onSecondary)
+        ColorItem("Secondary Container", colorScheme.secondaryContainer, colorScheme.onSecondaryContainer)
+        ColorItem("Tertiary", colorScheme.tertiary, colorScheme.onTertiary)
+        ColorItem("Tertiary Container", colorScheme.tertiaryContainer, colorScheme.onTertiaryContainer)
+        ColorItem("Background", colorScheme.background, colorScheme.onBackground)
+        ColorItem("Surface", colorScheme.surface, colorScheme.onSurface)
+        ColorItem("Surface Variant", colorScheme.surfaceVariant, colorScheme.onSurfaceVariant)
+        ColorItem("Outline", colorScheme.outline, colorScheme.outline)
+    }
+}
+
+@Composable
+private fun ColorItem(name: String, backgroundColor: Color, textColor: Color) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(backgroundColor)
+                .padding(16.dp)
+        ) {
+            Text(
+                text = name,
+                color = textColor,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = "#${(backgroundColor.value shr 8).toString(16).uppercase().substring(0, 8)}",
+                color = textColor
+            )
+        }
+    }
 }
 

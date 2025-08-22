@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.serialization)
 }
 
 kotlin {
@@ -14,6 +15,7 @@ kotlin {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
     
@@ -26,11 +28,20 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = true
         }
+        iosTarget.compilerOptions {
+            freeCompilerArgs.add("-Xexpect-actual-classes")
+        }
+    }
+
+    // Add global compiler options for all targets
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     
     sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)
+            implementation(compose.uiTooling)
             implementation(libs.androidx.activity.compose)
             // Firebase dependencies - using libs references
             implementation(libs.firebase.bom)
@@ -60,6 +71,7 @@ kotlin {
 
             // Multiplatform image loading
             implementation(libs.coil.compose)
+            implementation(libs.coil.network.okhttp )
 
             // Koin core for dependency injection
             implementation(project.dependencies.platform(libs.koin.bom))
@@ -101,3 +113,4 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 }
+

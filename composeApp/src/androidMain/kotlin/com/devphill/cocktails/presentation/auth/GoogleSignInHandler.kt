@@ -11,7 +11,7 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import kotlinx.coroutines.launch
-import com.devphill.cocktails.auth.AuthConstants
+import com.devphill.cocktails.data.auth.AuthConstants
 
 @Composable
 fun GoogleSignInHandler(

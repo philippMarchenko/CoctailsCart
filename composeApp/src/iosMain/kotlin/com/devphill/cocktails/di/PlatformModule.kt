@@ -1,7 +1,7 @@
 package com.devphill.cocktails.di
 
-import com.devphill.cocktails.auth.AuthManager
-import com.devphill.cocktails.auth.createAuthManager
+import com.devphill.cocktails.data.auth.AuthManager
+import com.devphill.cocktails.data.auth.createAuthManager
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
 import com.devphill.cocktails.data.preferences.createUserPreferencesManager
 import com.devphill.cocktails.data.repository.CocktailRepositoryImpl

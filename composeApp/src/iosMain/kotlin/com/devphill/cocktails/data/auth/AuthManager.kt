@@ -1,4 +1,4 @@
-package com.devphill.cocktails.auth
+package com.devphill.cocktails.data.auth
 
 actual fun createAuthManager(context: Any?): AuthManager {
     return IosAuthManager()

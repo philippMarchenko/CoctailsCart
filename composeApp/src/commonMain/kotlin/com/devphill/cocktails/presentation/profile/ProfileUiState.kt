@@ -11,5 +11,4 @@ data class ProfileUiState(
     val favoriteCategory: String = "",
     val totalFavorites: Int = 0,
     val totalCocktailsMade: Int = 0,
-    val isSigningOut: Boolean = false
 )
