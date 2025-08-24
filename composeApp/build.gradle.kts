@@ -44,7 +44,7 @@ kotlin {
             implementation(compose.uiTooling)
             implementation(libs.androidx.activity.compose)
             // Firebase dependencies - using libs references
-            implementation(libs.firebase.bom)
+            implementation(project.dependencies.platform(libs.firebase.bom))
             implementation(libs.firebase.auth)
             implementation(libs.firebase.firestore)
             implementation(libs.firebase.analytics)

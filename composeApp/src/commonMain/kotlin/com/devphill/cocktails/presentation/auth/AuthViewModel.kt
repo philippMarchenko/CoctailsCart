@@ -56,11 +56,11 @@ class AuthViewModel(
         }
     }
 
-    fun signUpWithEmailAndPassword(email: String, password: String) {
+    fun signUpWithEmailAndPassword(email: String, password: String, displayName: String) {
         viewModelScope.launch {
             authState = AuthState.Loading
             try {
-                val result = authManager.createUserWithEmailAndPassword(email, password)
+                val result = authManager.createUserWithEmailAndPassword(email, password, displayName)
                 result.fold(
                     onSuccess = { user ->
                         saveUserData(user)

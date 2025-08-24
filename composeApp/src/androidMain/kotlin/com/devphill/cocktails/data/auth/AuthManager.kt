@@ -11,6 +11,7 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingExcept
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.tasks.await
 
 class AndroidAuthManager(private val context: Context) : AuthManager {
@@ -93,11 +94,18 @@ class AndroidAuthManager(private val context: Context) : AuthManager {
         }
     }
 
-    override suspend fun createUserWithEmailAndPassword(email: String, password: String): Result<User> {
+    override suspend fun createUserWithEmailAndPassword(email: String, password: String, displayName: String): Result<User> {
         return try {
             val result = auth.createUserWithEmailAndPassword(email, password).await()
-            result.user?.let {
-                Result.success(it.toUser())
+            result.user?.let { firebaseUser ->
+                // Update the user's display name
+                val profileUpdates = UserProfileChangeRequest.Builder()
+                    .setDisplayName(displayName)
+                    .build()
+                firebaseUser.updateProfile(profileUpdates).await()
+
+                // Return the user with updated profile
+                Result.success(firebaseUser.toUser())
             } ?: Result.failure(Exception("Account creation failed"))
         } catch (e: Exception) {
             Result.failure(e)

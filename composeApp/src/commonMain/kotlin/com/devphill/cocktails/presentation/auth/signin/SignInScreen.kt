@@ -11,11 +11,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
@@ -37,7 +35,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -54,7 +52,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -63,9 +60,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.devphill.cocktails.presentation.auth.AuthState
 import com.devphill.cocktails.presentation.auth.AuthViewModel
-import com.devphill.cocktails.ui.theme.CocktailsTheme
 import org.koin.compose.viewmodel.koinViewModel
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun SignInScreen(
@@ -121,27 +116,27 @@ fun SignInScreen(
 private fun WelcomeHeader() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         // App Icon
         Text(
             text = "🍸",
-            style = MaterialTheme.typography.displayMedium,
-            modifier = Modifier.padding(bottom = 8.dp)
+            style = MaterialTheme.typography.headlineLarge,
+            modifier = Modifier.padding(bottom = 4.dp)
         )
 
         // Welcome Text
         Text(
             text = "Welcome Back!",
-            style = MaterialTheme.typography.headlineMedium,
+            style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center
         )
 
         Text(
-            text = "Sign in to access your favorite cocktails and personalized recommendations",
-            style = MaterialTheme.typography.bodyLarge,
+            text = "Sign in to access your cocktails",
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = 16.dp)
@@ -164,21 +159,20 @@ private fun SignInForm(
     onNavigateToSignUp: () -> Unit
 ) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-        shape = RoundedCornerShape(16.dp),
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         )
     ) {
         Column(
-            modifier = Modifier.padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
                 text = "Sign In",
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -188,7 +182,6 @@ private fun SignInForm(
                 value = email,
                 onValueChange = onEmailChange,
                 label = { Text("Email") },
-                placeholder = { Text("Enter your email") },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Email,
@@ -206,7 +199,6 @@ private fun SignInForm(
                 value = password,
                 onValueChange = onPasswordChange,
                 label = { Text("Password") },
-                placeholder = { Text("Enter your password") },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Lock,
@@ -238,39 +230,28 @@ private fun SignInForm(
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
-
             // Sign In Button
             Button(
                 onClick = onSignIn,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp),
+                    .height(44.dp),
                 enabled = !isLoading && email.isNotBlank() && password.isNotBlank(),
                 shape = RoundedCornerShape(8.dp)
             ) {
                 if (isLoading) {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(18.dp),
                         color = MaterialTheme.colorScheme.onPrimary,
                         strokeWidth = 2.dp
                     )
                 } else {
                     Text(
                         text = "Sign In",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.SemiBold
                     )
                 }
-            }
-
-            // Forgot Password
-            TextButton(
-                onClick = { /* TODO: Implement forgot password */ },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = !isLoading
-            ) {
-                Text("Forgot Password?")
             }
 
             // OR Divider
@@ -279,14 +260,14 @@ private fun SignInForm(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Divider(modifier = Modifier.weight(1f))
+                HorizontalDivider(modifier = Modifier.weight(1f))
                 Text(
                     text = "OR",
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    modifier = Modifier.padding(horizontal = 12.dp)
                 )
-                Divider(modifier = Modifier.weight(1f))
+                HorizontalDivider(modifier = Modifier.weight(1f))
             }
 
             // Google Sign-In Button
@@ -298,19 +279,19 @@ private fun SignInForm(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp),
+                    .height(44.dp),
                 enabled = !isLoading,
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.AccountCircle,
                     contentDescription = null,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(16.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "Continue with Google",
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium
                 )
             }
@@ -323,13 +304,16 @@ private fun SignInForm(
             ) {
                 Text(
                     text = "Don't have an account?",
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                TextButton(onClick = onNavigateToSignUp) {
+                TextButton(
+                    onClick = onNavigateToSignUp,
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                ) {
                     Text(
                         text = "Sign Up",
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.SemiBold
                     )
                 }
@@ -375,23 +359,25 @@ private fun SignInScreenContent(
             .offset(y = offsetAnimation.value)
             .statusBarsPadding()
             .navigationBarsPadding()
-            .imePadding(),
-        contentAlignment = Alignment.Center
+            .imePadding()
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
-                .padding(24.dp)
+                .fillMaxSize()
+                .padding(16.dp)
                 .verticalScroll(
                     rememberScrollState(),
                     enabled = true
                 )
         ) {
+            Spacer(modifier = Modifier.height(8.dp))
+
             // App Logo and Welcome Text
             WelcomeHeader()
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Sign In Form
             SignInForm(
@@ -407,48 +393,8 @@ private fun SignInScreenContent(
                 onGoogleSignIn = onGoogleSignIn,
                 onNavigateToSignUp = onNavigateToSignUp
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
-
-@Preview
-@Composable
-fun SignInScreenLightPreview() {
-    CocktailsTheme(useDarkTheme = false) {
-        SignInScreenContent(
-            email = "",
-            password = "",
-            passwordVisible = false,
-            isLoading = false,
-            errorMessage = null,
-            onEmailChange = { },
-            onPasswordChange = { },
-            onPasswordVisibilityToggle = { },
-            onSignIn = { },
-            onGoogleSignIn = { },
-            onNavigateToSignUp = { }
-        )
-    }
-}
-
-@Preview
-@Composable
-fun SignInScreenDarkPreview() {
-    CocktailsTheme(useDarkTheme = true) {
-        SignInScreenContent(
-            email = "",
-            password = "",
-            passwordVisible = false,
-            isLoading = false,
-            errorMessage = null,
-            onEmailChange = { },
-            onPasswordChange = { },
-            onPasswordVisibilityToggle = { },
-            onSignIn = { },
-            onGoogleSignIn = { },
-            onNavigateToSignUp = { }
-        )
-    }
-}
-
-
