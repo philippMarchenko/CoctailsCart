@@ -1,5 +1,6 @@
 package com.devphill.cocktails.presentation.favorites
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,12 +15,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.presentation.common.LoadingIndicator
 
 @Composable
 fun FavoritesScreen(
     viewModel: FavoritesViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigateToDiscover: () -> Unit = {},
+    onNavigateToCocktailDetails: (String) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -27,6 +31,8 @@ fun FavoritesScreen(
         uiState = uiState,
         onRemoveFavorite = viewModel::removeFromFavorites,
         onRetry = viewModel::loadFavorites,
+        onNavigateToDiscover = onNavigateToDiscover,
+        onNavigateToCocktailDetails = onNavigateToCocktailDetails,
         modifier = modifier
     )
 }
@@ -34,8 +40,10 @@ fun FavoritesScreen(
 @Composable
 private fun FavoritesContent(
     uiState: FavoritesUiState,
-    onRemoveFavorite: (com.devphill.cocktails.domain.model.Cocktail) -> Unit,
+    onRemoveFavorite: (Cocktail) -> Unit,
     onRetry: () -> Unit,
+    onNavigateToDiscover: () -> Unit,
+    onNavigateToCocktailDetails: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -64,6 +72,7 @@ private fun FavoritesContent(
 
             uiState.isEmpty -> {
                 EmptyFavoritesState(
+                    onNavigateToDiscover = onNavigateToDiscover,
                     modifier = Modifier
                         .fillMaxSize()
                         .wrapContentSize(Alignment.Center)
@@ -74,6 +83,7 @@ private fun FavoritesContent(
                 FavoritesList(
                     favorites = uiState.favorites,
                     onRemoveFavorite = onRemoveFavorite,
+                    onNavigateToCocktailDetails = onNavigateToCocktailDetails,
                     modifier = Modifier.fillMaxSize()
                 )
             }
@@ -100,8 +110,9 @@ private fun FavoritesHeader() {
 
 @Composable
 private fun FavoritesList(
-    favorites: List<com.devphill.cocktails.domain.model.Cocktail>,
-    onRemoveFavorite: (com.devphill.cocktails.domain.model.Cocktail) -> Unit,
+    favorites: List<Cocktail>,
+    onRemoveFavorite: (Cocktail) -> Unit,
+    onNavigateToCocktailDetails: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -119,6 +130,7 @@ private fun FavoritesList(
                 FavoriteItem(
                     cocktail = cocktail,
                     onRemoveFavorite = { onRemoveFavorite(cocktail) },
+                    onCocktailClick = { onNavigateToCocktailDetails(cocktail.id) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -126,14 +138,17 @@ private fun FavoritesList(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FavoriteItem(
     cocktail: com.devphill.cocktails.domain.model.Cocktail,
     onRemoveFavorite: () -> Unit,
+    onCocktailClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier
+            .clickable { onCocktailClick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
@@ -200,6 +215,7 @@ private fun FavoriteItem(
 
 @Composable
 private fun EmptyFavoritesState(
+    onNavigateToDiscover: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -233,7 +249,7 @@ private fun EmptyFavoritesState(
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
-            onClick = { /* Navigate to discover */ }
+            onClick = onNavigateToDiscover
         ) {
             Text("Discover Cocktails")
         }

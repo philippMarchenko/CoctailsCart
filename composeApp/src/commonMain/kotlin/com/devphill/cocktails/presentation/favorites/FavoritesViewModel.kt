@@ -45,7 +45,20 @@ class FavoritesViewModel(
 
     fun removeFromFavorites(cocktail: Cocktail) {
         viewModelScope.launch {
-            cocktailInteractor.toggleFavorite(cocktail, false)
+            try {
+                cocktailInteractor.toggleFavorite(cocktail,true)
+                // Remove the cocktail from the current favorites list
+                val updatedFavorites = _uiState.value.favorites.filter { it.id != cocktail.id }
+                _uiState.value = _uiState.value.copy(
+                    favorites = updatedFavorites,
+                    isEmpty = updatedFavorites.isEmpty(),
+                    errorMessage = null
+                )
+            } catch (exception: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    errorMessage = "Failed to remove favorite: ${exception.message}"
+                )
+            }
         }
     }
 }

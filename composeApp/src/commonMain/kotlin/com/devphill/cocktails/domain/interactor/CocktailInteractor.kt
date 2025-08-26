@@ -83,22 +83,4 @@ class CocktailInteractor(
             repository.addToFavorites(cocktail)
         }
     }
-
-    /**
-     * Adds a cocktail to favorites.
-     *
-     * @param cocktail The cocktail to mark as favorite
-     */
-    suspend fun addToFavorites(cocktail: Cocktail) {
-        repository.addToFavorites(cocktail)
-    }
-
-    /**
-     * Removes a cocktail from favorites.
-     *
-     * @param cocktailId The ID of the cocktail to remove from favorites
-     */
-    suspend fun removeFromFavorites(cocktailId: String) {
-        repository.removeFromFavorites(cocktailId)
-    }
 }

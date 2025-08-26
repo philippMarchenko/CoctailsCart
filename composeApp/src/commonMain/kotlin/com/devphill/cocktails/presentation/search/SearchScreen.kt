@@ -3,6 +3,7 @@ package com.devphill.cocktails.presentation.search
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
@@ -20,7 +21,8 @@ import com.devphill.cocktails.presentation.common.LoadingIndicator
 @Composable
 fun SearchScreen(
     viewModel: SearchViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onCocktailClick: (String) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -28,6 +30,7 @@ fun SearchScreen(
         uiState = uiState,
         onQueryChange = viewModel::onSearchQueryChanged,
         onClearSearch = viewModel::clearSearch,
+        onCocktailClick = onCocktailClick,
         modifier = modifier
     )
 }
@@ -38,6 +41,7 @@ private fun SearchContent(
     uiState: SearchUiState,
     onQueryChange: (String) -> Unit,
     onClearSearch: () -> Unit,
+    onCocktailClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -82,6 +86,7 @@ private fun SearchContent(
             uiState.searchResults.isNotEmpty() -> {
                 SearchResults(
                     results = uiState.searchResults,
+                    onCocktailClick = onCocktailClick,
                     modifier = Modifier.fillMaxSize()
                 )
             }
@@ -125,12 +130,16 @@ private fun SearchBar(
         value = query,
         onValueChange = onQueryChange,
         placeholder = {
-            Text("Search cocktails...")
+            Text(
+                text = "Search cocktails, ingredients...",
+                style = MaterialTheme.typography.bodyLarge
+            )
         },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = "Search"
+                contentDescription = "Search",
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         },
         trailingIcon = {
@@ -138,12 +147,20 @@ private fun SearchBar(
                 IconButton(onClick = onClearSearch) {
                     Icon(
                         imageVector = Icons.Default.Clear,
-                        contentDescription = "Clear search"
+                        contentDescription = "Clear search",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
         },
         singleLine = true,
+        shape = RoundedCornerShape(28.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
+            focusedContainerColor = MaterialTheme.colorScheme.surface,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+        ),
         modifier = modifier
     )
 }
@@ -151,6 +168,7 @@ private fun SearchBar(
 @Composable
 private fun SearchResults(
     results: List<com.devphill.cocktails.domain.model.Cocktail>,
+    onCocktailClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -167,7 +185,7 @@ private fun SearchResults(
             items(results) { cocktail ->
                 CocktailCard(
                     cocktail = cocktail,
-                    onClick = { /* Handle cocktail click */ },
+                    onClick = { onCocktailClick(cocktail.id) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }

@@ -21,6 +21,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.navArgument
+import androidx.navigation.NavType
 
 import com.devphill.cocktails.presentation.auth.signin.PlatformSignInScreen
 import com.devphill.cocktails.presentation.auth.signup.PlatformSignUpScreen
@@ -214,14 +216,30 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                 val viewModel: SearchViewModel = koinViewModel()
                 SearchScreen(
                     modifier = Modifier.padding(paddingValues),
-                    viewModel = viewModel)
+                    viewModel = viewModel,
+                    onCocktailClick = { cocktailId ->
+                        navController.navigate(NavigationRoutes.cocktailDetails(cocktailId))
+                    }
+                )
             }
 
             composable(NavigationRoutes.FAVORITES) {
                 val viewModel: FavoritesViewModel = koinViewModel()
                 FavoritesScreen(
                     modifier = Modifier.padding(paddingValues),
-                    viewModel = viewModel)
+                    viewModel = viewModel,
+                    onNavigateToDiscover = {
+                        navController.navigate(NavigationRoutes.DISCOVER) {
+                            popUpTo(NavigationRoutes.DISCOVER) {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
+                    },
+                    onNavigateToCocktailDetails = { cocktailId ->
+                        navController.navigate(NavigationRoutes.cocktailDetails(cocktailId))
+                    }
+                )
             }
 
             composable(NavigationRoutes.PROFILE) {
@@ -233,8 +251,11 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                 )
             }
 
-            composable(NavigationRoutes.COCKTAIL_DETAILS) { backStackEntry ->
-                val cocktailId = backStackEntry.arguments?.getString("cocktailId", "") ?: ""
+            composable(
+                route = NavigationRoutes.COCKTAIL_DETAILS,
+                arguments = listOf(navArgument("cocktailId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val cocktailId = backStackEntry.arguments?.getString("cocktailId") ?: ""
                 val viewModel: CocktailDetailsViewModel = koinViewModel()
                 CocktailDetailsScreenContainer(
                     cocktailId = cocktailId,
@@ -248,9 +269,3 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
         }
     }
 }
-
-
-
-
-
-
