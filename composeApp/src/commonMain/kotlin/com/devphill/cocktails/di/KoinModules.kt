@@ -2,6 +2,7 @@ package com.devphill.cocktails.di
 
 import com.devphill.cocktails.domain.interactor.CocktailInteractor
 import com.devphill.cocktails.presentation.auth.AuthViewModel
+import com.devphill.cocktails.presentation.cocktail_details.CocktailDetailsViewModel
 import com.devphill.cocktails.presentation.discover.DiscoverViewModel
 import com.devphill.cocktails.presentation.favorites.FavoritesViewModel
 import com.devphill.cocktails.presentation.profile.ProfileViewModel
@@ -28,6 +29,7 @@ val commonModule = module {
     viewModel { FavoritesViewModel(get()) }
     viewModel { TutorialsViewModel() }
     viewModel { ProfileViewModel(get(), get()) }
+    viewModel { CocktailDetailsViewModel(get()) }
 }
 
 /**

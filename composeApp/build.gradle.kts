@@ -62,9 +62,11 @@ kotlin {
             // Android-specific network implementation for Coil
             implementation(libs.coil.network.okhttp)
 
+            // Navigation Component
+            implementation(libs.androidx.navigation.compose)
+            implementation(libs.androidx.navigation.runtime.ktx)
+
             implementation(libs.room.ktx)
-
-
         }
         commonMain.dependencies {
             implementation(compose.runtime)

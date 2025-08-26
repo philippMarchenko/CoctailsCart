@@ -17,6 +17,10 @@ import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 
 import com.devphill.cocktails.presentation.auth.signin.PlatformSignInScreen
 import com.devphill.cocktails.presentation.auth.signup.PlatformSignUpScreen
@@ -26,6 +30,8 @@ import com.devphill.cocktails.presentation.favorites.FavoritesScreen
 import com.devphill.cocktails.presentation.tutorials.TutorialsScreen
 import com.devphill.cocktails.presentation.profile.ProfileScreen
 import com.devphill.cocktails.presentation.splash.SplashScreen
+import com.devphill.cocktails.presentation.cocktail_details.CocktailDetailsScreenContainer
+import com.devphill.cocktails.presentation.cocktail_details.CocktailDetailsViewModel
 import com.devphill.cocktails.ui.theme.CocktailsTheme
 import com.devphill.cocktails.ui.theme.GlobalThemeManager
 import com.devphill.cocktails.ui.theme.ThemeMode
@@ -39,12 +45,24 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
-sealed class BottomNavScreen(val title: String, val icon: ImageVector) {
-    object Discover : BottomNavScreen("Discover", Icons.Filled.Explore)
-    object Tutorials : BottomNavScreen("Tutorials", Icons.AutoMirrored.Filled.MenuBook)
-    object Search : BottomNavScreen("Search", Icons.Filled.Search)
-    object Favorites : BottomNavScreen("Favorites", Icons.Filled.Star)
-    object Profile : BottomNavScreen("Profile", Icons.Filled.Person)
+// Navigation routes as constants
+object NavigationRoutes {
+    const val DISCOVER = "discover"
+    const val TUTORIALS = "tutorials"
+    const val SEARCH = "search"
+    const val FAVORITES = "favorites"
+    const val PROFILE = "profile"
+    const val COCKTAIL_DETAILS = "cocktail_details/{cocktailId}"
+
+    fun cocktailDetails(cocktailId: String) = "cocktail_details/$cocktailId"
+}
+
+sealed class BottomNavScreen(val route: String, val title: String, val icon: ImageVector) {
+    object Discover : BottomNavScreen(NavigationRoutes.DISCOVER, "Discover", Icons.Filled.Explore)
+    object Tutorials : BottomNavScreen(NavigationRoutes.TUTORIALS, "Tutorials", Icons.AutoMirrored.Filled.MenuBook)
+    object Search : BottomNavScreen(NavigationRoutes.SEARCH, "Search", Icons.Filled.Search)
+    object Favorites : BottomNavScreen(NavigationRoutes.FAVORITES, "Favorites", Icons.Filled.Star)
+    object Profile : BottomNavScreen(NavigationRoutes.PROFILE, "Profile", Icons.Filled.Person)
 }
 
 enum class AppState {
@@ -113,60 +131,100 @@ fun App() {
 
 @Composable
 private fun MainApp(onNavigateToAuth: () -> Unit) {
-    var selectedScreen by remember { mutableStateOf<BottomNavScreen>(BottomNavScreen.Discover) }
+    val navController = rememberNavController()
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = currentBackStackEntry?.destination?.route
+
+    // Helper function to handle video clicks
+    val handleVideoClick = { videoUrl: String ->
+        // TODO: Implement video player or open in browser
+        println("Video URL clicked: $videoUrl")
+    }
+
+    // Helper function to handle share clicks
+    val handleShareClick = { cocktailTitle: String ->
+        // TODO: Implement share functionality
+        println("Share cocktail: $cocktailTitle")
+    }
+
+    // Define bottom navigation screens
+    val bottomNavScreens = listOf(
+        BottomNavScreen.Discover,
+        BottomNavScreen.Tutorials,
+        BottomNavScreen.Search,
+        BottomNavScreen.Favorites,
+        BottomNavScreen.Profile
+    )
+
+    // Check if current route is a bottom nav screen
+    val isBottomNavScreen = bottomNavScreens.any { it.route == currentRoute }
 
     Scaffold(
         bottomBar = {
-            NavigationBar {
-                val screens = listOf(
-                    BottomNavScreen.Discover,
-                    BottomNavScreen.Tutorials,
-                    BottomNavScreen.Search,
-                    BottomNavScreen.Favorites,
-                    BottomNavScreen.Profile
-                )
-
-                screens.forEach { screen ->
-                    NavigationBarItem(
-                        selected = selectedScreen == screen,
-                        onClick = { selectedScreen = screen },
-                        icon = { Icon(screen.icon, contentDescription = screen.title) },
-                        label = { Text(screen.title) }
-                    )
+            // Only show bottom bar for main screens, not for cocktail details
+            if (isBottomNavScreen) {
+                NavigationBar {
+                    bottomNavScreens.forEach { screen ->
+                        NavigationBarItem(
+                            selected = currentRoute == screen.route,
+                            onClick = {
+                                navController.navigate(screen.route) {
+                                    // Pop up to the start destination to avoid building up a large stack
+                                    popUpTo(NavigationRoutes.DISCOVER) {
+                                        saveState = true
+                                    }
+                                    // Avoid multiple copies of the same destination
+                                    launchSingleTop = true
+                                    // Restore state when reselecting a previously selected item
+                                    restoreState = true
+                                }
+                            },
+                            icon = { Icon(screen.icon, contentDescription = screen.title) },
+                            label = { Text(screen.title) }
+                        )
+                    }
                 }
             }
         }
     ) { paddingValues ->
-        when (selectedScreen) {
-            BottomNavScreen.Discover -> {
+        NavHost(
+            navController = navController,
+            startDestination = NavigationRoutes.DISCOVER,
+            modifier = Modifier // Remove padding to allow edge-to-edge for detail screens
+        ) {
+            composable(NavigationRoutes.DISCOVER) {
                 val viewModel: DiscoverViewModel = koinViewModel()
                 DiscoverScreen(
-                    modifier = Modifier.padding(paddingValues),
-                    viewModel = viewModel
+                    modifier = Modifier.padding(paddingValues), // Add padding for main screen
+                    viewModel = viewModel,
+                    onCocktailClick = { cocktailId ->
+                        navController.navigate(NavigationRoutes.cocktailDetails(cocktailId))
+                    }
                 )
             }
-            BottomNavScreen.Tutorials -> {
+
+            composable(NavigationRoutes.TUTORIALS) {
                 val viewModel: TutorialsViewModel = koinViewModel()
                 TutorialsScreen(
                     modifier = Modifier.padding(paddingValues),
-                    viewModel = viewModel
-                )
+                    viewModel = viewModel)
             }
-            BottomNavScreen.Search -> {
+
+            composable(NavigationRoutes.SEARCH) {
                 val viewModel: SearchViewModel = koinViewModel()
                 SearchScreen(
                     modifier = Modifier.padding(paddingValues),
-                    viewModel = viewModel
-                )
+                    viewModel = viewModel)
             }
-            BottomNavScreen.Favorites -> {
+
+            composable(NavigationRoutes.FAVORITES) {
                 val viewModel: FavoritesViewModel = koinViewModel()
                 FavoritesScreen(
                     modifier = Modifier.padding(paddingValues),
-                    viewModel = viewModel
-                )
+                    viewModel = viewModel)
             }
-            BottomNavScreen.Profile -> {
+
+            composable(NavigationRoutes.PROFILE) {
                 val viewModel: ProfileViewModel = koinViewModel()
                 ProfileScreen(
                     modifier = Modifier.padding(paddingValues),
@@ -174,6 +232,25 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                     onNavigateToAuth = onNavigateToAuth
                 )
             }
+
+            composable(NavigationRoutes.COCKTAIL_DETAILS) { backStackEntry ->
+                val cocktailId = backStackEntry.arguments?.getString("cocktailId", "") ?: ""
+                val viewModel: CocktailDetailsViewModel = koinViewModel()
+                CocktailDetailsScreenContainer(
+                    cocktailId = cocktailId,
+                    onBackClick = { navController.navigateUp() },
+                    onVideoClick = handleVideoClick,
+                    onShareClick = handleShareClick,
+                    modifier = Modifier, // No padding for edge-to-edge display
+                    viewModel = viewModel
+                )
+            }
         }
     }
 }
+
+
+
+
+
+

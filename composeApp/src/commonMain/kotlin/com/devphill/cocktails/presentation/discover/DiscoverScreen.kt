@@ -16,6 +16,7 @@ import com.devphill.cocktails.presentation.common.LoadingIndicator
 @Composable
 fun DiscoverScreen(
     viewModel: DiscoverViewModel,
+    onCocktailClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -23,6 +24,7 @@ fun DiscoverScreen(
     DiscoverContent(
         uiState = uiState,
         onRetry = viewModel::retryLoading,
+        onCocktailClick = onCocktailClick,
         modifier = modifier
     )
 }
@@ -31,6 +33,7 @@ fun DiscoverScreen(
 private fun DiscoverContent(
     uiState: DiscoverUiState,
     onRetry: () -> Unit,
+    onCocktailClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -56,6 +59,7 @@ private fun DiscoverContent(
             else -> {
                 DiscoverSuccessContent(
                     uiState = uiState,
+                    onCocktailClick = onCocktailClick,
                     modifier = Modifier.fillMaxSize()
                 )
             }
@@ -66,6 +70,7 @@ private fun DiscoverContent(
 @Composable
 private fun DiscoverSuccessContent(
     uiState: DiscoverUiState,
+    onCocktailClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -77,7 +82,7 @@ private fun DiscoverSuccessContent(
         }
 
         uiState.cocktailOfDay?.let { cocktailOfDay ->
-            item { CocktailOfDaySection(cocktail = cocktailOfDay) }
+            item { CocktailOfDaySection(cocktail = cocktailOfDay, onCocktailClick = onCocktailClick) }
         }
 
         if (uiState.cocktails.isNotEmpty()) {
@@ -104,7 +109,7 @@ private fun DiscoverSuccessContent(
                                 cocktail.category,
                                 cocktail.complexity.name
                             ),
-                            onClick = { /* Handle cocktail click */ },
+                            onClick = { onCocktailClick(cocktail.id) },
                             modifier = Modifier
                                 .weight(1f)
                                 .aspectRatio(0.8f)
@@ -139,7 +144,10 @@ private fun WelcomeSection() {
 }
 
 @Composable
-private fun CocktailOfDaySection(cocktail: com.devphill.cocktails.domain.model.Cocktail) {
+private fun CocktailOfDaySection(
+    cocktail: com.devphill.cocktails.domain.model.Cocktail,
+    onCocktailClick: (String) -> Unit = {}
+) {
     Column {
         Text(
             text = "Cocktail of Day",
@@ -154,7 +162,7 @@ private fun CocktailOfDaySection(cocktail: com.devphill.cocktails.domain.model.C
                 cocktail.category,
                 cocktail.complexity.name
             ),
-            onClick = { /* Handle cocktail click */ },
+            onClick = { onCocktailClick(cocktail.id) },
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1.6f) // Use aspect ratio instead of fixed height for better image display

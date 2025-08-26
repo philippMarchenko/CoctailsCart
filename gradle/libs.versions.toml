@@ -6,6 +6,7 @@ android-targetSdk = "35"
 
 androidx-activity = "1.10.1"
 androidx-lifecycle = "2.9.1"
+androidx-navigation = "2.8.5"
 composeMultiplatform = "1.8.2"
 kotlin = "2.2.0"
 coil = "3.3.0"
@@ -45,11 +46,16 @@ firebase_firestore = { module = "com.google.firebase:firebase-firestore", versio
 firebase_analytics = { module = "com.google.firebase:firebase-analytics", version.ref = "firebase-analytics" }
 # Serialization
 kotlinx_serialization_json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
-# Replace the old play-services-auth with Credential Manager
+# Authentication
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credential-manager" }
 androidx-credentials-play-services = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credential-manager" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version = "1.1.1" }
 
+# Navigation Component
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
+androidx-navigation-runtime-ktx = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "androidx-navigation" }
+
+# Coil - Image Loading
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 
