@@ -19,7 +19,6 @@ class AndroidAuthManager(private val context: Context) : AuthManager {
     private val credentialManager = CredentialManager.create(context)
 
     companion object {
-        // Web client ID from google-services.json (client_type: 3)
         private const val WEB_CLIENT_ID = AuthConstants.GOOGLE_WEB_CLIENT_ID
     }
 

@@ -1,12 +1,7 @@
 package com.devphill.cocktails.presentation.discover
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,8 +10,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.devphill.cocktails.presentation.common.CocktailImageCard
-import com.devphill.cocktails.presentation.common.LoadingIndicator
 import com.devphill.cocktails.presentation.common.ErrorMessage
+import com.devphill.cocktails.presentation.common.LoadingIndicator
 
 @Composable
 fun DiscoverScreen(
@@ -95,26 +90,30 @@ private fun DiscoverSuccessContent(
                 )
             }
             
-            item {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
+            // Add cocktails in rows of 2
+            val cocktailRows = uiState.cocktails.chunked(2)
+            items(cocktailRows.size) { rowIndex ->
+                Row(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    userScrollEnabled = false, // Disable scrolling for the cocktails grid
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(max = 800.dp) // Prevent infinite height
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    items(uiState.cocktails.size) { index ->
-                        val cocktail = uiState.cocktails[index]
+                    cocktailRows[rowIndex].forEach { cocktail ->
                         CocktailImageCard(
                             cocktail = cocktail,
-                            tags = listOf(cocktail.category) + cocktail.ingredients.take(2),
+                            tags = listOf(
+                                cocktail.category,
+                                cocktail.complexity.name
+                            ),
                             onClick = { /* Handle cocktail click */ },
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .aspectRatio(0.65f)
+                                .weight(1f)
+                                .aspectRatio(0.8f)
                         )
+                    }
+
+                    // Add spacer for odd number of items in the last row
+                    if (cocktailRows[rowIndex].size == 1) {
+                        Spacer(modifier = Modifier.weight(1f))
                     }
                 }
             }
@@ -153,7 +152,6 @@ private fun CocktailOfDaySection(cocktail: com.devphill.cocktails.domain.model.C
             cocktail = cocktail,
             tags = listOf(
                 cocktail.category,
-                cocktail.alcoholStrength.name,
                 cocktail.complexity.name
             ),
             onClick = { /* Handle cocktail click */ },
@@ -163,3 +161,4 @@ private fun CocktailOfDaySection(cocktail: com.devphill.cocktails.domain.model.C
         )
     }
 }
+
