@@ -8,6 +8,9 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.google.services)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.androidx.room)
+
 }
 
 kotlin {
@@ -55,6 +58,13 @@ kotlin {
             // Koin for Android
             implementation(libs.koin.android)
             implementation(libs.koin.compose)
+
+            // Android-specific network implementation for Coil
+            implementation(libs.coil.network.okhttp)
+
+            implementation(libs.room.ktx)
+
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -71,7 +81,6 @@ kotlin {
 
             // Multiplatform image loading
             implementation(libs.coil.compose)
-            implementation(libs.coil.network.okhttp )
 
             // Koin core for dependency injection
             implementation(project.dependencies.platform(libs.koin.bom))
@@ -79,6 +88,10 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.compose.viewmodel.navigation)
+
+            // Room dependencies for Android
+            implementation(libs.room.runtime)
+            implementation(libs.androidx.sqlite.bundled)
 
         }
         commonTest.dependencies {
@@ -112,5 +125,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
+dependencies {
+    add("kspAndroid", libs.room.compiler)
+}

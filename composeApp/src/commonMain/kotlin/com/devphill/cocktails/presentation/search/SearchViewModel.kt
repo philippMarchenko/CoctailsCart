@@ -2,7 +2,7 @@ package com.devphill.cocktails.presentation.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.devphill.cocktails.domain.usecase.SearchCocktailsUseCase
+import com.devphill.cocktails.domain.interactor.CocktailInteractor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,7 +12,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 
 class SearchViewModel(
-    private val searchCocktailsUseCase: SearchCocktailsUseCase
+    private val cocktailInteractor: CocktailInteractor
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchUiState())
@@ -40,7 +40,7 @@ class SearchViewModel(
     private suspend fun searchCocktails(query: String) {
         _uiState.value = _uiState.value.copy(isLoading = true, isSearchActive = true)
 
-        searchCocktailsUseCase(query)
+        cocktailInteractor.searchCocktails(query)
             .catch { exception ->
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,

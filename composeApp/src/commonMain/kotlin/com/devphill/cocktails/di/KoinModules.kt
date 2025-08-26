@@ -1,9 +1,6 @@
 package com.devphill.cocktails.di
 
-import com.devphill.cocktails.domain.usecase.GetAllCocktailsUseCase
-import com.devphill.cocktails.domain.usecase.GetFavoriteCocktailsUseCase
-import com.devphill.cocktails.domain.usecase.SearchCocktailsUseCase
-import com.devphill.cocktails.domain.usecase.ToggleFavoriteUseCase
+import com.devphill.cocktails.domain.interactor.CocktailInteractor
 import com.devphill.cocktails.presentation.auth.AuthViewModel
 import com.devphill.cocktails.presentation.discover.DiscoverViewModel
 import com.devphill.cocktails.presentation.favorites.FavoritesViewModel
@@ -14,23 +11,21 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 /**
- * Use cases module - Domain layer
+ * Common Koin module that provides shared dependencies across all platforms.
+ * This module contains business logic dependencies like interactors and ViewModels.
  */
-val useCaseModule = module {
-    factory { GetAllCocktailsUseCase(get()) }
-    factory { SearchCocktailsUseCase(get()) }
-    factory { GetFavoriteCocktailsUseCase(get()) }
-    factory { ToggleFavoriteUseCase(get()) }
-}
+val commonModule = module {
 
-/**
- * ViewModels module - Presentation layer
- */
-val viewModelModule = module {
-    viewModel { AuthViewModel(get(),get()) }
+    // Interactors
+    single {
+        CocktailInteractor(get())
+    }
+
+    // ViewModels
+    viewModel { AuthViewModel(get(), get()) }
     viewModel { DiscoverViewModel(get()) }
     viewModel { SearchViewModel(get()) }
-    viewModel { FavoritesViewModel(get(), get()) }
+    viewModel { FavoritesViewModel(get()) }
     viewModel { TutorialsViewModel() }
     viewModel { ProfileViewModel(get(), get()) }
 }
@@ -39,9 +34,5 @@ val viewModelModule = module {
  * All application modules combined
  */
 val appModules = listOf(
-    useCaseModule,
-    viewModelModule,
+    commonModule
 )
-
-
-

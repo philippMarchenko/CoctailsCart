@@ -3,7 +3,7 @@ package com.devphill.cocktails.presentation.discover
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devphill.cocktails.domain.model.Cocktail
-import com.devphill.cocktails.domain.usecase.GetAllCocktailsUseCase
+import com.devphill.cocktails.domain.interactor.CocktailInteractor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +13,7 @@ import kotlin.time.Clock.System
 import kotlin.time.ExperimentalTime
 
 class DiscoverViewModel(
-    private val getAllCocktailsUseCase: GetAllCocktailsUseCase
+    private val cocktailInteractor: CocktailInteractor
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DiscoverUiState())
@@ -57,7 +57,7 @@ class DiscoverViewModel(
             _uiState.value = _uiState.value.copy(isLoading = true)
 
             try {
-                getAllCocktailsUseCase()
+                cocktailInteractor.getAllCocktails()
                     .catch { exception ->
                         println("❌ DiscoverViewModel: Error caught: ${exception.message}")
                         exception.printStackTrace()
@@ -68,25 +68,20 @@ class DiscoverViewModel(
                     }
                     .collect { cocktails ->
                         println("📊 DiscoverViewModel: Received ${cocktails.size} cocktails")
-
-                        // Use the separate method to select cocktail of the day
-                        val cocktailOfDay = selectCocktailOfTheDay(cocktails)
-
-                        println("🍹 Initial Cocktail of Day: ${cocktailOfDay?.title}")
-
+                        val cocktailOfTheDay = selectCocktailOfTheDay(cocktails)
                         _uiState.value = _uiState.value.copy(
                             isLoading = false,
                             cocktails = cocktails,
-                            cocktailOfDay = cocktailOfDay,
+                            cocktailOfDay = cocktailOfTheDay,
                             errorMessage = null
                         )
                     }
-            } catch (e: Exception) {
-                println("❌ DiscoverViewModel: Exception caught: ${e.message}")
-                e.printStackTrace()
+            } catch (exception: Exception) {
+                println("❌ DiscoverViewModel: Unexpected error: ${exception.message}")
+                exception.printStackTrace()
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    errorMessage = e.message ?: "Unknown error occurred"
+                    errorMessage = exception.message ?: "Failed to load cocktails"
                 )
             }
         }

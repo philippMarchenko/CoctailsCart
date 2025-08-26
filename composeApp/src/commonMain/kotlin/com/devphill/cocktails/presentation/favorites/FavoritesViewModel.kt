@@ -2,8 +2,7 @@ package com.devphill.cocktails.presentation.favorites
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.devphill.cocktails.domain.usecase.GetFavoriteCocktailsUseCase
-import com.devphill.cocktails.domain.usecase.ToggleFavoriteUseCase
+import com.devphill.cocktails.domain.interactor.CocktailInteractor
 import com.devphill.cocktails.domain.model.Cocktail
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,8 +11,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class FavoritesViewModel(
-    private val getFavoriteCocktailsUseCase: GetFavoriteCocktailsUseCase,
-    private val toggleFavoriteUseCase: ToggleFavoriteUseCase
+    private val cocktailInteractor: CocktailInteractor
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(FavoritesUiState())
@@ -27,7 +25,7 @@ class FavoritesViewModel(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
 
-            getFavoriteCocktailsUseCase()
+            cocktailInteractor.getFavoriteCocktails()
                 .catch { exception ->
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
@@ -47,8 +45,7 @@ class FavoritesViewModel(
 
     fun removeFromFavorites(cocktail: Cocktail) {
         viewModelScope.launch {
-            toggleFavoriteUseCase(cocktail, true)
-            loadFavorites() // Refresh the list
+            cocktailInteractor.toggleFavorite(cocktail, false)
         }
     }
 }
