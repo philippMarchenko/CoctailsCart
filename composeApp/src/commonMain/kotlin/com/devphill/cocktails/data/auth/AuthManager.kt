@@ -11,6 +11,7 @@ interface AuthManager {
     suspend fun signInWithGoogleToken(idToken: String): Result<User>
     suspend fun signInWithEmailAndPassword(email: String, password: String): Result<User>
     suspend fun createUserWithEmailAndPassword(email: String, password: String, displayName: String): Result<User>
+    suspend fun deleteAccount(): Result<Unit>
     fun signOut()
 }
 

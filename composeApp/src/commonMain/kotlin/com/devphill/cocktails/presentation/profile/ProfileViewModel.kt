@@ -55,8 +55,30 @@ class ProfileViewModel(
             onSignOutComplete()
         }
     }
+
+    fun deleteAccount(onDeleteComplete: () -> Unit) {
+        _uiState.value = _uiState.value.copy(isLoading = true)
+
+        viewModelScope.launch {
+            try {
+                val result = authManager.deleteAccount()
+                if (result.isSuccess) {
+                    // Clear all user data after successful deletion
+                    userPreferencesManager.clearUserData()
+                    // Navigate to auth screen
+                    onDeleteComplete()
+                } else {
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        errorMessage = "Failed to delete account. Please try again."
+                    )
+                }
+            } catch (exception: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    errorMessage = exception.message ?: "Failed to delete account"
+                )
+            }
+        }
+    }
 }
-
-
-
-

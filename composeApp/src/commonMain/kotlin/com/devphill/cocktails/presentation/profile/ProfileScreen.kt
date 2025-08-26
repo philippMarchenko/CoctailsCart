@@ -23,6 +23,7 @@ import coil3.compose.AsyncImage
 import com.devphill.cocktails.presentation.common.ErrorMessage
 import com.devphill.cocktails.presentation.common.LoadingIndicator
 import com.devphill.cocktails.ui.theme.CocktailsTheme
+import com.devphill.cocktails.ui.theme.DialogShapes
 import com.devphill.cocktails.ui.theme.GlobalThemeManager
 import com.devphill.cocktails.ui.theme.ThemeSettingsDialog
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -39,6 +40,7 @@ fun ProfileScreen(
         uiState = uiState,
         onRetry = viewModel::loadProfileData,
         onSignOut = { viewModel.signOut(onNavigateToAuth) },
+        onDeleteAccount = { viewModel.deleteAccount(onNavigateToAuth) },
         modifier = modifier
     )
 }
@@ -48,6 +50,7 @@ private fun ProfileContent(
     uiState: ProfileUiState,
     onRetry: () -> Unit,
     onSignOut: () -> Unit,
+    onDeleteAccount: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     when {
@@ -60,6 +63,7 @@ private fun ProfileContent(
         else -> ProfileMainContent(
             uiState = uiState,
             onSignOut = onSignOut,
+            onDeleteAccount = onDeleteAccount,
             modifier = modifier
         )
     }
@@ -69,10 +73,12 @@ private fun ProfileContent(
 private fun ProfileMainContent(
     uiState: ProfileUiState,
     onSignOut: () -> Unit,
+    onDeleteAccount: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var showSignOutDialog by remember { mutableStateOf(false) }
     var showThemeDialog by remember { mutableStateOf(false) }
+    var showDeleteAccountDialog by remember { mutableStateOf(false) }
     val themeManager = GlobalThemeManager.getThemeManager()
     val currentTheme by themeManager.currentTheme.collectAsState()
 
@@ -96,7 +102,8 @@ private fun ProfileMainContent(
         )
 
         AccountActionsCard(
-            onSignOutClick = { showSignOutDialog = true }
+            onSignOutClick = { showSignOutDialog = true },
+            onDeleteAccountClick = { showDeleteAccountDialog = true }
         )
     }
 
@@ -123,6 +130,19 @@ private fun ProfileMainContent(
             },
             onDismiss = {
                 showThemeDialog = false
+            }
+        )
+    }
+
+    // Delete Account Confirmation Dialog
+    if (showDeleteAccountDialog) {
+        DeleteAccountConfirmationDialog(
+            onConfirm = {
+                showDeleteAccountDialog = false
+                onDeleteAccount()
+            },
+            onDismiss = {
+                showDeleteAccountDialog = false
             }
         )
     }
@@ -336,7 +356,8 @@ private fun AppSettingsCard(
 
 @Composable
 private fun AccountActionsCard(
-    onSignOutClick: () -> Unit
+    onSignOutClick: () -> Unit,
+    onDeleteAccountClick: () -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -370,7 +391,7 @@ private fun AccountActionsCard(
 
             // Dangerous action - Delete Account
             Surface(
-                onClick = { /* TODO: Implement account deletion with confirmation */ },
+                onClick = onDeleteAccountClick,
                 shape = RoundedCornerShape(8.dp),
                 color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.1f),
                 modifier = Modifier.fillMaxWidth()
@@ -526,6 +547,7 @@ private fun SignOutConfirmationDialog(
     onDismiss: () -> Unit
 ) {
     AlertDialog(
+        shape = DialogShapes.default,
         onDismissRequest = onDismiss,
         icon = {
             Icon(
@@ -567,6 +589,54 @@ private fun SignOutConfirmationDialog(
     )
 }
 
+@Composable
+private fun DeleteAccountConfirmationDialog(
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        shape = DialogShapes.default,
+        onDismissRequest = onDismiss,
+        icon = {
+            Icon(
+                imageVector = Icons.Default.DeleteForever,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.error,
+                modifier = Modifier.size(24.dp)
+            )
+        },
+        title = {
+            Text(
+                text = "Delete Account",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.SemiBold
+            )
+        },
+        text = {
+            Text(
+                text = "Are you sure you want to delete your account? This action is irreversible and will remove all your data.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        },
+        confirmButton = {
+            Button(
+                onClick = onConfirm,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error
+                )
+            ) {
+                Text("Delete Account")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    )
+}
+
 // Preview
 @Preview
 @Composable
@@ -582,8 +652,8 @@ private fun ProfileMainContentPreview() {
                 totalFavorites = 12,
                 totalCocktailsMade = 45
             ),
-            onSignOut = { }
+            onSignOut = { },
+            onDeleteAccount = { }
         )
     }
 }
-

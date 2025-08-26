@@ -111,6 +111,20 @@ class AndroidAuthManager(private val context: Context) : AuthManager {
         }
     }
 
+    override suspend fun deleteAccount(): Result<Unit> {
+        return try {
+            val currentUser = auth.currentUser
+            if (currentUser != null) {
+                currentUser.delete().await()
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("No user is currently signed in"))
+            }
+        } catch (e: Exception) {
+            Result.failure(Exception("Failed to delete account: ${e.message}"))
+        }
+    }
+
     override fun signOut() {
         auth.signOut()
         // Note: With Credential Manager, there's no need to explicitly sign out from Google

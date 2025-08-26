@@ -82,6 +82,13 @@ val CocktailsShapes = Shapes(
     extraLarge = RoundedCornerShape(28)
 )
 
+// Dialog-specific shapes for consistent theming
+object DialogShapes {
+    val default = RoundedCornerShape(18.dp)
+    val small = RoundedCornerShape(12.dp)
+    val large = RoundedCornerShape(24.dp)
+}
+
 val CocktailsTypography = Typography()
 
 @Composable
@@ -259,4 +266,3 @@ private fun ColorItem(name: String, backgroundColor: Color, textColor: Color) {
         }
     }
 }
-

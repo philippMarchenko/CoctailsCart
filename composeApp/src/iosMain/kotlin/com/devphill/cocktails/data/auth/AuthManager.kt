@@ -27,6 +27,10 @@ class IosAuthManager : AuthManager {
         return Result.failure(Exception("Not implemented on iOS yet"))
     }
 
+    override suspend fun deleteAccount(): Result<Unit> {
+        return Result.failure(Exception("Not implemented on iOS yet"))
+    }
+
     override fun signOut() {
         // No-op for now
     }

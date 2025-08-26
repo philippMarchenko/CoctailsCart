@@ -22,7 +22,7 @@ fun ThemeSettingsDialog(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            shape = RoundedCornerShape(12.dp)
+            shape = DialogShapes.default
         ) {
             Column(
                 modifier = Modifier.padding(24.dp),
