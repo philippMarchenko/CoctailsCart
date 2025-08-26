@@ -8,6 +8,8 @@ import com.devphill.cocktails.data.repository.AndroidCocktailRepository
 import com.devphill.cocktails.data.database.datasource.LocalCocktailDataSource
 import com.devphill.cocktails.data.datasource.CocktailsDataSource
 import com.devphill.cocktails.domain.repository.CocktailRepository
+import com.devphill.cocktails.platform.UrlOpener
+import com.devphill.cocktails.platform.createUrlOpener
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -30,5 +32,8 @@ val platformModule = module {
     }
     single<AuthManager> {
         createAuthManager(androidContext())
+    }
+    single<UrlOpener> {
+        createUrlOpener(androidContext())
     }
 }

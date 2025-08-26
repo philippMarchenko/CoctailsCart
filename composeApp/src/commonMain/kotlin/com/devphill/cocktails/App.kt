@@ -43,6 +43,7 @@ import com.devphill.cocktails.presentation.search.SearchViewModel
 import com.devphill.cocktails.presentation.favorites.FavoritesViewModel
 import com.devphill.cocktails.presentation.tutorials.TutorialsViewModel
 import com.devphill.cocktails.presentation.profile.ProfileViewModel
+import com.devphill.cocktails.platform.UrlOpener
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
@@ -137,10 +138,12 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
 
-    // Helper function to handle video clicks
+    // Get the UrlOpener from dependency injection
+    val urlOpener: UrlOpener = koinInject()
+
+    // Helper function to handle video clicks - now opens YouTube links!
     val handleVideoClick = { videoUrl: String ->
-        // TODO: Implement video player or open in browser
-        println("Video URL clicked: $videoUrl")
+        urlOpener.openUrl(videoUrl)
     }
 
     // Helper function to handle share clicks
@@ -255,7 +258,9 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                 route = NavigationRoutes.COCKTAIL_DETAILS,
                 arguments = listOf(navArgument("cocktailId") { type = NavType.StringType })
             ) { backStackEntry ->
-                val cocktailId = backStackEntry.arguments?.getString("cocktailId") ?: ""
+                val cocktailId = checkNotNull(backStackEntry.arguments?.getString("cocktailId")) {
+                    "cocktailId parameter wasn't found. Please make sure it's set!"
+                }
                 val viewModel: CocktailDetailsViewModel = koinViewModel()
                 CocktailDetailsScreenContainer(
                     cocktailId = cocktailId,
