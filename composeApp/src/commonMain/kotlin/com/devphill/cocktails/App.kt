@@ -50,6 +50,9 @@ import org.koin.compose.viewmodel.koinViewModel
 
 // Navigation routes as constants
 object NavigationRoutes {
+    const val SPLASH = "splash"
+    const val SIGN_IN = "sign_in"
+    const val SIGN_UP = "sign_up"
     const val DISCOVER = "discover"
     const val TUTORIALS = "tutorials"
     const val SEARCH = "search"
@@ -68,21 +71,23 @@ sealed class BottomNavScreen(val route: String, val title: String, val icon: Ima
     object Profile : BottomNavScreen(NavigationRoutes.PROFILE, "Profile", Icons.Filled.Person)
 }
 
-enum class AppState {
-    SPLASH,
-    SIGN_IN,
-    SIGN_UP,
-    MAIN_APP
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
 fun App() {
-    var appState by remember { mutableStateOf(AppState.SPLASH) }
     val userPreferencesManager: UserPreferencesManager = koinInject()
     val themeManager = remember { GlobalThemeManager.getThemeManager() }
     val currentTheme by themeManager.currentTheme.collectAsState()
+    val navController = rememberNavController()
+
+    // Check login state in a LaunchedEffect
+    var isLoggedIn by remember { mutableStateOf(false) }
+    var isLoginCheckComplete by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        isLoggedIn = userPreferencesManager.isUserLoggedIn()
+        isLoginCheckComplete = true
+    }
 
     // Update status bar when theme changes
     LaunchedEffect(currentTheme) {
@@ -90,41 +95,73 @@ fun App() {
         // The actual status bar update happens in the theme
     }
 
+    // Don't render until login check is complete
+    if (!isLoginCheckComplete) {
+        return
+    }
+
+    // Determine initial destination based on user login state
+    val startDestination = if (isLoggedIn) {
+        NavigationRoutes.DISCOVER
+    } else {
+        NavigationRoutes.SPLASH
+    }
+
     CocktailsTheme(useDarkTheme = currentTheme == ThemeMode.DARK) {
-        when (appState) {
-            AppState.SPLASH -> {
+        NavHost(
+            navController = navController,
+            startDestination = startDestination
+        ) {
+            // Auth flow screens
+            composable(NavigationRoutes.SPLASH) {
                 SplashScreen(
                     userPreferencesManager = userPreferencesManager,
-                    onNavigateToSignIn = { appState = AppState.SIGN_IN },
-                    onNavigateToMain = { appState = AppState.MAIN_APP }
+                    onNavigateToSignIn = {
+                        navController.navigate(NavigationRoutes.SIGN_IN) {
+                            popUpTo(NavigationRoutes.SPLASH) { inclusive = true }
+                        }
+                    },
+                    onNavigateToMain = {
+                        navController.navigate(NavigationRoutes.DISCOVER) {
+                            popUpTo(NavigationRoutes.SPLASH) { inclusive = true }
+                        }
+                    }
                 )
             }
-            AppState.SIGN_IN -> {
+
+            composable(NavigationRoutes.SIGN_IN) {
                 PlatformSignInScreen(
                     onSignInSuccess = {
-                        // Save login state
-                        appState = AppState.MAIN_APP
+                        navController.navigate(NavigationRoutes.DISCOVER) {
+                            popUpTo(NavigationRoutes.SIGN_IN) { inclusive = true }
+                        }
                     },
                     onNavigateToSignUp = {
-                        appState = AppState.SIGN_UP
+                        navController.navigate(NavigationRoutes.SIGN_UP)
                     }
                 )
             }
-            AppState.SIGN_UP -> {
+
+            composable(NavigationRoutes.SIGN_UP) {
                 PlatformSignUpScreen(
                     onSignUpSuccess = {
-                        // Save login state and navigate to main app
-                        appState = AppState.MAIN_APP
+                        navController.navigate(NavigationRoutes.DISCOVER) {
+                            popUpTo(NavigationRoutes.SIGN_UP) { inclusive = true }
+                        }
                     },
                     onNavigateToSignIn = {
-                        appState = AppState.SIGN_IN
+                        navController.navigateUp()
                     }
                 )
             }
-            AppState.MAIN_APP -> {
+
+            // Main app screens with bottom navigation
+            composable(NavigationRoutes.DISCOVER) {
                 MainApp(
                     onNavigateToAuth = {
-                        appState = AppState.SIGN_IN
+                        navController.navigate(NavigationRoutes.SIGN_IN) {
+                            popUpTo(0) { inclusive = true }
+                        }
                     }
                 )
             }
@@ -258,9 +295,7 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                 route = NavigationRoutes.COCKTAIL_DETAILS,
                 arguments = listOf(navArgument("cocktailId") { type = NavType.StringType })
             ) { backStackEntry ->
-                val cocktailId = checkNotNull(backStackEntry.arguments?.getString("cocktailId")) {
-                    "cocktailId parameter wasn't found. Please make sure it's set!"
-                }
+                val cocktailId = backStackEntry.arguments?.getString("cocktailId") ?: ""
                 val viewModel: CocktailDetailsViewModel = koinViewModel()
                 CocktailDetailsScreenContainer(
                     cocktailId = cocktailId,

@@ -31,6 +31,14 @@ class IosAuthManager : AuthManager {
         return Result.failure(Exception("Not implemented on iOS yet"))
     }
 
+    override suspend fun reauthenticateWithEmailAndPassword(email: String, password: String): Result<Unit> {
+        return Result.failure(Exception("Not implemented on iOS yet"))
+    }
+
+    override suspend fun reauthenticateWithGoogle(): Result<Unit> {
+        return Result.failure(Exception("Not implemented on iOS yet"))
+    }
+
     override fun signOut() {
         // No-op for now
     }

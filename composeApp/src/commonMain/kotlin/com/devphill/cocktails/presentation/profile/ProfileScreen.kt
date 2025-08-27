@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -27,6 +29,7 @@ import com.devphill.cocktails.ui.theme.DialogShapes
 import com.devphill.cocktails.ui.theme.GlobalThemeManager
 import com.devphill.cocktails.ui.theme.ThemeSettingsDialog
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ProfileScreen(
@@ -38,6 +41,7 @@ fun ProfileScreen(
 
     ProfileContent(
         uiState = uiState,
+        viewModel = viewModel,
         onRetry = viewModel::loadProfileData,
         onSignOut = { viewModel.signOut(onNavigateToAuth) },
         onDeleteAccount = { viewModel.deleteAccount(onNavigateToAuth) },
@@ -48,6 +52,7 @@ fun ProfileScreen(
 @Composable
 private fun ProfileContent(
     uiState: ProfileUiState,
+    viewModel: ProfileViewModel,
     onRetry: () -> Unit,
     onSignOut: () -> Unit,
     onDeleteAccount: () -> Unit,
@@ -62,6 +67,7 @@ private fun ProfileContent(
         )
         else -> ProfileMainContent(
             uiState = uiState,
+            viewModel = viewModel,
             onSignOut = onSignOut,
             onDeleteAccount = onDeleteAccount,
             modifier = modifier
@@ -72,6 +78,7 @@ private fun ProfileContent(
 @Composable
 private fun ProfileMainContent(
     uiState: ProfileUiState,
+    viewModel: ProfileViewModel,
     onSignOut: () -> Unit,
     onDeleteAccount: () -> Unit,
     modifier: Modifier = Modifier
@@ -146,6 +153,19 @@ private fun ProfileMainContent(
             }
         )
     }
+
+    // Re-authentication Dialog
+    if (uiState.showReauthDialog) {
+        ReAuthenticationDialog(
+            userEmail = uiState.userEmail,
+            onConfirm = { password ->
+                viewModel.reauthenticateAndDelete(password, onDeleteAccount)
+            },
+            onDismiss = {
+                viewModel.dismissReauthDialog()
+            }
+        )
+    }
 }
 
 @Composable
@@ -178,14 +198,28 @@ private fun AvatarSection(uiState: ProfileUiState) {
         modifier = Modifier.fillMaxWidth()
     ) {
         // Profile Image
-        AsyncImage(
-            model = uiState.userPhotoUrl,
-            contentDescription = "User Avatar",
+        Box(
             modifier = Modifier
                 .size(80.dp)
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-        )
+                .background(MaterialTheme.colorScheme.surfaceVariant),
+            contentAlignment = Alignment.Center
+        ) {
+            if (!uiState.userPhotoUrl.isNullOrEmpty()) {
+                AsyncImage(
+                    model = uiState.userPhotoUrl,
+                    contentDescription = "User Avatar",
+                    modifier = Modifier.fillMaxSize()
+                )
+            } else {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "Default Avatar",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(40.dp)
+                )
+            }
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -637,6 +671,88 @@ private fun DeleteAccountConfirmationDialog(
     )
 }
 
+@Composable
+private fun ReAuthenticationDialog(
+    userEmail: String,
+    onConfirm: (String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var password by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
+
+    AlertDialog(
+        shape = DialogShapes.default,
+        onDismissRequest = onDismiss,
+        icon = {
+            Icon(
+                imageVector = Icons.Default.Security,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(24.dp)
+            )
+        },
+        title = {
+            Text(
+                text = "Re-authenticate",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.SemiBold
+            )
+        },
+        text = {
+            Column {
+                Text(
+                    text = "For security, please re-enter your password to confirm account deletion.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = "Email: $userEmail",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text("Password") },
+                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    trailingIcon = {
+                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                            Icon(
+                                imageVector = if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                                contentDescription = if (passwordVisible) "Hide password" else "Show password"
+                            )
+                        }
+                    },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = { onConfirm(password) },
+                enabled = password.isNotBlank(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error
+                )
+            ) {
+                Text("Confirm Delete")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    )
+}
+
 // Preview
 @Preview
 @Composable
@@ -652,6 +768,7 @@ private fun ProfileMainContentPreview() {
                 totalFavorites = 12,
                 totalCocktailsMade = 45
             ),
+            viewModel = koinViewModel(),
             onSignOut = { },
             onDeleteAccount = { }
         )

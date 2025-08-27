@@ -125,6 +125,61 @@ class AndroidAuthManager(private val context: Context) : AuthManager {
         }
     }
 
+    override suspend fun reauthenticateWithEmailAndPassword(email: String, password: String): Result<Unit> {
+        return try {
+            val currentUser = auth.currentUser
+            if (currentUser == null) {
+                return Result.failure(Exception("No user is currently signed in"))
+            }
+
+            // Re-authenticate with email and password
+            val credential = com.google.firebase.auth.EmailAuthProvider.getCredential(email, password)
+            currentUser.reauthenticate(credential).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(Exception("Re-authentication failed: ${e.message}"))
+        }
+    }
+
+    override suspend fun reauthenticateWithGoogle(): Result<Unit> {
+        return try {
+            val currentUser = auth.currentUser
+            if (currentUser == null) {
+                return Result.failure(Exception("No user is currently signed in"))
+            }
+
+            // Get Google credentials using the same flow as sign in
+            val googleIdOption = GetGoogleIdOption.Builder()
+                .setFilterByAuthorizedAccounts(false)
+                .setServerClientId(WEB_CLIENT_ID)
+                .build()
+
+            val request = GetCredentialRequest.Builder()
+                .addCredentialOption(googleIdOption)
+                .build()
+
+            val result = credentialManager.getCredential(
+                request = request,
+                context = context
+            )
+
+            val credential = result.credential
+            when (credential.type) {
+                GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL -> {
+                    val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+                    val authCredential = GoogleAuthProvider.getCredential(googleIdTokenCredential.idToken, null)
+                    currentUser.reauthenticate(authCredential).await()
+                    Result.success(Unit)
+                }
+                else -> {
+                    Result.failure(Exception("Unexpected type of credential"))
+                }
+            }
+        } catch (e: Exception) {
+            Result.failure(Exception("Re-authentication failed: ${e.message}"))
+        }
+    }
+
     override fun signOut() {
         auth.signOut()
         // Note: With Credential Manager, there's no need to explicitly sign out from Google
