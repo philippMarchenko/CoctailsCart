@@ -1,6 +1,8 @@
 package com.devphill.cocktails.presentation.favorites
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.presentation.common.LoadingIndicator
+import com.devphill.cocktails.presentation.theme.CocktailGradients
 
 @Composable
 fun FavoritesScreen(
@@ -102,7 +105,6 @@ private fun FavoritesHeader() {
         Text(
             text = "Your saved cocktails",
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp)
         )
     }

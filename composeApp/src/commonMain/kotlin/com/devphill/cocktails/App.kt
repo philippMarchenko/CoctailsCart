@@ -77,11 +77,11 @@ fun App() {
     val navController = rememberNavController()
 
     // Check login state in a LaunchedEffect
-    var isLoggedIn by remember { mutableStateOf(false) }
     var isLoginCheckComplete by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        isLoggedIn = userPreferencesManager.isUserLoggedIn()
+        // We still check login status for the splash screen logic, but we don't store it here
+        // since the splash screen handles the navigation decision
         isLoginCheckComplete = true
 
         // Handle first launch and show welcome notification if it's the first time
@@ -99,12 +99,8 @@ fun App() {
         return
     }
 
-    // Determine initial destination based on user login state
-    val startDestination = if (isLoggedIn) {
-        NavigationRoutes.DISCOVER
-    } else {
-        NavigationRoutes.SPLASH
-    }
+    // Always start with splash screen to show beautiful animation
+    val startDestination = NavigationRoutes.SPLASH
 
     CocktailsTheme(useDarkTheme = currentTheme == ThemeMode.DARK) {
         NavHost(
@@ -200,6 +196,7 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
     val isBottomNavScreen = bottomNavScreens.any { it.route == currentRoute }
 
     Scaffold(
+        containerColor = androidx.compose.ui.graphics.Color.Transparent, // Make scaffold transparent
         bottomBar = {
             // Only show bottom bar for main screens, not for cocktail details
             if (isBottomNavScreen) {

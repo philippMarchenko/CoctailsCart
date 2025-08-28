@@ -156,14 +156,12 @@ internal fun ProfileHeader() {
         Text(
             text = "Profile",
             style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface
+            fontWeight = FontWeight.Bold
         )
 
         Text(
             text = "Manage your cocktail journey",
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = 4.dp)
         )

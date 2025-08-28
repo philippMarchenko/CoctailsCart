@@ -1,5 +1,6 @@
 package com.devphill.cocktails.presentation.search
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.devphill.cocktails.presentation.common.CocktailCard
 import com.devphill.cocktails.presentation.common.LoadingIndicator
+import com.devphill.cocktails.presentation.theme.CocktailGradients
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -112,7 +114,6 @@ private fun SearchHeader() {
         Text(
             text = "Find cocktails by name or ingredients",
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp)
         )
     }
