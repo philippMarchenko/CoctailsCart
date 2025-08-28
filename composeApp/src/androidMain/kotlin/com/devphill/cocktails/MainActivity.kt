@@ -9,7 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import com.devphill.cocktails.di.appModules
 import com.devphill.cocktails.di.platformModule
-import com.devphill.cocktails.ui.theme.StatusBarController
+import com.devphill.cocktails.presentation.theme.StatusBarController
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 

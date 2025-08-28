@@ -75,14 +75,21 @@ private fun DiscoverSuccessContent(
 ) {
     LazyColumn(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+        verticalArrangement = Arrangement.spacedBy(24.dp),
+        // Add content padding to prevent items from being cut off
+        contentPadding = PaddingValues(bottom = 16.dp)
     ) {
         item {
             WelcomeSection()
         }
 
         uiState.cocktailOfDay?.let { cocktailOfDay ->
-            item { CocktailOfDaySection(cocktail = cocktailOfDay, onCocktailClick = onCocktailClick) }
+            item {
+                CocktailOfDaySection(
+                    cocktail = cocktailOfDay,
+                    onCocktailClick = onCocktailClick
+                )
+            }
         }
 
         if (uiState.cocktails.isNotEmpty()) {
@@ -94,10 +101,16 @@ private fun DiscoverSuccessContent(
                     modifier = Modifier.padding(bottom = 12.dp)
                 )
             }
-            
-            // Add cocktails in rows of 2
+
+            // Optimize cocktail grid rendering with lazy loading
             val cocktailRows = uiState.cocktails.chunked(2)
-            items(cocktailRows.size) { rowIndex ->
+            items(
+                count = cocktailRows.size,
+                key = { index ->
+                    // Use cocktail IDs as stable keys for better performance
+                    cocktailRows[index].joinToString("-") { it.id }
+                }
+            ) { rowIndex ->
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.fillMaxWidth()
@@ -169,4 +182,7 @@ private fun CocktailOfDaySection(
         )
     }
 }
+
+
+
 

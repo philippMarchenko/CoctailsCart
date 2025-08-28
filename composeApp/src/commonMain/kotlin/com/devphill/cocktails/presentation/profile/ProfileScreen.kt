@@ -24,10 +24,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.devphill.cocktails.presentation.common.ErrorMessage
 import com.devphill.cocktails.presentation.common.LoadingIndicator
-import com.devphill.cocktails.ui.theme.CocktailsTheme
-import com.devphill.cocktails.ui.theme.DialogShapes
-import com.devphill.cocktails.ui.theme.GlobalThemeManager
-import com.devphill.cocktails.ui.theme.ThemeSettingsDialog
+import com.devphill.cocktails.presentation.theme.CocktailsTheme
+import com.devphill.cocktails.presentation.theme.DialogShapes
+import com.devphill.cocktails.presentation.theme.GlobalThemeManager
+import com.devphill.cocktails.presentation.theme.ThemeSettingsDialog
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -35,6 +35,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun ProfileScreen(
     viewModel: ProfileViewModel,
     onNavigateToAuth: () -> Unit,
+    onNavigateToFavorites: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -45,6 +46,7 @@ fun ProfileScreen(
         onRetry = viewModel::loadProfileData,
         onSignOut = { viewModel.signOut(onNavigateToAuth) },
         onDeleteAccount = { viewModel.deleteAccount(onNavigateToAuth) },
+        onNavigateToFavorites = onNavigateToFavorites,
         modifier = modifier
     )
 }
@@ -56,6 +58,7 @@ private fun ProfileContent(
     onRetry: () -> Unit,
     onSignOut: () -> Unit,
     onDeleteAccount: () -> Unit,
+    onNavigateToFavorites: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     when {
@@ -70,6 +73,7 @@ private fun ProfileContent(
             viewModel = viewModel,
             onSignOut = onSignOut,
             onDeleteAccount = onDeleteAccount,
+            onNavigateToFavorites = onNavigateToFavorites,
             modifier = modifier
         )
     }
@@ -81,6 +85,7 @@ private fun ProfileMainContent(
     viewModel: ProfileViewModel,
     onSignOut: () -> Unit,
     onDeleteAccount: () -> Unit,
+    onNavigateToFavorites: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var showSignOutDialog by remember { mutableStateOf(false) }
@@ -102,7 +107,7 @@ private fun ProfileMainContent(
 
         UserInfoCard(uiState = uiState)
 
-        QuickActionsCard()
+        QuickActionsCard(onNavigateToFavorites = onNavigateToFavorites)
 
         AppSettingsCard(
             onThemeClick = { showThemeDialog = true }
@@ -295,7 +300,9 @@ private fun UserInfoCard(uiState: ProfileUiState) {
 }
 
 @Composable
-private fun QuickActionsCard() {
+private fun QuickActionsCard(
+    viewModel: ProfileViewModel = koinViewModel(),
+    onNavigateToFavorites: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
@@ -323,15 +330,15 @@ private fun QuickActionsCard() {
             Spacer(modifier = Modifier.height(12.dp))
 
             SettingItem(
-                icon = Icons.Default.BookmarkBorder,
-                label = "Saved Drinks",
-                onClick = { /* TODO: Navigate to saved drinks */ }
+                icon = Icons.Default.Favorite,
+                label = "Favourite Drinks",
+                onClick = onNavigateToFavorites
             )
 
             SettingItem(
                 icon = Icons.Default.Share,
                 label = "Invite Friends",
-                onClick = { /* TODO: Implement invite friends */ }
+                onClick = { viewModel.inviteFriends() }
             )
         }
     }
@@ -770,7 +777,8 @@ private fun ProfileMainContentPreview() {
             ),
             viewModel = koinViewModel(),
             onSignOut = { },
-            onDeleteAccount = { }
+            onDeleteAccount = { },
+            onNavigateToFavorites = { }
         )
     }
 }

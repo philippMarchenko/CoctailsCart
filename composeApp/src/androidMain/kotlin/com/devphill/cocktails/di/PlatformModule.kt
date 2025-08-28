@@ -8,8 +8,10 @@ import com.devphill.cocktails.data.repository.AndroidCocktailRepository
 import com.devphill.cocktails.data.database.datasource.LocalCocktailDataSource
 import com.devphill.cocktails.data.datasource.CocktailsDataSource
 import com.devphill.cocktails.domain.repository.CocktailRepository
-import com.devphill.cocktails.platform.UrlOpener
-import com.devphill.cocktails.platform.createUrlOpener
+import com.devphill.cocktails.data.platform.UrlOpener
+import com.devphill.cocktails.data.platform.createUrlOpener
+import com.devphill.cocktails.data.platform.ShareManager
+import com.devphill.cocktails.data.platform.AndroidShareManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -35,5 +37,8 @@ val platformModule = module {
     }
     single<UrlOpener> {
         createUrlOpener(androidContext())
+    }
+    single<ShareManager> {
+        AndroidShareManager(androidContext())
     }
 }

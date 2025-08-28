@@ -82,7 +82,7 @@ fun SplashScreen(
 
             // App Name
             Text(
-                text = "CocktailsCart",
+                text = "CocktailsCraft",
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimary,

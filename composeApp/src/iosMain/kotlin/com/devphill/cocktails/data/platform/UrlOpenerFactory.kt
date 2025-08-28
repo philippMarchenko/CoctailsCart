@@ -1,4 +1,4 @@
-package com.devphill.cocktails.platform
+package com.devphill.cocktails.data.platform
 
 /**
  * iOS-specific factory function to create UrlOpener instance

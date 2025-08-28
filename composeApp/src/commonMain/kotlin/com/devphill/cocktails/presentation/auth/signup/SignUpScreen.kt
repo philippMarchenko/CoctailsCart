@@ -58,7 +58,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.devphill.cocktails.presentation.auth.AuthState
 import com.devphill.cocktails.presentation.auth.AuthViewModel
-import com.devphill.cocktails.ui.theme.DialogShapes
+import com.devphill.cocktails.presentation.theme.DialogShapes
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

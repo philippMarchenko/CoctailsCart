@@ -1,8 +1,7 @@
-package com.devphill.cocktails.ui.theme
+package com.devphill.cocktails.presentation.theme
 
 import android.app.Activity
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsControllerCompat
 
 actual class StatusBarController(private val activity: Activity) {
     actual fun setStatusBarAppearance(isLight: Boolean) {

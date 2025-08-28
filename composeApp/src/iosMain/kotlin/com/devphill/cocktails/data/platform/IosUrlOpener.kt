@@ -1,5 +1,6 @@
-package com.devphill.cocktails.platform
+package com.devphill.cocktails.data.platform
 
+import com.devphill.cocktails.data.platform.UrlOpener
 import platform.UIKit.UIApplication
 import platform.Foundation.NSURL
 

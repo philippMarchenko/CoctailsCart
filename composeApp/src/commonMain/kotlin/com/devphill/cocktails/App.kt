@@ -1,49 +1,43 @@
 package com.devphill.cocktails
 
-import androidx.compose.runtime.*
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Explore
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.Explore
-import androidx.compose.material.icons.automirrored.filled.MenuBook
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.navigation.NavType
-
+import com.devphill.cocktails.data.preferences.UserPreferencesManager
+import com.devphill.cocktails.data.platform.UrlOpener
 import com.devphill.cocktails.presentation.auth.signin.PlatformSignInScreen
 import com.devphill.cocktails.presentation.auth.signup.PlatformSignUpScreen
-import com.devphill.cocktails.presentation.discover.DiscoverScreen
-import com.devphill.cocktails.presentation.search.SearchScreen
-import com.devphill.cocktails.presentation.favorites.FavoritesScreen
-import com.devphill.cocktails.presentation.tutorials.TutorialsScreen
-import com.devphill.cocktails.presentation.profile.ProfileScreen
-import com.devphill.cocktails.presentation.splash.SplashScreen
 import com.devphill.cocktails.presentation.cocktail_details.CocktailDetailsScreenContainer
 import com.devphill.cocktails.presentation.cocktail_details.CocktailDetailsViewModel
-import com.devphill.cocktails.ui.theme.CocktailsTheme
-import com.devphill.cocktails.ui.theme.GlobalThemeManager
-import com.devphill.cocktails.ui.theme.ThemeMode
-import com.devphill.cocktails.data.preferences.UserPreferencesManager
+import com.devphill.cocktails.presentation.discover.DiscoverScreen
 import com.devphill.cocktails.presentation.discover.DiscoverViewModel
-import com.devphill.cocktails.presentation.search.SearchViewModel
+import com.devphill.cocktails.presentation.favorites.FavoritesScreen
 import com.devphill.cocktails.presentation.favorites.FavoritesViewModel
-import com.devphill.cocktails.presentation.tutorials.TutorialsViewModel
+import com.devphill.cocktails.presentation.profile.ProfileScreen
 import com.devphill.cocktails.presentation.profile.ProfileViewModel
-import com.devphill.cocktails.platform.UrlOpener
+import com.devphill.cocktails.presentation.search.SearchScreen
+import com.devphill.cocktails.presentation.search.SearchViewModel
+import com.devphill.cocktails.presentation.splash.SplashScreen
+import com.devphill.cocktails.presentation.theme.CocktailsTheme
+import com.devphill.cocktails.presentation.theme.GlobalThemeManager
+import com.devphill.cocktails.presentation.theme.ThemeMode
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
@@ -54,7 +48,6 @@ object NavigationRoutes {
     const val SIGN_IN = "sign_in"
     const val SIGN_UP = "sign_up"
     const val DISCOVER = "discover"
-    const val TUTORIALS = "tutorials"
     const val SEARCH = "search"
     const val FAVORITES = "favorites"
     const val PROFILE = "profile"
@@ -65,13 +58,11 @@ object NavigationRoutes {
 
 sealed class BottomNavScreen(val route: String, val title: String, val icon: ImageVector) {
     object Discover : BottomNavScreen(NavigationRoutes.DISCOVER, "Discover", Icons.Filled.Explore)
-    object Tutorials : BottomNavScreen(NavigationRoutes.TUTORIALS, "Tutorials", Icons.AutoMirrored.Filled.MenuBook)
     object Search : BottomNavScreen(NavigationRoutes.SEARCH, "Search", Icons.Filled.Search)
     object Favorites : BottomNavScreen(NavigationRoutes.FAVORITES, "Favorites", Icons.Filled.Star)
     object Profile : BottomNavScreen(NavigationRoutes.PROFILE, "Profile", Icons.Filled.Person)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
 fun App() {
@@ -192,7 +183,6 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
     // Define bottom navigation screens
     val bottomNavScreens = listOf(
         BottomNavScreen.Discover,
-        BottomNavScreen.Tutorials,
         BottomNavScreen.Search,
         BottomNavScreen.Favorites,
         BottomNavScreen.Profile
@@ -211,13 +201,11 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                             selected = currentRoute == screen.route,
                             onClick = {
                                 navController.navigate(screen.route) {
-                                    // Pop up to the start destination to avoid building up a large stack
-                                    popUpTo(NavigationRoutes.DISCOVER) {
+                                    // Pop up to the current destination to avoid building up a large stack
+                                    popUpTo(screen.route) {
                                         saveState = true
                                     }
                                     // Avoid multiple copies of the same destination
-                                    launchSingleTop = true
-                                    // Restore state when reselecting a previously selected item
                                     restoreState = true
                                 }
                             },
@@ -243,13 +231,6 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                         navController.navigate(NavigationRoutes.cocktailDetails(cocktailId))
                     }
                 )
-            }
-
-            composable(NavigationRoutes.TUTORIALS) {
-                val viewModel: TutorialsViewModel = koinViewModel()
-                TutorialsScreen(
-                    modifier = Modifier.padding(paddingValues),
-                    viewModel = viewModel)
             }
 
             composable(NavigationRoutes.SEARCH) {
@@ -287,7 +268,16 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                 ProfileScreen(
                     modifier = Modifier.padding(paddingValues),
                     viewModel = viewModel,
-                    onNavigateToAuth = onNavigateToAuth
+                    onNavigateToAuth = onNavigateToAuth,
+                    onNavigateToFavorites = {
+                        navController.navigate(NavigationRoutes.FAVORITES) {
+                            popUpTo(NavigationRoutes.PROFILE) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
                 )
             }
 

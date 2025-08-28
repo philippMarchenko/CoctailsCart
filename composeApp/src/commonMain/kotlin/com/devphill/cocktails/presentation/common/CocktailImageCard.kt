@@ -8,15 +8,19 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -47,14 +51,34 @@ fun CocktailImageCard(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.surfaceVariant)
         ) {
+            var isLoading by remember { mutableStateOf(true) }
+
             if (cocktail.imageUrl != null) {
                 AsyncImage(
                     model = cocktail.imageUrl,
                     contentDescription = cocktail.title,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxSize()
+                    onLoading = { isLoading = true },
+                    onSuccess = { isLoading = false },
+                    onError = { isLoading = false },
+                    modifier = Modifier.fillMaxSize()
                 )
+
+                // Show progress indicator while image is loading
+                if (isLoading) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f))
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(24.dp), // Smaller progress indicator
+                            color = MaterialTheme.colorScheme.primary,
+                            strokeWidth = 2.dp // Thinner stroke for better performance
+                        )
+                    }
+                }
             }
 
             // Dark gradient overlay to improve text contrast
@@ -135,3 +159,6 @@ fun CocktailImageCardPreview() {
         )
     }
 }
+
+
+

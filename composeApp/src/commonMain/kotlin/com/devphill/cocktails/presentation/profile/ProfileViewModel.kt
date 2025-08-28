@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devphill.cocktails.data.auth.AuthManager
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
+import com.devphill.cocktails.data.platform.ShareManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +13,8 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     private val userPreferencesManager: UserPreferencesManager,
-    private val authManager: AuthManager
+    private val authManager: AuthManager,
+    private val shareManager: ShareManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
@@ -175,5 +177,12 @@ class ProfileViewModel(
 
     fun dismissReauthDialog() {
         _uiState.value = _uiState.value.copy(showReauthDialog = false)
+    }
+
+    fun inviteFriends() {
+        val appName = "CocktailsCraft"
+        val appUrl = "https://play.google.com/store/apps/details?id=com.devphill.cocktails"
+
+        shareManager.shareApp(appName, appUrl)
     }
 }

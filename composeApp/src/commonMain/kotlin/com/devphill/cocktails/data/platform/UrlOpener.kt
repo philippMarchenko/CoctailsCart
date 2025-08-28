@@ -1,4 +1,4 @@
-package com.devphill.cocktails.platform
+package com.devphill.cocktails.data.platform
 
 /**
  * Platform-specific interface for opening URLs in external browsers or apps.

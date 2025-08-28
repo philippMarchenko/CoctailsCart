@@ -1,7 +1,9 @@
 package com.devphill.cocktails.di
 
-import com.devphill.cocktails.platform.UrlOpener
-import com.devphill.cocktails.platform.createUrlOpener
+import com.devphill.cocktails.data.platform.UrlOpener
+import com.devphill.cocktails.data.platform.createUrlOpener
+import com.devphill.cocktails.data.platform.ShareManager
+import com.devphill.cocktails.data.platform.IosShareManager
 import org.koin.dsl.module
 
 /**
@@ -11,5 +13,8 @@ import org.koin.dsl.module
 val platformModule = module {
     single<UrlOpener> {
         createUrlOpener()
+    }
+    single<ShareManager> {
+        IosShareManager()
     }
 }

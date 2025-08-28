@@ -1,7 +1,5 @@
-package com.devphill.cocktails.ui.theme
+package com.devphill.cocktails.presentation.theme
 
-import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

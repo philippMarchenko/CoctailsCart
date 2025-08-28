@@ -1,11 +1,9 @@
-package com.devphill.cocktails.ui.theme
+package com.devphill.cocktails.presentation.theme
 
 import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsControllerCompat
 
 actual fun updateStatusBarAppearance(isLight: Boolean) {
     // This will be called from the composable context

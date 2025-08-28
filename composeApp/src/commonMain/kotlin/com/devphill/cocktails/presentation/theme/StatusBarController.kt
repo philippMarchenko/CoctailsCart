@@ -1,4 +1,4 @@
-package com.devphill.cocktails.ui.theme
+package com.devphill.cocktails.presentation.theme
 
 /**
  * Common interface for controlling status bar appearance

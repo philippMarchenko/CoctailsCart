@@ -7,7 +7,6 @@ import com.devphill.cocktails.presentation.discover.DiscoverViewModel
 import com.devphill.cocktails.presentation.favorites.FavoritesViewModel
 import com.devphill.cocktails.presentation.profile.ProfileViewModel
 import com.devphill.cocktails.presentation.search.SearchViewModel
-import com.devphill.cocktails.presentation.tutorials.TutorialsViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -27,8 +26,7 @@ val commonModule = module {
     viewModel { DiscoverViewModel(get()) }
     viewModel { SearchViewModel(get()) }
     viewModel { FavoritesViewModel(get()) }
-    viewModel { TutorialsViewModel() }
-    viewModel { ProfileViewModel(get(), get()) }
+    viewModel { ProfileViewModel(get(), get(), get()) }
     viewModel { CocktailDetailsViewModel(get()) }
 }
 

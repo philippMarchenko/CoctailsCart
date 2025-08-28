@@ -1,4 +1,4 @@
-package com.devphill.cocktails.ui.theme
+package com.devphill.cocktails.presentation.theme
 
 actual class StatusBarController {
     actual fun setStatusBarAppearance(isLight: Boolean) {
