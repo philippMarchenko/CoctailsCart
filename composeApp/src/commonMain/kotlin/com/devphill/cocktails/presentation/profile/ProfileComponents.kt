@@ -29,6 +29,7 @@ fun ProfileContent(
     onSignOut: () -> Unit,
     onDeleteAccount: () -> Unit,
     onNavigateToFavorites: () -> Unit,
+    onNavigateToNotifications: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     when {
@@ -44,6 +45,7 @@ fun ProfileContent(
             onSignOut = onSignOut,
             onDeleteAccount = onDeleteAccount,
             onNavigateToFavorites = onNavigateToFavorites,
+            onNavigateToNotifications = onNavigateToNotifications,
             modifier = modifier
         )
     }
@@ -56,6 +58,7 @@ fun ProfileMainContent(
     onSignOut: () -> Unit,
     onDeleteAccount: () -> Unit,
     onNavigateToFavorites: () -> Unit,
+    onNavigateToNotifications: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     var showSignOutDialog by remember { mutableStateOf(false) }
@@ -80,7 +83,8 @@ fun ProfileMainContent(
         QuickActionsCard(onNavigateToFavorites = onNavigateToFavorites)
 
         AppSettingsCard(
-            onThemeClick = { showThemeDialog = true }
+            onThemeClick = { showThemeDialog = true },
+            onNotificationsClick = onNavigateToNotifications
         )
 
         AccountActionsCard(

@@ -20,6 +20,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.devphill.cocktails.data.manager.FirstLaunchManager
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
 import com.devphill.cocktails.data.platform.UrlOpener
 import com.devphill.cocktails.presentation.auth.signin.PlatformSignInScreen
@@ -30,6 +31,8 @@ import com.devphill.cocktails.presentation.discover.DiscoverScreen
 import com.devphill.cocktails.presentation.discover.DiscoverViewModel
 import com.devphill.cocktails.presentation.favorites.FavoritesScreen
 import com.devphill.cocktails.presentation.favorites.FavoritesViewModel
+import com.devphill.cocktails.presentation.notifications.NotificationsScreen
+import com.devphill.cocktails.presentation.notifications.NotificationsViewModel
 import com.devphill.cocktails.presentation.profile.ProfileScreen
 import com.devphill.cocktails.presentation.profile.ProfileViewModel
 import com.devphill.cocktails.presentation.search.SearchScreen
@@ -51,6 +54,7 @@ object NavigationRoutes {
     const val SEARCH = "search"
     const val FAVORITES = "favorites"
     const val PROFILE = "profile"
+    const val NOTIFICATIONS = "notifications"
     const val COCKTAIL_DETAILS = "cocktail_details/{cocktailId}"
 
     fun cocktailDetails(cocktailId: String) = "cocktail_details/$cocktailId"
@@ -67,6 +71,7 @@ sealed class BottomNavScreen(val route: String, val title: String, val icon: Ima
 @Preview
 fun App() {
     val userPreferencesManager: UserPreferencesManager = koinInject()
+    val firstLaunchManager: FirstLaunchManager = koinInject()
     val themeManager = remember { GlobalThemeManager.getThemeManager() }
     val currentTheme by themeManager.currentTheme.collectAsState()
     val navController = rememberNavController()
@@ -78,6 +83,9 @@ fun App() {
     LaunchedEffect(Unit) {
         isLoggedIn = userPreferencesManager.isUserLoggedIn()
         isLoginCheckComplete = true
+
+        // Handle first launch and show welcome notification if it's the first time
+        firstLaunchManager.handleFirstLaunch()
     }
 
     // Update status bar when theme changes
@@ -276,6 +284,24 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                             }
                             launchSingleTop = true
                             restoreState = true
+                        }
+                    },
+                    onNavigateToNotifications = {
+                        navController.navigate(NavigationRoutes.NOTIFICATIONS)
+                    }
+                )
+            }
+
+            composable(NavigationRoutes.NOTIFICATIONS) {
+                val viewModel: NotificationsViewModel = koinViewModel()
+                NotificationsScreen(
+                    modifier = Modifier,
+                    viewModel = viewModel,
+                    onBackClick = { navController.navigateUp() },
+                    onNotificationClick = { notification ->
+                        // Handle notification click - if it has a cocktailId, navigate to cocktail details
+                        notification.cocktailId?.let { cocktailId ->
+                            navController.navigate(NavigationRoutes.cocktailDetails(cocktailId))
                         }
                     }
                 )

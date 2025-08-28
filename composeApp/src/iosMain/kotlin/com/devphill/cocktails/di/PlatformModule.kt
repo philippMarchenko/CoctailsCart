@@ -4,6 +4,7 @@ import com.devphill.cocktails.data.platform.UrlOpener
 import com.devphill.cocktails.data.platform.createUrlOpener
 import com.devphill.cocktails.data.platform.ShareManager
 import com.devphill.cocktails.data.platform.IosShareManager
+import com.devphill.cocktails.data.platform.NotificationPermissionManager
 import org.koin.dsl.module
 
 /**
@@ -16,5 +17,8 @@ val platformModule = module {
     }
     single<ShareManager> {
         IosShareManager()
+    }
+    single<NotificationPermissionManager> {
+        NotificationPermissionManager()
     }
 }

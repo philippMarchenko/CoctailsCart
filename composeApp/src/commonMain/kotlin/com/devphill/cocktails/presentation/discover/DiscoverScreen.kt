@@ -9,9 +9,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.devphill.cocktails.data.platform.NotificationPermissionManager
 import com.devphill.cocktails.presentation.common.CocktailImageCard
 import com.devphill.cocktails.presentation.common.ErrorMessage
 import com.devphill.cocktails.presentation.common.LoadingIndicator
+import org.koin.compose.koinInject
 
 @Composable
 fun DiscoverScreen(
@@ -20,6 +22,12 @@ fun DiscoverScreen(
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val notificationPermissionManager: NotificationPermissionManager = koinInject()
+
+    // Request notification permission when user reaches Discovery screen
+    LaunchedEffect(Unit) {
+        notificationPermissionManager.requestPermissionIfNeeded()
+    }
 
     DiscoverContent(
         uiState = uiState,
@@ -182,7 +190,3 @@ private fun CocktailOfDaySection(
         )
     }
 }
-
-
-
-

@@ -117,7 +117,8 @@ internal fun QuickActionsCard(
 
 @Composable
 internal fun AppSettingsCard(
-    onThemeClick: () -> Unit
+    onThemeClick: () -> Unit,
+    onNotificationsClick: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -160,7 +161,7 @@ internal fun AppSettingsCard(
             SettingItem(
                 icon = Icons.Default.Notifications,
                 label = "Notifications",
-                onClick = { /* TODO: Implement notification settings */ }
+                onClick = { onNotificationsClick() }
             )
         }
     }

@@ -11,5 +11,10 @@ interface UserPreferencesManager {
     suspend fun saveUser(user: User?)
     suspend fun getUser(): User?
     suspend fun clearUserData()
-}
 
+    // Generic preference methods for storing any key-value pairs
+    suspend fun putBoolean(key: String, value: Boolean)
+    suspend fun getBoolean(key: String, defaultValue: Boolean = false): Boolean
+    suspend fun putString(key: String, value: String)
+    suspend fun getString(key: String, defaultValue: String? = null): String?
+}

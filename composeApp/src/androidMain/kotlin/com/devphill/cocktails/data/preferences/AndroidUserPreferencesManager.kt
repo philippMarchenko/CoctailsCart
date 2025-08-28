@@ -63,6 +63,27 @@ class AndroidUserPreferencesManager(private val context: Context) : UserPreferen
             .apply()
     }
 
+    // Generic preference methods
+    override suspend fun putBoolean(key: String, value: Boolean) = withContext(Dispatchers.IO) {
+        sharedPreferences.edit()
+            .putBoolean(key, value)
+            .apply()
+    }
+
+    override suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean = withContext(Dispatchers.IO) {
+        sharedPreferences.getBoolean(key, defaultValue)
+    }
+
+    override suspend fun putString(key: String, value: String) = withContext(Dispatchers.IO) {
+        sharedPreferences.edit()
+            .putString(key, value)
+            .apply()
+    }
+
+    override suspend fun getString(key: String, defaultValue: String?): String? = withContext(Dispatchers.IO) {
+        sharedPreferences.getString(key, defaultValue)
+    }
+
     companion object {
         private const val PREFS_NAME = "cocktails_user_prefs"
         private const val KEY_IS_LOGGED_IN = "is_logged_in"
@@ -74,6 +95,3 @@ class AndroidUserPreferencesManager(private val context: Context) : UserPreferen
         private const val KEY_USER_OBJECT = "user_object"
     }
 }
-
-
-

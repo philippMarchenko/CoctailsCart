@@ -13,6 +13,7 @@ fun ProfileScreen(
     viewModel: ProfileViewModel,
     onNavigateToAuth: () -> Unit,
     onNavigateToFavorites: () -> Unit = {},
+    onNavigateToNotifications: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -24,6 +25,7 @@ fun ProfileScreen(
         onSignOut = { viewModel.signOut(onNavigateToAuth) },
         onDeleteAccount = { viewModel.deleteAccount(onNavigateToAuth) },
         onNavigateToFavorites = onNavigateToFavorites,
+        onNavigateToNotifications = onNavigateToNotifications,
         modifier = modifier
     )
 }

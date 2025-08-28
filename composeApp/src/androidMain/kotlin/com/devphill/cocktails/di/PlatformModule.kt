@@ -12,6 +12,8 @@ import com.devphill.cocktails.data.platform.UrlOpener
 import com.devphill.cocktails.data.platform.createUrlOpener
 import com.devphill.cocktails.data.platform.ShareManager
 import com.devphill.cocktails.data.platform.AndroidShareManager
+import com.devphill.cocktails.data.platform.PushNotificationManager
+import com.devphill.cocktails.data.platform.NotificationPermissionManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -40,5 +42,11 @@ val platformModule = module {
     }
     single<ShareManager> {
         AndroidShareManager(androidContext())
+    }
+    single<PushNotificationManager> {
+        PushNotificationManager()
+    }
+    single<NotificationPermissionManager> {
+        NotificationPermissionManager()
     }
 }
