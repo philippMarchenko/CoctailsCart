@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidx.room)
-
+    jacoco
 }
 
 kotlin {
@@ -99,6 +99,11 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+
+        androidUnitTest.dependencies {
+            implementation(libs.junit)
+            implementation(libs.androidx.test.ext.junit)
+        }
     }
 }
 
@@ -112,6 +117,8 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     packaging {
         resources {
@@ -122,14 +129,121 @@ android {
         getByName("release") {
             isMinifyEnabled = false
         }
+        getByName("debug") {
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
 
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+        unitTests.isReturnDefaultValues = true
+    }
+
     room {
         schemaDirectory("$projectDir/schemas")
+    }
+}
+
+// Configure JaCoCo
+jacoco {
+    toolVersion = "0.8.11"
+}
+
+/**
+ * JaCoCo Test Coverage Configuration
+ *
+ * This configuration provides code coverage reporting for the Android app module.
+ *
+ * Available Tasks:
+ * - `./gradlew jacocoTestReport` - Generates coverage report after running tests
+ * - `./gradlew jacocoTestReportAndOpen` - Generates report and opens it in browser
+ *
+ * Report Locations:
+ * - HTML Report: build/reports/jacoco/jacocoTestReport/html/index.html
+ * - XML Report: build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+ *
+ * The configuration includes:
+ * - Coverage for commonMain and androidMain source sets
+ * - Exclusion of generated classes, R classes, and test files
+ * - HTML and XML report generation (CSV disabled)
+ * - Automatic dependency on testDebugUnitTest task
+ *
+ * Prerequisites:
+ * - Run unit tests first: `./gradlew testDebugUnitTest`
+ * - Or use the jacocoTestReport task which includes this dependency
+ *
+ * Coverage Scope:
+ * - Includes: All production code in commonMain and androidMain
+ * - Excludes: Test files, generated code, Android R classes, BuildConfig, Manifest files
+ */
+
+// Custom task to generate unified test coverage report
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn("testDebugUnitTest")
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        csv.required.set(false)
+    }
+
+    val fileFilter = listOf(
+        "**/R.class",
+        "**/R$*.class",
+        "**/BuildConfig.*",
+        "**/Manifest*.*",
+        "**/*Test*.*",
+        "android/**/*.*",
+        "**/lambda$*.class",
+        "**/lambda.class",
+        "**/*lambda.class",
+        "**/*lambda*.class",
+        "**/*\$WhenMappings.*",
+        "**/*\$WhenMappings\$*.*",
+        "**/serializer.*",
+        "**/*\$\$serializer.*"
+    )
+
+    val debugTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
+        exclude(fileFilter)
+    }
+
+    val mainSrc = "${project.projectDir}/src/commonMain/kotlin"
+    val androidMainSrc = "${project.projectDir}/src/androidMain/kotlin"
+
+    sourceDirectories.setFrom(files(listOf(mainSrc, androidMainSrc)))
+    classDirectories.setFrom(files(listOf(debugTree)))
+    executionData.setFrom(fileTree(layout.buildDirectory.get()) {
+        include("jacoco/testDebugUnitTest.exec", "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
+    })
+}
+
+/**
+ * Convenience task to generate coverage report and automatically open it in the default browser.
+ *
+ * Usage: `./gradlew jacocoTestReportAndOpen`
+ *
+ * This task will:
+ * 1. Run unit tests (via jacocoTestReport dependency)
+ * 2. Generate the coverage report
+ * 3. Open the HTML report in your default browser (macOS only)
+ */
+// Task to generate coverage report and open it
+tasks.register("jacocoTestReportAndOpen") {
+    dependsOn("jacocoTestReport")
+
+    doLast {
+        val reportPath = "${layout.buildDirectory.get()}/reports/jacoco/jacocoTestReport/html/index.html"
+        if (file(reportPath).exists()) {
+            exec {
+                commandLine("open", reportPath)
+            }
+        }
     }
 }
 
