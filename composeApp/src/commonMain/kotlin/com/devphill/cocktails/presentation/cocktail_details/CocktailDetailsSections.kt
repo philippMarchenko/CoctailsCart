@@ -12,10 +12,19 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.devphill.cocktails.domain.model.AlcoholStrength
 import com.devphill.cocktails.domain.model.ComplexityLevel
+
+object CocktailDetailsTestTags {
+    const val QUICK_STATS = "quick_stats_section"
+    const val INGREDIENTS_SECTION = "ingredients_section"
+    const val INSTRUCTIONS_SECTION = "instructions_section"
+    const val GARNISH_SECTION = "garnish_section"
+    const val VIDEO_SECTION = "video_section"
+}
 
 @Composable
 fun AnimatedQuickStatsSection(
@@ -45,7 +54,8 @@ fun AnimatedQuickStatsSection(
             .graphicsLayer {
                 translationY = slideOffset.toFloat()
                 this.alpha = alpha
-            },
+            }
+            .testTag(CocktailDetailsTestTags.QUICK_STATS),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
@@ -132,6 +142,7 @@ fun AnimatedIngredientsSection(
                 translationX = slideOffset.toFloat()
                 this.alpha = alpha
             }
+            .testTag(CocktailDetailsTestTags.INGREDIENTS_SECTION)
     ) {
         Text(
             text = "Ingredients",
@@ -205,6 +216,7 @@ fun AnimatedInstructionsSection(
                 translationX = slideOffset.toFloat()
                 this.alpha = alpha
             }
+            .testTag(CocktailDetailsTestTags.INSTRUCTIONS_SECTION)
     ) {
         Text(
             text = "Instructions",
@@ -289,6 +301,7 @@ fun AnimatedVideoSection(
                 translationY = slideOffset.toFloat()
                 this.alpha = alpha
             }
+            .testTag(CocktailDetailsTestTags.VIDEO_SECTION)
     ) {
         Text(
             text = "Tutorial Video",

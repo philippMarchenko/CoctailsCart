@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devphill.cocktails.domain.interactor.CocktailInteractor
 import com.devphill.cocktails.domain.model.Cocktail
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -70,5 +69,3 @@ class CocktailDetailsViewModel(
         _uiState.value = _uiState.value.copy(error = null)
     }
 }
-
-

@@ -21,7 +21,7 @@ kotlin {
             freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -32,15 +32,15 @@ kotlin {
             isStatic = true
         }
         iosTarget.compilerOptions {
-            freeCompilerArgs.add("-Xexpect-actual-classes")
+            freeCompilerArgs.add("-Xexpected-actual-classes")
         }
     }
 
     // Add global compiler options for all targets
     compilerOptions {
-        freeCompilerArgs.add("-Xexpect-actual-classes")
+        freeCompilerArgs.add("-Xexpected-actual-classes")
     }
-    
+
     sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)
@@ -94,15 +94,27 @@ kotlin {
             // Room dependencies for Android
             implementation(libs.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
-
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.turbine)
+            implementation(libs.compose.ui.test.junit4)
+            implementation(libs.compose.ui.test.manifest)
         }
 
         androidUnitTest.dependencies {
             implementation(libs.junit)
             implementation(libs.androidx.test.ext.junit)
+            implementation(libs.kotlinx.coroutines.test)
+        }
+
+        androidInstrumentedTest.dependencies {
+            implementation(libs.androidx.test.ext.junit)
+            implementation(libs.androidx.test.espresso.core)
+            implementation(libs.compose.ui.test.junit4)
+            implementation(libs.compose.ui.test.manifest)
+            implementation(libs.kotlinx.coroutines.test)
         }
     }
 }

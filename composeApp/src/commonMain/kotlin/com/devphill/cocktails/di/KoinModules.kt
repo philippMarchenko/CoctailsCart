@@ -5,6 +5,7 @@ import com.devphill.cocktails.data.manager.FirstLaunchManagerImpl
 import com.devphill.cocktails.data.repository.NotificationsRepository
 import com.devphill.cocktails.data.repository.NotificationsRepositoryImpl
 import com.devphill.cocktails.domain.interactor.CocktailInteractor
+import com.devphill.cocktails.domain.interactor.CocktailInteractorImpl
 import com.devphill.cocktails.presentation.auth.AuthViewModel
 import com.devphill.cocktails.presentation.cocktail_details.CocktailDetailsViewModel
 import com.devphill.cocktails.presentation.discover.DiscoverViewModel
@@ -34,7 +35,7 @@ val commonModule = module {
 
     // Interactors
     single {
-        CocktailInteractor(get())
+        CocktailInteractorImpl(get())
     }
 
     // ViewModels
