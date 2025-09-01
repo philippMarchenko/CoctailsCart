@@ -1,7 +1,7 @@
 package com.devphill.cocktails.data.repository
 
-import com.devphill.cocktails.data.database.datasource.LocalCocktailDataSource
-import com.devphill.cocktails.data.datasource.CocktailsDataSource
+import com.devphill.cocktails.data.database.datasource.DatabaseCocktailDataSource
+import com.devphill.cocktails.data.datasource.LocalCocktailsDataSource
 import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.domain.repository.CocktailRepository
 import kotlinx.coroutines.CoroutineScope
@@ -17,8 +17,8 @@ import kotlinx.coroutines.launch
  * local Room database storage and remote JSON data source for initial data loading.
  *
  * ## Architecture
- * - **Local Storage**: Uses Room database via [LocalCocktailDataSource] for persistent cocktail data
- * - **Remote Data**: Uses [CocktailsDataSource] to load initial cocktail data from JSON assets
+ * - **Local Storage**: Uses Room database via [DatabaseCocktailDataSource] for persistent cocktail data
+ * - **Remote Data**: Uses [LocalCocktailsDataSource] to load initial cocktail data from JSON assets
  * - **Auto-initialization**: Automatically loads data from JSON on first run if database is empty
  * - **Pure Methods**: All public methods are simple delegations to the local data source
  *
@@ -38,16 +38,16 @@ import kotlinx.coroutines.launch
  * instantiated directly. The repository automatically handles data loading and provides
  * reactive data streams via [Flow].
  *
- * @param localDataSource Room database data source for local cocktail storage
+ * @param databaseCocktailDataSource Room database data source for local cocktail storage
  * @param remoteDataSource JSON file data source for initial cocktail data loading
  *
  * @see CocktailRepository
- * @see LocalCocktailDataSource
- * @see CocktailsDataSource
+ * @see DatabaseCocktailDataSource
+ * @see LocalCocktailsDataSource
  */
 class AndroidCocktailRepository(
-    private val localDataSource: LocalCocktailDataSource,
-    private val remoteDataSource: CocktailsDataSource
+    private val databaseCocktailDataSource: DatabaseCocktailDataSource,
+    private val remoteDataSource: LocalCocktailsDataSource
 ) : CocktailRepository {
 
     private val repositoryScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -66,32 +66,14 @@ class AndroidCocktailRepository(
      * This method runs in a background coroutine to avoid blocking the main thread.
      */
     private suspend fun initializeIfNeeded() {
-        if (localDataSource.isEmpty()) {
+        if (databaseCocktailDataSource.isEmpty()) {
             println("📥 Database is empty, loading cocktails from JSON...")
 
-            remoteDataSource.loadCocktailsDatabase().fold(
+            remoteDataSource.loadCocktails().fold(
                 onSuccess = { database ->
-                    val cocktails = database.cocktails.map { cocktailDetail ->
-                        Cocktail(
-                            id = cocktailDetail.title.lowercase().replace(" ", "_"),
-                            title = cocktailDetail.title,
-                            imageUrl = cocktailDetail.imageUrl,
-                            cocktailUrl = cocktailDetail.cocktailUrl,
-                            category = cocktailDetail.category,
-                            categoryEnum = cocktailDetail.categoryEnum,
-                            views = cocktailDetail.views,
-                            ingredients = cocktailDetail.ingredients,
-                            ingredientsEnums = cocktailDetail.ingredientsEnums,
-                            method = cocktailDetail.method,
-                            garnish = cocktailDetail.garnish,
-                            glass = cocktailDetail.glass,
-                            videoUrl = cocktailDetail.videoUrl,
-                            complexity = com.devphill.cocktails.domain.model.ComplexityLevel.fromString(cocktailDetail.complexity),
-                            alcoholStrength = com.devphill.cocktails.domain.model.AlcoholStrength.fromString(cocktailDetail.alcoholStrength),
-                            searchText = cocktailDetail.searchText
-                        )
-                    }
-                    localDataSource.insertCocktails(cocktails)
+                    // The parser now returns Cocktail objects directly, no conversion needed
+                    val cocktails = database.cocktails
+                    databaseCocktailDataSource.insertCocktails(cocktails)
                     println("✅ Successfully cached ${cocktails.size} cocktails to database")
                 },
                 onFailure = { error ->
@@ -109,7 +91,7 @@ class AndroidCocktailRepository(
      * @return A [Flow] emitting lists of all [Cocktail]s in the database.
      */
     override suspend fun getAllCocktails(): Flow<List<Cocktail>> {
-        return localDataSource.getAllCocktails()
+        return databaseCocktailDataSource.getAllCocktails()
     }
 
     /**
@@ -119,7 +101,7 @@ class AndroidCocktailRepository(
      * @return The [Cocktail] with the specified ID, or null if not found.
      */
     override suspend fun getCocktailById(id: String): Cocktail? {
-        return localDataSource.getCocktailById(id)
+        return databaseCocktailDataSource.getCocktailById(id)
     }
 
     /**
@@ -129,7 +111,7 @@ class AndroidCocktailRepository(
      * @return A [Flow] emitting lists of [Cocktail]s that match the search query.
      */
     override suspend fun searchCocktails(query: String): Flow<List<Cocktail>> {
-        return localDataSource.searchCocktails(query)
+        return databaseCocktailDataSource.searchCocktails(query)
     }
 
     /**
@@ -138,7 +120,7 @@ class AndroidCocktailRepository(
      * @return A [Flow] emitting lists of favorite [Cocktail]s.
      */
     override suspend fun getFavoriteCocktails(): Flow<List<Cocktail>> {
-        return localDataSource.getFavoriteCocktails()
+        return databaseCocktailDataSource.getFavoriteCocktails()
     }
 
     /**
@@ -147,7 +129,7 @@ class AndroidCocktailRepository(
      * @param cocktail The [Cocktail] to be added to favorites.
      */
     override suspend fun addToFavorites(cocktail: Cocktail) {
-        localDataSource.updateFavoriteStatus(cocktail.id, true)
+        databaseCocktailDataSource.updateFavoriteStatus(cocktail.id, true)
     }
 
     /**
@@ -156,7 +138,7 @@ class AndroidCocktailRepository(
      * @param cocktailId The unique identifier of the [Cocktail] to be removed from favorites.
      */
     override suspend fun removeFromFavorites(cocktailId: String) {
-        localDataSource.updateFavoriteStatus(cocktailId, false)
+        databaseCocktailDataSource.updateFavoriteStatus(cocktailId, false)
     }
 
     /**
@@ -166,7 +148,6 @@ class AndroidCocktailRepository(
      * @return A [Flow] emitting lists of [Cocktail]s in the specified category.
      */
     override suspend fun getCocktailsByCategory(category: String): Flow<List<Cocktail>> {
-        return localDataSource.getCocktailsByCategory(category)
+        return databaseCocktailDataSource.getCocktailsByCategory(category)
     }
 }
-

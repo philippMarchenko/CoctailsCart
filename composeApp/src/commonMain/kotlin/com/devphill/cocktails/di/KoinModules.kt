@@ -34,7 +34,7 @@ val commonModule = module {
     }
 
     // Interactors
-    single {
+    single<CocktailInteractor> {
         CocktailInteractorImpl(get())
     }
 

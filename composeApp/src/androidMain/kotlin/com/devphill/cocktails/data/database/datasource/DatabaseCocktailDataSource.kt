@@ -7,7 +7,7 @@ import com.devphill.cocktails.domain.model.Cocktail
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class LocalCocktailDataSource(context: Context) {
+class DatabaseCocktailDataSource(context: Context) {
     private val database = CocktailDatabase.getDatabase(context)
     private val cocktailDao = database.cocktailDao()
 
@@ -44,16 +44,8 @@ class LocalCocktailDataSource(context: Context) {
         cocktailDao.insertCocktails(entities)
     }
 
-    suspend fun insertCocktail(cocktail: Cocktail) {
-        cocktailDao.insertCocktail(CocktailEntity.fromCocktail(cocktail))
-    }
-
     suspend fun updateFavoriteStatus(cocktailId: String, isFavorite: Boolean) {
         cocktailDao.updateFavoriteStatus(cocktailId, isFavorite)
-    }
-
-    suspend fun deleteAllCocktails() {
-        cocktailDao.deleteAllCocktails()
     }
 
     suspend fun getCocktailsCount(): Int {
