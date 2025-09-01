@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -19,6 +20,14 @@ kotlin {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
             freeCompilerArgs.add("-Xexpect-actual-classes")
+        }
+
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
+
+        dependencies {
+            androidTestImplementation(libs.compose.ui.test.junit4)
+            debugImplementation(libs.compose.ui.test.manifest)
         }
     }
 
@@ -99,14 +108,18 @@ kotlin {
             implementation(libs.kotlin.test)
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.turbine)
-            implementation(libs.compose.ui.test.junit4)
-            implementation(libs.compose.ui.test.manifest)
+
+            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+            implementation(compose.uiTest)
         }
 
         androidUnitTest.dependencies {
             implementation(libs.junit)
             implementation(libs.androidx.test.ext.junit)
             implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.robolectric)
+            implementation(libs.compose.ui.test.junit4)
+            implementation(libs.compose.ui.test.manifest)
         }
 
         androidInstrumentedTest.dependencies {
@@ -117,148 +130,156 @@ kotlin {
             implementation(libs.kotlinx.coroutines.test)
         }
     }
-}
 
-android {
-    namespace = "com.devphill.cocktails"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    android {
+        namespace = "com.devphill.cocktails"
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
 
-    defaultConfig {
-        applicationId = "com.devphill.cocktails"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
+        defaultConfig {
+            applicationId = "com.devphill.cocktails"
+            minSdk = libs.versions.android.minSdk.get().toInt()
+            targetSdk = libs.versions.android.targetSdk.get().toInt()
+            versionCode = 1
+            versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
+        packaging {
+            resources {
+                excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            }
         }
-        getByName("debug") {
-            enableUnitTestCoverage = true
-            enableAndroidTestCoverage = true
+        buildTypes {
+            getByName("release") {
+                isMinifyEnabled = false
+            }
+            getByName("debug") {
+                enableUnitTestCoverage = true
+                enableAndroidTestCoverage = true
+            }
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
+        compileOptions {
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
+        }
 
-    testOptions {
-        unitTests.isIncludeAndroidResources = true
-        unitTests.isReturnDefaultValues = true
-    }
+        testOptions {
+            unitTests.isIncludeAndroidResources = true
+            unitTests.isReturnDefaultValues = true
+        }
 
-    room {
-        schemaDirectory("$projectDir/schemas")
+        room {
+            schemaDirectory("$projectDir/schemas")
+        }
+        testOptions.unitTests.isIncludeAndroidResources = true
     }
-}
 
 // Configure JaCoCo
-jacoco {
-    toolVersion = "0.8.11"
-}
+    jacoco {
+        toolVersion = "0.8.11"
+    }
 
-/**
- * JaCoCo Test Coverage Configuration
- *
- * This configuration provides code coverage reporting for the Android app module.
- *
- * Available Tasks:
- * - `./gradlew jacocoTestReport` - Generates coverage report after running tests
- * - `./gradlew jacocoTestReportAndOpen` - Generates report and opens it in browser
- *
- * Report Locations:
- * - HTML Report: build/reports/jacoco/jacocoTestReport/html/index.html
- * - XML Report: build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
- *
- * The configuration includes:
- * - Coverage for commonMain and androidMain source sets
- * - Exclusion of generated classes, R classes, and test files
- * - HTML and XML report generation (CSV disabled)
- * - Automatic dependency on testDebugUnitTest task
- *
- * Prerequisites:
- * - Run unit tests first: `./gradlew testDebugUnitTest`
- * - Or use the jacocoTestReport task which includes this dependency
- *
- * Coverage Scope:
- * - Includes: All production code in commonMain and androidMain
- * - Excludes: Test files, generated code, Android R classes, BuildConfig, Manifest files
- */
+    /**
+     * JaCoCo Test Coverage Configuration
+     *
+     * This configuration provides code coverage reporting for the Android app module.
+     *
+     * Available Tasks:
+     * - `./gradlew jacocoTestReport` - Generates coverage report after running tests
+     * - `./gradlew jacocoTestReportAndOpen` - Generates report and opens it in browser
+     *
+     * Report Locations:
+     * - HTML Report: build/reports/jacoco/jacocoTestReport/html/index.html
+     * - XML Report: build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+     *
+     * The configuration includes:
+     * - Coverage for commonMain and androidMain source sets
+     * - Exclusion of generated classes, R classes, and test files
+     * - HTML and XML report generation (CSV disabled)
+     * - Automatic dependency on both unit and instrumented tests
+     *
+     * Prerequisites:
+     * - Tests are run automatically when you call the jacocoTestReport task
+     *
+     * Coverage Scope:
+     * - Includes: All production code in commonMain and androidMain
+     * - Excludes: Test files, generated code, Android R classes, BuildConfig, Manifest files
+     */
+
+    // Make sure test tasks always run and are not considered up-to-date
+    tasks.withType<Test>().configureEach {
+        outputs.upToDateWhen { false }
+    }
 
 // Custom task to generate unified test coverage report
-tasks.register<JacocoReport>("jacocoTestReport") {
-    dependsOn("testDebugUnitTest")
+    tasks.register<JacocoReport>("jacocoTestReport") {
+        // Depend on both unit tests and connected Android tests
+        dependsOn("testDebugUnitTest", "connectedDebugAndroidTest")
 
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
-        csv.required.set(false)
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+            csv.required.set(false)
+        }
+
+        val fileFilter = listOf(
+            "**/R.class",
+            "**/R$*.class",
+            "**/BuildConfig.*",
+            "**/Manifest*.*",
+            "**/*Test*.*",
+            "**/lambda$*.class",
+            "**/lambda.class",
+            "**/*lambda.class",
+            "**/*lambda*.class",
+            "**/*\$WhenMappings.*",
+            "**/*\$WhenMappings\$*.*",
+            "**/serializer.*",
+            "**/*\$\$serializer.*"
+        )
+
+        val debugTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
+            exclude(fileFilter)
+        }
+
+        val mainSrc = "${project.projectDir}/src/commonMain/kotlin"
+        val androidMainSrc = "${project.projectDir}/src/androidMain/kotlin"
+
+        sourceDirectories.setFrom(files(listOf(mainSrc, androidMainSrc)))
+        classDirectories.setFrom(files(listOf(debugTree)))
+        executionData.setFrom(fileTree(layout.buildDirectory.get()) {
+            include(
+                // Unit test execution data
+                "jacoco/testDebugUnitTest.exec",
+                "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
+                // Instrumented test execution data
+                "outputs/code_coverage/debugAndroidTest/connected/*coverage.ec"
+            )
+        })
     }
 
-    val fileFilter = listOf(
-        "**/R.class",
-        "**/R$*.class",
-        "**/BuildConfig.*",
-        "**/Manifest*.*",
-        "**/*Test*.*",
-        "android/**/*.*",
-        "**/lambda$*.class",
-        "**/lambda.class",
-        "**/*lambda.class",
-        "**/*lambda*.class",
-        "**/*\$WhenMappings.*",
-        "**/*\$WhenMappings\$*.*",
-        "**/serializer.*",
-        "**/*\$\$serializer.*"
-    )
+    /**
+     * Convenience task to generate coverage report and automatically open it in the default browser.
+     *
+     * Usage: `./gradlew jacocoTestReportAndOpen`
+     *
+     * This task will:
+     */
+    tasks.register("jacocoTestReportAndOpen") {
+        dependsOn("jacocoTestReport")
 
-    val debugTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
-        exclude(fileFilter)
-    }
-
-    val mainSrc = "${project.projectDir}/src/commonMain/kotlin"
-    val androidMainSrc = "${project.projectDir}/src/androidMain/kotlin"
-
-    sourceDirectories.setFrom(files(listOf(mainSrc, androidMainSrc)))
-    classDirectories.setFrom(files(listOf(debugTree)))
-    executionData.setFrom(fileTree(layout.buildDirectory.get()) {
-        include("jacoco/testDebugUnitTest.exec", "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
-    })
-}
-
-/**
- * Convenience task to generate coverage report and automatically open it in the default browser.
- *
- * Usage: `./gradlew jacocoTestReportAndOpen`
- *
- * This task will:
- * 1. Run unit tests (via jacocoTestReport dependency)
- * 2. Generate the coverage report
- * 3. Open the HTML report in your default browser (macOS only)
- */
-// Task to generate coverage report and open it
-tasks.register("jacocoTestReportAndOpen") {
-    dependsOn("jacocoTestReport")
-
-    doLast {
-        val reportPath = "${layout.buildDirectory.get()}/reports/jacoco/jacocoTestReport/html/index.html"
-        if (file(reportPath).exists()) {
-            exec {
-                commandLine("open", reportPath)
+        doLast {
+            val reportPath =
+                "${layout.buildDirectory.get()}/reports/jacoco/jacocoTestReport/html/index.html"
+            if (file(reportPath).exists()) {
+                exec {
+                    commandLine("open", reportPath)
+                }
             }
         }
     }
-}
 
-dependencies {
-    add("kspAndroid", libs.room.compiler)
+    dependencies {
+        add("kspAndroid", libs.room.compiler)
+    }
 }
