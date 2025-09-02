@@ -2,6 +2,8 @@ package com.devphill.cocktails.di
 
 import com.devphill.cocktails.data.auth.AuthManager
 import com.devphill.cocktails.data.auth.createAuthManager
+import com.devphill.cocktails.data.database.datasource.DatabaseCocktailDataSourceImpl
+import com.devphill.cocktails.data.datasource.LocalCocktailsDataSourceImpl
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
 import com.devphill.cocktails.data.preferences.createUserPreferencesManager
 import com.devphill.cocktails.data.repository.AndroidCocktailRepository
@@ -12,6 +14,8 @@ import com.devphill.cocktails.data.platform.ShareManager
 import com.devphill.cocktails.data.platform.AndroidShareManager
 import com.devphill.cocktails.data.platform.PushNotificationManager
 import com.devphill.cocktails.data.platform.NotificationPermissionManager
+import com.devphill.cocktails.domain.datasource.DatabaseCocktailDataSource
+import com.devphill.cocktails.domain.datasource.LocalCocktailsDataSource
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -21,6 +25,12 @@ import org.koin.dsl.module
  */
 val platformModule = module {
 
+    single<DatabaseCocktailDataSource> {
+        DatabaseCocktailDataSourceImpl(androidContext())
+    }
+    single<LocalCocktailsDataSource> {
+        LocalCocktailsDataSourceImpl(androidContext())
+    }
     single<CocktailRepository> {
         AndroidCocktailRepository(get(), get()) // Inject both data sources
     }
@@ -42,4 +52,6 @@ val platformModule = module {
     single<NotificationPermissionManager> {
         NotificationPermissionManager()
     }
+
+
 }
