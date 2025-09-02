@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.devphill.cocktails.domain.model.AlcoholStrength
 import com.devphill.cocktails.domain.model.ComplexityLevel
+import com.devphill.cocktails.presentation.theme.*
 
 object CocktailDetailsTestTags {
     const val QUICK_STATS = "quick_stats_section"
@@ -144,10 +145,8 @@ fun AnimatedIngredientsSection(
             }
             .testTag(CocktailDetailsTestTags.INGREDIENTS_SECTION)
     ) {
-        Text(
-            text = "Ingredients",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold
+        CocktailSectionHeader(
+            text = "Ingredients"
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -218,10 +217,8 @@ fun AnimatedInstructionsSection(
             }
             .testTag(CocktailDetailsTestTags.INSTRUCTIONS_SECTION)
     ) {
-        Text(
-            text = "Instructions",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold
+        CocktailSectionHeader(
+            text = "Instructions"
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -247,11 +244,9 @@ fun AnimatedInstructionsSection(
 
                     Spacer(modifier = Modifier.width(12.dp))
 
-                    Text(
+                    CocktailBodyText(
                         text = method,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        lineHeight = MaterialTheme.typography.bodyMedium.lineHeight
+                        modifier = Modifier.weight(1f)
                     )
                 }
 
@@ -303,10 +298,8 @@ fun AnimatedVideoSection(
             }
             .testTag(CocktailDetailsTestTags.VIDEO_SECTION)
     ) {
-        Text(
-            text = "Tutorial Video",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold
+        CocktailSectionHeader(
+            text = "Tutorial Video"
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -334,17 +327,12 @@ fun AnimatedVideoSection(
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text(
-                        text = "Watch Tutorial",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    CocktailCardTitle(
+                        text = "Watch Tutorial"
                     )
 
-                    Text(
-                        text = "Learn how to make this cocktail",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f)
+                    CocktailBodyText(
+                        text = "Learn how to make this cocktail"
                     )
                 }
 

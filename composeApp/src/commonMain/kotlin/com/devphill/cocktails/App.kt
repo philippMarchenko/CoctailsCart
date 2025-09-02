@@ -38,6 +38,7 @@ import com.devphill.cocktails.presentation.profile.ProfileViewModel
 import com.devphill.cocktails.presentation.search.SearchScreen
 import com.devphill.cocktails.presentation.search.SearchViewModel
 import com.devphill.cocktails.presentation.splash.SplashScreen
+import com.devphill.cocktails.presentation.theme.CocktailLabel
 import com.devphill.cocktails.presentation.theme.CocktailsTheme
 import com.devphill.cocktails.presentation.theme.GlobalThemeManager
 import com.devphill.cocktails.presentation.theme.ThemeMode
@@ -206,16 +207,18 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                             selected = currentRoute == screen.route,
                             onClick = {
                                 navController.navigate(screen.route) {
-                                    // Pop up to the current destination to avoid building up a large stack
-                                    popUpTo(screen.route) {
+                                    // Pop up to the start destination to keep only one instance of each tab
+                                    popUpTo(NavigationRoutes.DISCOVER) {
                                         saveState = true
                                     }
-                                    // Avoid multiple copies of the same destination
+                                    // Avoid multiple copies of the same destination when reselecting the same tab
+                                    launchSingleTop = true
+                                    // Restore state when reselecting a previously selected tab
                                     restoreState = true
                                 }
                             },
                             icon = { Icon(screen.icon, contentDescription = screen.title) },
-                            label = { Text(screen.title) }
+                            label = { CocktailLabel(screen.title) }
                         )
                     }
                 }

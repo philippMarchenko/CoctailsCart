@@ -19,8 +19,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.domain.model.ComplexityLevel
-
-
+import com.devphill.cocktails.presentation.theme.*
 
 @Composable
 fun TagChip(
@@ -33,15 +32,12 @@ fun TagChip(
         shape = RoundedCornerShape(10.dp),
         modifier = modifier
     ) {
-        Text(
+        CocktailLabel(
             text = text,
-            style = MaterialTheme.typography.labelSmall,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
         )
     }
 }
-
-
 
 @Composable
 fun CategoryChip(
@@ -52,10 +48,7 @@ fun CategoryChip(
     FilterChip(
         onClick = onClick,
         label = {
-            Text(
-                text = category,
-                style = MaterialTheme.typography.labelMedium
-            )
+            CocktailLabel(text = category)
         },
         selected = false,
         modifier = modifier
@@ -78,11 +71,8 @@ fun ComplexityChip(
         shape = RoundedCornerShape(12.dp),
         modifier = modifier
     ) {
-        Text(
+        CocktailLabel(
             text = text,
-            color = color,
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Medium,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
         )
     }
@@ -94,10 +84,8 @@ fun CocktailIngredientsList(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        Text(
+        CocktailSectionHeader(
             text = "Ingredients",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
@@ -108,14 +96,12 @@ fun CocktailIngredientsList(
                     .padding(vertical = 2.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
+                CocktailBodyText(
                     text = "• ",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    modifier = Modifier
                 )
-                Text(
+                CocktailBodyText(
                     text = ingredient,
-                    style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -146,17 +132,13 @@ fun ErrorMessage(
         verticalArrangement = Arrangement.Center,
         modifier = modifier.fillMaxSize()
     ) {
-        Text(
+        CocktailScreenTitle(
             text = "⚠️",
-            style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
-        Text(
+        ErrorText(
             text = message,
-            style = MaterialTheme.typography.bodyLarge,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(horizontal = 24.dp)
         )
 
@@ -165,10 +147,8 @@ fun ErrorMessage(
                 onClick = retry,
                 modifier = Modifier.padding(top = 16.dp)
             ) {
-                Text("Retry")
+                CocktailBodyText("Retry")
             }
         }
     }
 }
-
-

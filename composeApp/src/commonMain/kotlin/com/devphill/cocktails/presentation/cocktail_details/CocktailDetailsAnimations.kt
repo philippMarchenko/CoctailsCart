@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.devphill.cocktails.presentation.theme.*
 
 @Composable
 internal fun AnimatedStatItem(
@@ -53,19 +54,12 @@ internal fun AnimatedStatItem(
 
         Spacer(modifier = Modifier.height(4.dp))
 
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+        CocktailLabel(
+            text = label
         )
 
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodySmall,
-            fontWeight = FontWeight.Medium,
-            textAlign = TextAlign.Center,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+        CocktailBodyText(
+            text = value
         )
     }
 }
@@ -88,27 +82,19 @@ internal fun AnimatedIngredientChip(
         label = "alpha"
     )
 
-    AssistChip(
-        onClick = { },
-        label = {
-            Text(
-                text = ingredient,
-                style = MaterialTheme.typography.bodySmall,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        },
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.LocalDining,
-                contentDescription = null,
-                modifier = Modifier.size(16.dp)
-            )
-        },
+    Surface(
+        color = MaterialTheme.colorScheme.secondaryContainer,
+        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        shape = RoundedCornerShape(16.dp),
         modifier = Modifier
             .scale(scale)
             .graphicsLayer { this.alpha = alpha }
-    )
+    ) {
+        CocktailLabel(
+            text = ingredient,
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+        )
+    }
 }
 
 @Composable
@@ -137,20 +123,20 @@ internal fun AnimatedIngredientRow(
         }
     ) {
         Row(
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 imageVector = Icons.Default.Circle,
                 contentDescription = null,
-                modifier = Modifier.size(8.dp),
-                tint = MaterialTheme.colorScheme.primary
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(6.dp)
             )
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            Text(
+            CocktailBodyText(
                 text = ingredient,
-                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.weight(1f)
             )
         }
@@ -180,11 +166,11 @@ internal fun AnimatedGarnishSection(
     )
 
     Row(
-        verticalAlignment = Alignment.Top,
         modifier = Modifier.graphicsLayer {
             translationX = slideOffset.toFloat()
             this.alpha = alpha
-        }
+        },
+        verticalAlignment = Alignment.Top
     ) {
         Icon(
             imageVector = Icons.Default.LocalFlorist,
@@ -196,17 +182,12 @@ internal fun AnimatedGarnishSection(
         Spacer(modifier = Modifier.width(12.dp))
 
         Column {
-            Text(
-                text = "Garnish",
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+            CocktailLabel(
+                text = "Garnish"
             )
 
-            Text(
-                text = garnish,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+            CocktailBodyText(
+                text = garnish
             )
         }
     }

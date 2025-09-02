@@ -12,11 +12,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.devphill.cocktails.data.model.Notification
 import com.devphill.cocktails.data.model.NotificationType
+import com.devphill.cocktails.presentation.theme.*
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,13 +37,10 @@ fun NotificationsScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text("Notifications")
+                        CocktailSectionHeader("Notifications")
                         if (uiState.unreadCount > 0) {
                             Badge {
-                                Text(
-                                    text = uiState.unreadCount.toString(),
-                                    style = MaterialTheme.typography.labelSmall
-                                )
+                                CocktailLabel(uiState.unreadCount.toString())
                             }
                         }
                     }
@@ -62,7 +58,7 @@ fun NotificationsScreen(
                         TextButton(
                             onClick = { viewModel.markAllAsRead() }
                         ) {
-                            Text("Mark all read")
+                            CocktailBodyText("Mark all read")
                         }
                     }
                 }
@@ -184,13 +180,9 @@ private fun NotificationItem(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.Top
                 ) {
-                    Text(
+                    CocktailCardTitle(
                         text = notification.title,
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = if (notification.isRead) FontWeight.Normal else FontWeight.Bold,
-                        modifier = Modifier.weight(1f),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        modifier = Modifier.weight(1f)
                     )
 
                     if (!notification.isRead) {
@@ -208,18 +200,12 @@ private fun NotificationItem(
                     }
                 }
 
-                Text(
-                    text = notification.message,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                CocktailBodyText(
+                    text = notification.message
                 )
 
-                Text(
-                    text = formatTimestamp(notification.timestamp),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.outline
+                CocktailLabel(
+                    text = formatTimestamp(notification.timestamp)
                 )
             }
 
@@ -255,15 +241,11 @@ private fun EmptyNotificationsState() {
                 modifier = Modifier.size(64.dp),
                 tint = MaterialTheme.colorScheme.outline
             )
-            Text(
-                text = "No notifications yet",
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+            CenteredTitle(
+                text = "No notifications yet"
             )
-            Text(
-                text = "We'll notify you when there's something new!",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.outline
+            CocktailSubtitle(
+                text = "We'll notify you when there's something new!"
             )
         }
     }
@@ -288,18 +270,14 @@ private fun ErrorState(
                 modifier = Modifier.size(64.dp),
                 tint = MaterialTheme.colorScheme.error
             )
-            Text(
-                text = "Something went wrong",
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+            CenteredTitle(
+                text = "Something went wrong"
             )
-            Text(
-                text = error ?: "Unable to load notifications.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.outline
+            ErrorText(
+                text = error ?: "Unable to load notifications."
             )
             Button(onClick = onRetry) {
-                Text("Try again")
+                CocktailBodyText("Try again")
             }
         }
     }

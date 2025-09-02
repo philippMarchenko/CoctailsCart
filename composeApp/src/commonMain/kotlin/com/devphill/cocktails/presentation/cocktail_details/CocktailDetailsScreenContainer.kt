@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.viewmodel.koinViewModel
+import com.devphill.cocktails.presentation.theme.*
 
 @Composable
 fun CocktailDetailsScreenContainer(
@@ -82,10 +83,8 @@ private fun LoadingScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text(
-                text = "Loading cocktail details...",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+            CocktailBodyText(
+                text = "Loading cocktail details..."
             )
         }
     }
@@ -107,18 +106,14 @@ private fun ErrorScreen(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.padding(32.dp)
         ) {
-            Text(
-                text = "Oops!",
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.error
+            CenteredTitle(
+                text = "Oops!"
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(
-                text = error,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+            ErrorText(
+                text = error
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -129,13 +124,13 @@ private fun ErrorScreen(
                 OutlinedButton(
                     onClick = onBackClick
                 ) {
-                    Text("Go Back")
+                    CocktailBodyText("Go Back")
                 }
 
                 Button(
                     onClick = onRetry
                 ) {
-                    Text("Try Again")
+                    CocktailBodyText("Try Again")
                 }
             }
         }
