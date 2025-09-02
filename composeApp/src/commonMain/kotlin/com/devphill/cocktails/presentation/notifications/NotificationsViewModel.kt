@@ -3,7 +3,7 @@ package com.devphill.cocktails.presentation.notifications
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devphill.cocktails.data.model.Notification
-import com.devphill.cocktails.data.repository.NotificationsRepository
+import com.devphill.cocktails.domain.repository.NotificationsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

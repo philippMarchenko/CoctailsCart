@@ -1,7 +1,7 @@
 package com.devphill.cocktails.data.repository
 
-import com.devphill.cocktails.data.database.datasource.DatabaseCocktailDataSource
-import com.devphill.cocktails.data.datasource.LocalCocktailsDataSource
+import com.devphill.cocktails.domain.datasource.DatabaseCocktailDataSource
+import com.devphill.cocktails.domain.datasource.LocalCocktailsDataSource
 import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.domain.repository.CocktailRepository
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
  * local Room database storage and remote JSON data source for initial data loading.
  *
  * ## Architecture
- * - **Local Storage**: Uses Room database via [DatabaseCocktailDataSource] for persistent cocktail data
+ * - **Local Storage**: Uses Room database via [CocktailDataSource] for persistent cocktail data
  * - **Remote Data**: Uses [LocalCocktailsDataSource] to load initial cocktail data from JSON assets
  * - **Auto-initialization**: Automatically loads data from JSON on first run if database is empty
  * - **Pure Methods**: All public methods are simple delegations to the local data source
@@ -38,16 +38,16 @@ import kotlinx.coroutines.launch
  * instantiated directly. The repository automatically handles data loading and provides
  * reactive data streams via [Flow].
  *
- * @param databaseCocktailDataSource Room database data source for local cocktail storage
- * @param remoteDataSource JSON file data source for initial cocktail data loading
+ * @param databaseCocktailDataSource Interface for cocktail data operations, abstracting the underlying data source implementation
+ * @param localCocktailsDataSource Interface for remote cocktail data loading operations
  *
  * @see CocktailRepository
- * @see DatabaseCocktailDataSource
+ * @see CocktailDataSource
  * @see LocalCocktailsDataSource
  */
 class AndroidCocktailRepository(
     private val databaseCocktailDataSource: DatabaseCocktailDataSource,
-    private val remoteDataSource: LocalCocktailsDataSource
+    private val localCocktailsDataSource: LocalCocktailsDataSource
 ) : CocktailRepository {
 
     private val repositoryScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -69,7 +69,7 @@ class AndroidCocktailRepository(
         if (databaseCocktailDataSource.isEmpty()) {
             println("📥 Database is empty, loading cocktails from JSON...")
 
-            remoteDataSource.loadCocktails().fold(
+            localCocktailsDataSource.loadCocktails().fold(
                 onSuccess = { database ->
                     // The parser now returns Cocktail objects directly, no conversion needed
                     val cocktails = database.cocktails

@@ -2,17 +2,10 @@ package com.devphill.cocktails.data.repository
 
 import com.devphill.cocktails.data.model.Notification
 import com.devphill.cocktails.data.model.NotificationType
+import com.devphill.cocktails.domain.repository.NotificationsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-
-interface NotificationsRepository {
-    fun getNotifications(): Flow<List<Notification>>
-    suspend fun markAsRead(notificationId: String)
-    suspend fun markAllAsRead()
-    suspend fun deleteNotification(notificationId: String)
-    suspend fun getUnreadCount(): Int
-}
 
 class NotificationsRepositoryImpl : NotificationsRepository {
 
