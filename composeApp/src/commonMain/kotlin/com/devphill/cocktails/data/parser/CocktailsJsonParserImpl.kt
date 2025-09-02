@@ -57,15 +57,6 @@ class CocktailsJsonParserImpl : CocktailsJsonParser {
         }
     }
 
-    override suspend fun parseCocktails(jsonString: String): Result<List<Cocktail>> {
-        return try {
-            val cocktails = parseCocktailsFromJson(jsonString)
-            Result.success(cocktails)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
     private fun parseCocktailsFromJson(jsonString: String): List<Cocktail> {
         return try {
             val jsonArray = json.parseToJsonElement(jsonString).jsonArray
