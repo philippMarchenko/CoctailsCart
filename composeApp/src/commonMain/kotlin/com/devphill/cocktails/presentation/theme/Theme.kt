@@ -173,7 +173,7 @@ object DialogShapes {
     val large = RoundedCornerShape(32.dp)
 }
 
-val CocktailsTypography = Typography()
+val AppTypography = CocktailsTypography.create()
 
 @Composable
 fun CocktailsTheme(
@@ -209,7 +209,7 @@ fun CocktailsTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = CocktailsTypography,
+        typography = AppTypography,
         shapes = CocktailsShapes
     ) {
         // Apply beautiful gradient background to all screens automatically
@@ -234,7 +234,7 @@ fun CocktailsTheme(
 fun DarkCocktailThemePreview() {
     MaterialTheme(
         colorScheme = DarkCocktailColors,
-        typography = CocktailsTypography,
+        typography = AppTypography,
         shapes = CocktailsShapes
     ) {
         Column(
@@ -305,7 +305,7 @@ fun DarkCocktailThemePreview() {
 fun LightCocktailThemePreview() {
     MaterialTheme(
         colorScheme = LightCocktailColors,
-        typography = CocktailsTypography,
+        typography = AppTypography,
         shapes = CocktailsShapes
     ) {
         Column(

@@ -20,6 +20,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.presentation.common.LoadingIndicator
 import com.devphill.cocktails.presentation.theme.CocktailGradients
+import com.devphill.cocktails.presentation.theme.CocktailScreenTitle
+import com.devphill.cocktails.presentation.theme.CocktailSectionHeader
+import com.devphill.cocktails.presentation.theme.CocktailSubtitle
 
 @Composable
 fun FavoritesScreen(
@@ -97,14 +100,11 @@ private fun FavoritesContent(
 @Composable
 private fun FavoritesHeader() {
     Column {
-        Text(
-            text = "Favorites",
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold
+        CocktailScreenTitle(
+            text = "Favorites"
         )
-        Text(
+        CocktailSubtitle(
             text = "Your saved cocktails",
-            style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(top = 4.dp)
         )
     }
@@ -118,10 +118,8 @@ private fun FavoritesList(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        Text(
+        CocktailSectionHeader(
             text = "${favorites.size} Favorite${if (favorites.size != 1) "s" else ""}",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
@@ -143,7 +141,7 @@ private fun FavoritesList(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FavoriteItem(
-    cocktail: com.devphill.cocktails.domain.model.Cocktail,
+    cocktail: Cocktail,
     onRemoveFavorite: () -> Unit,
     onCocktailClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -233,11 +231,8 @@ private fun EmptyFavoritesState(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text(
+        CocktailSectionHeader(
             text = "No Favorites Yet",
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Medium,
-            textAlign = TextAlign.Center
         )
 
         Text(

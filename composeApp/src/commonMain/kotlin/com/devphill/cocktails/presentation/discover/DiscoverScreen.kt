@@ -2,6 +2,7 @@ package com.devphill.cocktails.presentation.discover
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -10,14 +11,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.devphill.cocktails.data.platform.NotificationPermissionManager
+import com.devphill.cocktails.domain.model.AlcoholStrength
+import com.devphill.cocktails.domain.model.Cocktail
+import com.devphill.cocktails.domain.model.ComplexityLevel
 import com.devphill.cocktails.presentation.common.CocktailImageCard
 import com.devphill.cocktails.presentation.common.ErrorMessage
 import com.devphill.cocktails.presentation.common.LoadingIndicator
+import com.devphill.cocktails.presentation.theme.CocktailsTheme
+import com.devphill.cocktails.presentation.theme.CocktailScreenTitle
+import com.devphill.cocktails.presentation.theme.CocktailSectionHeader
+import com.devphill.cocktails.presentation.theme.CocktailSubtitle
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 
 @Composable
 fun DiscoverScreen(
-    viewModel: DiscoverViewModel,
+    viewModel: DiscoverViewModel = koinInject(),
     onCocktailClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -38,7 +47,7 @@ fun DiscoverScreen(
 }
 
 @Composable
-private fun DiscoverContent(
+internal fun DiscoverContent(
     uiState: DiscoverUiState,
     onRetry: () -> Unit,
     onCocktailClick: (String) -> Unit = {},
@@ -84,7 +93,6 @@ private fun DiscoverSuccessContent(
     LazyColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(24.dp),
-        // Add content padding to prevent items from being cut off
         contentPadding = PaddingValues(bottom = 16.dp)
     ) {
         item {
@@ -102,28 +110,22 @@ private fun DiscoverSuccessContent(
 
         if (uiState.cocktails.isNotEmpty()) {
             item {
-                Text(
+                CocktailSectionHeader(
                     text = "All Cocktails",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(bottom = 12.dp)
                 )
             }
 
-            // Optimize cocktail grid rendering with lazy loading
             val cocktailRows = uiState.cocktails.chunked(2)
             items(
-                count = cocktailRows.size,
-                key = { index ->
-                    // Use cocktail IDs as stable keys for better performance
-                    cocktailRows[index].joinToString("-") { it.id }
-                }
-            ) { rowIndex ->
+                items = cocktailRows,
+                key = { row -> row.joinToString("-") { it.id } }
+            ) { cocktailRow ->
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    cocktailRows[rowIndex].forEach { cocktail ->
+                    cocktailRow.forEach { cocktail ->
                         CocktailImageCard(
                             cocktail = cocktail,
                             tags = listOf(
@@ -137,8 +139,7 @@ private fun DiscoverSuccessContent(
                         )
                     }
 
-                    // Add spacer for odd number of items in the last row
-                    if (cocktailRows[rowIndex].size == 1) {
+                    if (cocktailRow.size == 1) {
                         Spacer(modifier = Modifier.weight(1f))
                     }
                 }
@@ -150,15 +151,11 @@ private fun DiscoverSuccessContent(
 @Composable
 private fun WelcomeSection() {
     Column {
-        Text(
-            text = "Discover",
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold
+        CocktailScreenTitle(
+            text = "Discover"
         )
-        Text(
+        CocktailSubtitle(
             text = "Find your perfect cocktail",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp)
         )
     }
@@ -166,14 +163,12 @@ private fun WelcomeSection() {
 
 @Composable
 private fun CocktailOfDaySection(
-    cocktail: com.devphill.cocktails.domain.model.Cocktail,
+    cocktail: Cocktail,
     onCocktailClick: (String) -> Unit = {}
 ) {
     Column {
-        Text(
+        CocktailSectionHeader(
             text = "Cocktail of Day",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
@@ -186,7 +181,111 @@ private fun CocktailOfDaySection(
             onClick = { onCocktailClick(cocktail.id) },
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(1.6f) // Use aspect ratio instead of fixed height for better image display
+                .aspectRatio(1.6f)
+        )
+    }
+}
+
+@Preview()
+@Composable
+fun DiscoverScreenPreview() {
+    // Mock data for preview
+    val mockCocktailOfDay = Cocktail(
+        id = "1",
+        title = "Classic Mojito",
+        imageUrl = null,
+        cocktailUrl = null,
+        category = "Classic",
+        categoryEnum = "CLASSIC",
+        views = "1250",
+        ingredients = listOf("White rum", "Fresh lime juice", "Sugar", "Soda water", "Fresh mint"),
+        ingredientsEnums = listOf("WHITE_RUM", "LIME_JUICE", "SUGAR", "SODA_WATER", "MINT"),
+        method = "Muddle mint and sugar in glass. Add lime juice and rum. Top with soda water.",
+        garnish = "Fresh mint sprig",
+        glass = "Highball glass",
+        videoUrl = null,
+        complexity = ComplexityLevel.SIMPLE,
+        alcoholStrength = AlcoholStrength.MEDIUM,
+        searchText = "mojito classic rum mint lime",
+        isFavorite = false,
+        preparationTime = 5
+    )
+
+    val mockCocktails = listOf(
+        Cocktail(
+            id = "2",
+            title = "Martini",
+            imageUrl = null,
+            cocktailUrl = null,
+            category = "Classic",
+            categoryEnum = "CLASSIC",
+            views = "980",
+            ingredients = listOf("Gin", "Dry vermouth", "Lemon twist"),
+            ingredientsEnums = listOf("GIN", "DRY_VERMOUTH", "LEMON"),
+            method = "Stir gin and vermouth with ice. Strain into chilled glass.",
+            garnish = "Lemon twist",
+            glass = "Martini glass",
+            videoUrl = null,
+            complexity = ComplexityLevel.MEDIUM,
+            alcoholStrength = AlcoholStrength.STRONG,
+            searchText = "martini classic gin vermouth",
+            isFavorite = true,
+            preparationTime = 3
+        ),
+        Cocktail(
+            id = "3",
+            title = "Ramos Gin Fizz",
+            imageUrl = null,
+            cocktailUrl = null,
+            category = "Fizz",
+            categoryEnum = "FIZZ",
+            views = "420",
+            ingredients = listOf("Gin", "Lemon juice", "Lime juice", "Sugar", "Cream", "Egg white", "Soda water"),
+            ingredientsEnums = listOf("GIN", "LEMON_JUICE", "LIME_JUICE", "SUGAR", "CREAM", "EGG_WHITE", "SODA_WATER"),
+            method = "Shake all ingredients except soda water for 12 minutes. Add soda water and serve.",
+            garnish = "None",
+            glass = "Collins glass",
+            videoUrl = null,
+            complexity = ComplexityLevel.COMPLEX,
+            alcoholStrength = AlcoholStrength.MEDIUM,
+            searchText = "ramos gin fizz complex cream egg",
+            isFavorite = false,
+            preparationTime = 15
+        ),
+        Cocktail(
+            id = "4",
+            title = "Virgin Mojito",
+            imageUrl = null,
+            cocktailUrl = null,
+            category = "Mocktail",
+            categoryEnum = "MOCKTAIL",
+            views = "680",
+            ingredients = listOf("Fresh lime juice", "Sugar", "Soda water", "Fresh mint"),
+            ingredientsEnums = listOf("LIME_JUICE", "SUGAR", "SODA_WATER", "MINT"),
+            method = "Muddle mint and sugar. Add lime juice and top with soda water.",
+            garnish = "Fresh mint sprig",
+            glass = "Highball glass",
+            videoUrl = null,
+            complexity = ComplexityLevel.SIMPLE,
+            alcoholStrength = AlcoholStrength.NON_ALCOHOLIC,
+            searchText = "virgin mojito mocktail mint lime non-alcoholic",
+            isFavorite = false,
+            preparationTime = 3
+        )
+    )
+
+    val mockUiState = DiscoverUiState(
+        isLoading = false,
+        cocktails = mockCocktails,
+        cocktailOfDay = mockCocktailOfDay,
+        errorMessage = null
+    )
+
+    CocktailsTheme {
+        DiscoverContent(
+            uiState = mockUiState,
+            onRetry = { },
+            onCocktailClick = { }
         )
     }
 }

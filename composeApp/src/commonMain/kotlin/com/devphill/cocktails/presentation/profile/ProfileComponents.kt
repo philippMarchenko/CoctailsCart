@@ -18,8 +18,12 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.devphill.cocktails.presentation.common.ErrorMessage
 import com.devphill.cocktails.presentation.common.LoadingIndicator
+import com.devphill.cocktails.presentation.theme.CocktailBodyText
 import com.devphill.cocktails.presentation.theme.GlobalThemeManager
 import com.devphill.cocktails.presentation.theme.ThemeSettingsDialog
+import com.devphill.cocktails.presentation.theme.CocktailScreenTitle
+import com.devphill.cocktails.presentation.theme.CocktailSectionHeader
+import com.devphill.cocktails.presentation.theme.CocktailSubtitle
 
 @Composable
 fun ProfileContent(
@@ -153,16 +157,12 @@ internal fun ProfileHeader() {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text(
-            text = "Profile",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
+        CocktailScreenTitle(
+            text = "Profile"
         )
 
-        Text(
+        CocktailSubtitle(
             text = "Manage your cocktail journey",
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = 4.dp)
         )
     }
@@ -201,17 +201,13 @@ internal fun AvatarSection(uiState: ProfileUiState) {
         Spacer(modifier = Modifier.height(16.dp))
 
         // User Name
-        Text(
+        CocktailSubtitle(
             text = uiState.userName,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold
         )
 
         // User Email
-        Text(
+        CocktailBodyText(
             text = uiState.userEmail,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
