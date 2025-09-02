@@ -12,8 +12,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.devphill.cocktails.MainActivity
-import com.devphill.cocktails.data.model.Notification
-import com.devphill.cocktails.data.model.NotificationType
+import com.devphill.cocktails.domain.model.Notification
+import com.devphill.cocktails.domain.model.NotificationType
 import kotlinx.coroutines.delay
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

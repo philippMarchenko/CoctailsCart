@@ -1,7 +1,7 @@
 package com.devphill.cocktails.data.repository
 
-import com.devphill.cocktails.data.model.Notification
-import com.devphill.cocktails.data.model.NotificationType
+import com.devphill.cocktails.domain.model.Notification
+import com.devphill.cocktails.domain.model.NotificationType
 import com.devphill.cocktails.domain.repository.NotificationsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,8 +32,23 @@ class NotificationsRepositoryImpl : NotificationsRepository {
         _notifications.value = updatedNotifications
     }
 
+    override suspend fun deleteAllReadNotifications() {
+        val updatedNotifications = _notifications.value.filter { !it.isRead }
+        _notifications.value = updatedNotifications
+    }
+
     override suspend fun getUnreadCount(): Int {
         return _notifications.value.count { !it.isRead }
+    }
+
+    override suspend fun getNotificationById(notificationId: String): Notification? {
+        return _notifications.value.firstOrNull { it.id == notificationId }
+    }
+
+    override suspend fun createNotification(notification: Notification) {
+        val currentNotifications = _notifications.value.toMutableList()
+        currentNotifications.add(0, notification) // Add to the beginning for newest first
+        _notifications.value = currentNotifications
     }
 
     private fun generateSampleNotifications(): List<Notification> {

@@ -1,4 +1,4 @@
-package com.devphill.cocktails.data.model
+package com.devphill.cocktails.domain.model
 
 /**
  * Represents a notification message in the CocktailsCraft application.

@@ -10,7 +10,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -33,6 +32,7 @@ import com.devphill.cocktails.presentation.favorites.FavoritesScreen
 import com.devphill.cocktails.presentation.favorites.FavoritesViewModel
 import com.devphill.cocktails.presentation.notifications.NotificationsScreen
 import com.devphill.cocktails.presentation.notifications.NotificationsViewModel
+import com.devphill.cocktails.presentation.notifications.NotificationDetailsScreen
 import com.devphill.cocktails.presentation.profile.ProfileScreen
 import com.devphill.cocktails.presentation.profile.ProfileViewModel
 import com.devphill.cocktails.presentation.search.SearchScreen
@@ -56,9 +56,11 @@ object NavigationRoutes {
     const val FAVORITES = "favorites"
     const val PROFILE = "profile"
     const val NOTIFICATIONS = "notifications"
+    const val NOTIFICATION_DETAILS = "notification_details/{notificationId}"
     const val COCKTAIL_DETAILS = "cocktail_details/{cocktailId}"
 
     fun cocktailDetails(cocktailId: String) = "cocktail_details/$cocktailId"
+    fun notificationDetails(notificationId: String) = "notification_details/$notificationId"
 }
 
 sealed class BottomNavScreen(val route: String, val title: String, val icon: ImageVector) {
@@ -299,10 +301,29 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                     viewModel = viewModel,
                     onBackClick = { navController.navigateUp() },
                     onNotificationClick = { notification ->
-                        // Handle notification click - if it has a cocktailId, navigate to cocktail details
-                        notification.cocktailId?.let { cocktailId ->
-                            navController.navigate(NavigationRoutes.cocktailDetails(cocktailId))
-                        }
+                        // Navigate to notification details screen
+                        navController.navigate(NavigationRoutes.notificationDetails(notification.id))
+                    }
+                )
+            }
+
+            composable(
+                route = NavigationRoutes.NOTIFICATION_DETAILS,
+                arguments = listOf(navArgument("notificationId") { type = NavType.StringType })
+            ) { navBackStackEntry ->
+                val notificationId = navBackStackEntry.arguments?.getString("notificationId") ?: ""
+                val viewModel: NotificationsViewModel = koinViewModel()
+                NotificationDetailsScreen(
+                    notificationId = notificationId,
+                    modifier = Modifier,
+                    viewModel = viewModel,
+                    onBackClick = { navController.navigateUp() },
+                    onCocktailClick = { cocktailId ->
+                        navController.navigate(NavigationRoutes.cocktailDetails(cocktailId))
+                    },
+                    onActionClick = { actionUrl ->
+                        // Handle action URL - could open in browser or handle custom actions
+                        urlOpener.openUrl(actionUrl)
                     }
                 )
             }

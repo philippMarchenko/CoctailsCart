@@ -2,8 +2,9 @@ package com.devphill.cocktails.presentation.notifications
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.devphill.cocktails.data.model.Notification
-import com.devphill.cocktails.domain.repository.NotificationsRepository
+import com.devphill.cocktails.domain.model.Notification
+import com.devphill.cocktails.domain.model.NotificationType
+import com.devphill.cocktails.domain.interactor.NotificationInteractor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +19,7 @@ data class NotificationsUiState(
 )
 
 class NotificationsViewModel(
-    private val notificationsRepository: NotificationsRepository
+    private val notificationInteractor: NotificationInteractor
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(NotificationsUiState())
@@ -31,10 +32,10 @@ class NotificationsViewModel(
     private fun loadNotifications() {
         viewModelScope.launch {
             try {
-                notificationsRepository.getNotifications().collectLatest { notifications ->
-                    val unreadCount = notificationsRepository.getUnreadCount()
+                notificationInteractor.getAllNotifications().collectLatest { notifications ->
+                    val unreadCount = notificationInteractor.getUnreadCount()
                     _uiState.value = _uiState.value.copy(
-                        notifications = notifications.sortedByDescending { it.timestamp },
+                        notifications = notifications, // Already sorted in interactor
                         isLoading = false,
                         unreadCount = unreadCount,
                         error = null
@@ -51,19 +52,109 @@ class NotificationsViewModel(
 
     fun markAsRead(notificationId: String) {
         viewModelScope.launch {
-            notificationsRepository.markAsRead(notificationId)
+            try {
+                notificationInteractor.markNotificationAsRead(notificationId)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    error = e.message ?: "Failed to mark notification as read"
+                )
+            }
         }
     }
 
     fun markAllAsRead() {
         viewModelScope.launch {
-            notificationsRepository.markAllAsRead()
+            try {
+                notificationInteractor.markAllNotificationsAsRead()
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    error = e.message ?: "Failed to mark all notifications as read"
+                )
+            }
         }
     }
 
     fun deleteNotification(notificationId: String) {
         viewModelScope.launch {
-            notificationsRepository.deleteNotification(notificationId)
+            try {
+                notificationInteractor.deleteNotification(notificationId)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    error = e.message ?: "Failed to delete notification"
+                )
+            }
         }
+    }
+
+    fun deleteAllReadNotifications() {
+        viewModelScope.launch {
+            try {
+                notificationInteractor.deleteAllReadNotifications()
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    error = e.message ?: "Failed to delete read notifications"
+                )
+            }
+        }
+    }
+
+    fun loadUnreadNotifications() {
+        viewModelScope.launch {
+            try {
+                notificationInteractor.getUnreadNotifications().collectLatest { notifications ->
+                    _uiState.value = _uiState.value.copy(
+                        notifications = notifications,
+                        isLoading = false,
+                        error = null
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = e.message ?: "Failed to load unread notifications"
+                )
+            }
+        }
+    }
+
+    fun loadNotificationsByType(type: NotificationType) {
+        viewModelScope.launch {
+            try {
+                notificationInteractor.getNotificationsByType(type).collectLatest { notifications ->
+                    _uiState.value = _uiState.value.copy(
+                        notifications = notifications,
+                        isLoading = false,
+                        error = null
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = e.message ?: "Failed to load notifications by type"
+                )
+            }
+        }
+    }
+
+    fun createNotification(
+        title: String,
+        message: String,
+        type: NotificationType,
+        cocktailId: String? = null,
+        actionUrl: String? = null
+    ) {
+        viewModelScope.launch {
+            try {
+                notificationInteractor.createNotification(title, message, type, cocktailId, actionUrl)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    error = e.message ?: "Failed to create notification"
+                )
+            }
+        }
+    }
+
+    fun clearError() {
+        _uiState.value = _uiState.value.copy(error = null)
     }
 }

@@ -13,8 +13,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.devphill.cocktails.data.model.Notification
-import com.devphill.cocktails.data.model.NotificationType
+import com.devphill.cocktails.domain.model.Notification
+import com.devphill.cocktails.domain.model.NotificationType
 import com.devphill.cocktails.presentation.theme.*
 import org.koin.compose.viewmodel.koinViewModel
 

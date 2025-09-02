@@ -1,7 +1,7 @@
 package com.devphill.cocktails.data.platform
 
-import com.devphill.cocktails.data.model.Notification
-import com.devphill.cocktails.data.model.NotificationType
+import com.devphill.cocktails.domain.model.Notification
+
 /**
  * Platform-specific interface for managing push notifications.
  */
