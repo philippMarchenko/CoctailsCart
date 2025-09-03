@@ -28,7 +28,9 @@ import org.koin.dsl.module
 val commonModule = module {
 
     // Repositories
-    single<NotificationsRepository> { NotificationsRepositoryImpl() }
+    single<NotificationsRepository> {
+        NotificationsRepositoryImpl(get()) // Inject database
+    }
 
     // Managers (PushNotificationManager is provided by platform-specific modules)
     single<FirstLaunchManager> {
