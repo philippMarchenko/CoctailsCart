@@ -90,6 +90,9 @@ kotlin {
             // JSON Serialization for parsing cocktails data
             implementation(libs.kotlinx.serialization.json)
 
+            // DateTime handling
+            implementation(libs.kotlinx.datetime)
+
             // Multiplatform image loading
             implementation(libs.coil.compose)
 
@@ -117,7 +120,6 @@ kotlin {
             implementation(libs.junit)
             implementation(libs.androidx.test.ext.junit)
             implementation(libs.kotlinx.coroutines.test)
-            implementation(libs.robolectric)
             implementation(libs.compose.ui.test.junit4)
             implementation(libs.compose.ui.test.manifest)
         }

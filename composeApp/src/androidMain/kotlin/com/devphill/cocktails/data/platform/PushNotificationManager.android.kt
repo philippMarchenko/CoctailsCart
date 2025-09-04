@@ -99,7 +99,7 @@ actual class PushNotificationManager : KoinComponent {
         }
     }
 
-    actual suspend fun showWelcomeNotification() {
+    actual suspend fun showWelcomeNotification(): Notification {
         println("PushNotificationManager: Creating welcome notification...")
         val welcomeNotification = Notification(
             id = "welcome_${System.currentTimeMillis()}",
@@ -111,13 +111,8 @@ actual class PushNotificationManager : KoinComponent {
         )
 
         showNotification(welcomeNotification)
-    }
 
-    actual suspend fun scheduleNotification(notification: Notification, delayMillis: Long) {
-        if (delayMillis > 0) {
-            delay(delayMillis)
-        }
-        showNotification(notification)
+        return welcomeNotification
     }
 
     actual fun requestPermissions() {

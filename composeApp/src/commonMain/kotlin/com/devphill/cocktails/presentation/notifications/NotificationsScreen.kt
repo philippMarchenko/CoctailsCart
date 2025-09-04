@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.devphill.cocktails.domain.model.Notification
 import com.devphill.cocktails.domain.model.NotificationType
 import com.devphill.cocktails.presentation.theme.*
+import com.devphill.cocktails.utils.formatToEuropeanDateTime
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -205,7 +206,7 @@ private fun NotificationItem(
                 )
 
                 CocktailLabel(
-                    text = formatTimestamp(notification.timestamp)
+                    text = notification.timestamp.formatToEuropeanDateTime()
                 )
             }
 
@@ -299,10 +300,4 @@ private fun getNotificationColor(type: NotificationType) = when (type) {
     NotificationType.SYSTEM_MESSAGE -> MaterialTheme.colorScheme.tertiary
     NotificationType.PROMOTION -> MaterialTheme.colorScheme.secondary
     NotificationType.REMINDER -> MaterialTheme.colorScheme.outline
-}
-
-private fun formatTimestamp(timestamp: String): String {
-    // Simple timestamp formatting - you can enhance this with proper date/time formatting
-    // For now, just take the date part from "2024-08-27 10:30:00" format
-    return timestamp.substringBefore(" ")
 }

@@ -100,36 +100,12 @@ class NotificationInteractorImpl(
 
     /**
      * Creates a new notification with business logic validation.
-     * @param title The notification title - must not be empty
-     * @param message The notification message - must not be empty
-     * @param type The type of notification
-     * @param cocktailId Optional cocktail ID if related to a specific cocktail
-     * @param actionUrl Optional action URL for the notification
+     * @param notification The notification to insert
      */
-    override suspend fun createNotification(
-        title: String,
-        message: String,
-        type: NotificationType,
-        cocktailId: String?,
-        actionUrl: String?
+    override suspend fun insertNotification(
+        notification: Notification
     ) {
-        // Business logic validation
-        require(title.isNotBlank()) { "Notification title cannot be empty" }
-        require(message.isNotBlank()) { "Notification message cannot be empty" }
-
-        // Create notification with current timestamp
-        val notification = Notification(
-            id = generateNotificationId(),
-            title = title.trim(),
-            message = message.trim(),
-            type = type,
-            timestamp = "",
-            isRead = false,
-            cocktailId = cocktailId,
-            actionUrl = actionUrl
-        )
-
-        repository.createNotification(notification)
+        repository.insertNotification(notification)
     }
 
     /**

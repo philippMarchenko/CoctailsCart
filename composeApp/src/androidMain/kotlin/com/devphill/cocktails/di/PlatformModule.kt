@@ -2,6 +2,8 @@ package com.devphill.cocktails.di
 
 import com.devphill.cocktails.data.auth.AuthManager
 import com.devphill.cocktails.data.auth.createAuthManager
+import com.devphill.cocktails.data.database.CocktailDatabase
+import com.devphill.cocktails.data.database.getDatabaseBuilder
 import com.devphill.cocktails.data.database.datasource.DatabaseCocktailDataSourceImpl
 import com.devphill.cocktails.data.datasource.LocalCocktailsDataSourceImpl
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
@@ -25,8 +27,13 @@ import org.koin.dsl.module
  */
 val platformModule = module {
 
+    // Database
+    single<CocktailDatabase> {
+        getDatabaseBuilder(androidContext()).build()
+    }
+
     single<DatabaseCocktailDataSource> {
-        DatabaseCocktailDataSourceImpl(androidContext())
+        DatabaseCocktailDataSourceImpl(get()) // Inject the shared database instance
     }
     single<LocalCocktailsDataSource> {
         LocalCocktailsDataSourceImpl(androidContext())

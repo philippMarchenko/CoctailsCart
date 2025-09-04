@@ -10,5 +10,5 @@ actual fun getDatabaseBuilder(context: Any): RoomDatabase.Builder<CocktailDataba
     return Room.databaseBuilder<CocktailDatabase>(
         context = appContext.applicationContext,
         name = dbFile.absolutePath
-    )
+    ).fallbackToDestructiveMigration(dropAllTables = true) // This will recreate the database if migration is needed
 }

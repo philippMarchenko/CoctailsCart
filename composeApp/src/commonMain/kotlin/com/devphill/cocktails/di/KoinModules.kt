@@ -36,7 +36,8 @@ val commonModule = module {
     single<FirstLaunchManager> {
         FirstLaunchManagerImpl(
             userPreferencesManager = get(),
-            pushNotificationManager = get()
+            pushNotificationManager = get(),
+            notificationInteractor = get()
         )
     }
 

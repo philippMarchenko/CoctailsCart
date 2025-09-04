@@ -2,6 +2,8 @@ package com.devphill.cocktails.data.platform
 
 import com.devphill.cocktails.data.model.Notification
 import com.devphill.cocktails.data.model.NotificationType
+import com.devphill.cocktails.domain.model.Notification
+import com.devphill.cocktails.domain.model.NotificationType
 import kotlinx.coroutines.delay
 import platform.UserNotifications.*
 import platform.Foundation.*
@@ -45,7 +47,7 @@ actual class PushNotificationManager {
         }
     }
 
-    actual suspend fun showWelcomeNotification() {
+    actual suspend fun showWelcomeNotification(): Notification {
         val welcomeNotification = Notification(
             id = "welcome_${NSDate().timeIntervalSince1970.toLong()}",
             title = "Welcome to CocktailsCraft! 🍹",
@@ -56,6 +58,8 @@ actual class PushNotificationManager {
         )
 
         showNotification(welcomeNotification)
+
+        return welcomeNotification
     }
 
     actual suspend fun scheduleNotification(notification: Notification, delayMillis: Long) {

@@ -7,8 +7,7 @@ import com.devphill.cocktails.domain.model.Notification
  */
 expect class PushNotificationManager{
     suspend fun showNotification(notification: Notification)
-    suspend fun showWelcomeNotification()
-    suspend fun scheduleNotification(notification: Notification, delayMillis: Long = 0)
+    suspend fun showWelcomeNotification(): Notification
     fun requestPermissions()
     fun isPermissionGranted(): Boolean
 }

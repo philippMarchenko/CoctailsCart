@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.devphill.cocktails.domain.model.Notification
 import com.devphill.cocktails.domain.model.NotificationType
 import com.devphill.cocktails.presentation.theme.*
+import com.devphill.cocktails.utils.formatToEuropeanDateTime
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -178,7 +179,7 @@ private fun NotificationHeader(notification: Notification) {
                 CocktailCardTitle(notification.title)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = formatNotificationTimestamp(notification.timestamp),
+                    text = notification.timestamp.formatToEuropeanDateTime(),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -291,14 +292,4 @@ private fun getNotificationTypeLabel(type: NotificationType) = when (type) {
     NotificationType.SYSTEM_MESSAGE -> "System Message"
     NotificationType.PROMOTION -> "Promotion"
     NotificationType.REMINDER -> "Reminder"
-}
-
-private fun formatNotificationTimestamp(timestamp: String): String {
-    return try {
-        // For simplicity, just return a formatted version of the timestamp
-        // In a real app, you'd use kotlinx-datetime for proper parsing
-        timestamp
-    } catch (_: Exception) {
-        timestamp // Return original if parsing fails
-    }
 }

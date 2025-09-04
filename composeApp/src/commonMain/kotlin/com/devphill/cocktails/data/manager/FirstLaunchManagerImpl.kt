@@ -2,11 +2,13 @@ package com.devphill.cocktails.data.manager
 
 import com.devphill.cocktails.data.platform.PushNotificationManager
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
+import com.devphill.cocktails.domain.interactor.NotificationInteractor
 import kotlinx.coroutines.delay
 
 class FirstLaunchManagerImpl(
     private val userPreferencesManager: UserPreferencesManager,
-    private val pushNotificationManager: PushNotificationManager
+    private val pushNotificationManager: PushNotificationManager,
+    private val notificationInteractor: NotificationInteractor
 ) : FirstLaunchManager {
 
     companion object {
@@ -22,7 +24,8 @@ class FirstLaunchManagerImpl(
 
             // Show welcome push notification only if permissions are granted
             if (pushNotificationManager.isPermissionGranted()) {
-                pushNotificationManager.showWelcomeNotification()
+                val notification = pushNotificationManager.showWelcomeNotification()
+                notificationInteractor.insertNotification(notification)
             }
 
             // Mark as launched regardless of notification permission status
