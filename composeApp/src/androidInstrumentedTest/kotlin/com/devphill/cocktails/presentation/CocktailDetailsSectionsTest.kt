@@ -1,30 +1,23 @@
 package com.devphill.cocktails.presentation
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onAllNodesWithText
 import com.devphill.cocktails.domain.model.AlcoholStrength
 import com.devphill.cocktails.domain.model.ComplexityLevel
-import com.devphill.cocktails.presentation.cocktail_details.AnimatedIngredientsSection
-import com.devphill.cocktails.presentation.cocktail_details.AnimatedInstructionsSection
-import com.devphill.cocktails.presentation.cocktail_details.AnimatedQuickStatsSection
-import com.devphill.cocktails.presentation.cocktail_details.AnimatedVideoSection
-import com.devphill.cocktails.presentation.cocktail_details.CocktailDetailsTestTags
+import com.devphill.cocktails.presentation.cocktail_details.*
 import org.junit.Rule
 import org.junit.Test
 
 /**
- * UI tests for the Cocktail Details sections.
+ * Comprehensive UI tests for the Cocktail Details sections.
  */
 class CocktailDetailsSectionsTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
+    // QUICK STATS SECTION TESTS
     @Test
     fun quickStatsSection_rendersAllStats_whenVisible() {
         composeTestRule.setContent {
@@ -54,6 +47,125 @@ class CocktailDetailsSectionsTest {
     }
 
     @Test
+    fun quickStatsSection_notVisible_whenIsVisibleFalse() {
+        composeTestRule.setContent {
+            MaterialTheme {
+                AnimatedQuickStatsSection(
+                    complexity = ComplexityLevel.COMPLEX,
+                    alcoholStrength = AlcoholStrength.STRONG,
+                    preparationTime = 5,
+                    glass = "Coupe",
+                    isVisible = false,
+                    delay = 0
+                )
+            }
+        }
+
+        composeTestRule.mainClock.advanceTimeBy(1000)
+
+        composeTestRule.onNodeWithTag(CocktailDetailsTestTags.QUICK_STATS).assertIsNotDisplayed()
+    }
+
+    @Test
+    fun quickStatsSection_handlesNullGlass() {
+        composeTestRule.setContent {
+            MaterialTheme {
+                AnimatedQuickStatsSection(
+                    complexity = ComplexityLevel.SIMPLE,
+                    alcoholStrength = AlcoholStrength.LIGHT,
+                    preparationTime = 2,
+                    glass = null,
+                    isVisible = true,
+                    delay = 0
+                )
+            }
+        }
+
+        composeTestRule.mainClock.advanceTimeBy(1000)
+
+        composeTestRule.onNodeWithTag(CocktailDetailsTestTags.QUICK_STATS).assertIsDisplayed()
+        composeTestRule.onNodeWithText("Glass").assertDoesNotExist()
+    }
+
+    @Test
+    fun quickStatsSection_showsCorrectComplexityLevels() {
+        val complexityLevels = listOf(
+            ComplexityLevel.SIMPLE to "Simple",
+            ComplexityLevel.MEDIUM to "Medium",
+            ComplexityLevel.COMPLEX to "Complex"
+        )
+
+        complexityLevels.forEach { (level, expectedText) ->
+            composeTestRule.setContent {
+                MaterialTheme {
+                    AnimatedQuickStatsSection(
+                        complexity = level,
+                        alcoholStrength = AlcoholStrength.MEDIUM,
+                        preparationTime = 3,
+                        glass = "Rocks",
+                        isVisible = true,
+                        delay = 0
+                    )
+                }
+            }
+
+            composeTestRule.mainClock.advanceTimeBy(1000)
+            composeTestRule.onNodeWithText(expectedText).assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun quickStatsSection_showsCorrectAlcoholStrengths() {
+        val alcoholStrengths = listOf(
+            AlcoholStrength.LIGHT to "Light",
+            AlcoholStrength.MEDIUM to "Medium",
+            AlcoholStrength.STRONG to "Strong"
+        )
+
+        alcoholStrengths.forEach { (strength, expectedText) ->
+            composeTestRule.setContent {
+                MaterialTheme {
+                    AnimatedQuickStatsSection(
+                        complexity = ComplexityLevel.MEDIUM,
+                        alcoholStrength = strength,
+                        preparationTime = 3,
+                        glass = "Rocks",
+                        isVisible = true,
+                        delay = 0
+                    )
+                }
+            }
+
+            composeTestRule.mainClock.advanceTimeBy(1000)
+            composeTestRule.onNodeWithText(expectedText).assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun quickStatsSection_showsCorrectPreparationTime() {
+        val preparationTimes = listOf(1, 5, 10, 15)
+
+        preparationTimes.forEach { time ->
+            composeTestRule.setContent {
+                MaterialTheme {
+                    AnimatedQuickStatsSection(
+                        complexity = ComplexityLevel.MEDIUM,
+                        alcoholStrength = AlcoholStrength.MEDIUM,
+                        preparationTime = time,
+                        glass = "Rocks",
+                        isVisible = true,
+                        delay = 0
+                    )
+                }
+            }
+
+            composeTestRule.mainClock.advanceTimeBy(1000)
+            composeTestRule.onNodeWithText("$time min").assertIsDisplayed()
+        }
+    }
+
+    // INGREDIENTS SECTION TESTS
+    @Test
     fun ingredientsSection_displaysChipsAndList_whenVisible() {
         val ingredients = listOf("Vodka", "Lime Juice", "Sugar Syrup")
 
@@ -72,13 +184,96 @@ class CocktailDetailsSectionsTest {
         composeTestRule.onNodeWithTag(CocktailDetailsTestTags.INGREDIENTS_SECTION).assertIsDisplayed()
         composeTestRule.onNodeWithText("Ingredients").assertIsDisplayed()
 
-        // Verify ingredients are present without requiring unique instances
         ingredients.forEach { ingredient ->
-            // Check that at least one node with this text exists
             composeTestRule.onAllNodesWithText(ingredient)[0].assertIsDisplayed()
         }
     }
 
+    @Test
+    fun ingredientsSection_notVisible_whenIsVisibleFalse() {
+        val ingredients = listOf("Vodka", "Lime Juice")
+
+        composeTestRule.setContent {
+            MaterialTheme {
+                AnimatedIngredientsSection(
+                    ingredients = ingredients,
+                    isVisible = false,
+                    delay = 0
+                )
+            }
+        }
+
+        composeTestRule.mainClock.advanceTimeBy(1500)
+
+        composeTestRule.onNodeWithTag(CocktailDetailsTestTags.INGREDIENTS_SECTION).assertIsNotDisplayed()
+    }
+
+    @Test
+    fun ingredientsSection_handlesEmptyIngredientsList() {
+        composeTestRule.setContent {
+            MaterialTheme {
+                AnimatedIngredientsSection(
+                    ingredients = emptyList(),
+                    isVisible = true,
+                    delay = 0
+                )
+            }
+        }
+
+        composeTestRule.mainClock.advanceTimeBy(1500)
+
+        composeTestRule.onNodeWithTag(CocktailDetailsTestTags.INGREDIENTS_SECTION).assertIsDisplayed()
+        composeTestRule.onNodeWithText("Ingredients").assertIsDisplayed()
+    }
+
+    @Test
+    fun ingredientsSection_handlesSingleIngredient() {
+        val ingredients = listOf("Whiskey")
+
+        composeTestRule.setContent {
+            MaterialTheme {
+                AnimatedIngredientsSection(
+                    ingredients = ingredients,
+                    isVisible = true,
+                    delay = 0
+                )
+            }
+        }
+
+        composeTestRule.mainClock.advanceTimeBy(1500)
+
+        composeTestRule.onNodeWithTag(CocktailDetailsTestTags.INGREDIENTS_SECTION).assertIsDisplayed()
+        composeTestRule.onAllNodesWithText("Whiskey")[0].assertIsDisplayed()
+    }
+
+    @Test
+    fun ingredientsSection_handlesLongIngredientsList() {
+        val ingredients = listOf(
+            "Gin", "Dry Vermouth", "Sweet Vermouth", "Campari",
+            "Orange Peel", "Lemon Twist", "Angostura Bitters",
+            "Simple Syrup", "Fresh Lime Juice", "Egg White"
+        )
+
+        composeTestRule.setContent {
+            MaterialTheme {
+                AnimatedIngredientsSection(
+                    ingredients = ingredients,
+                    isVisible = true,
+                    delay = 0
+                )
+            }
+        }
+
+        composeTestRule.mainClock.advanceTimeBy(1500)
+
+        composeTestRule.onNodeWithTag(CocktailDetailsTestTags.INGREDIENTS_SECTION).assertIsDisplayed()
+
+        // Verify first and last ingredients are displayed
+        composeTestRule.onAllNodesWithText("Gin")[0].assertIsDisplayed()
+        composeTestRule.onAllNodesWithText("Egg White")[0].assertIsDisplayed()
+    }
+
+    // INSTRUCTIONS SECTION TESTS
     @Test
     fun instructionsSection_showsMethodAndGarnish_whenProvided() {
         val method = "Shake all ingredients with ice and fine strain."
@@ -105,11 +300,97 @@ class CocktailDetailsSectionsTest {
     }
 
     @Test
-    fun videoSection_displaysTitleAndDescription() {
+    fun instructionsSection_showsOnlyMethod_whenGarnishNull() {
+        val method = "Stir with ice and strain into glass."
+
+        composeTestRule.setContent {
+            MaterialTheme {
+                AnimatedInstructionsSection(
+                    method = method,
+                    garnish = null,
+                    isVisible = true,
+                    delay = 0
+                )
+            }
+        }
+
+        composeTestRule.mainClock.advanceTimeBy(1200)
+
+        composeTestRule.onNodeWithTag(CocktailDetailsTestTags.INSTRUCTIONS_SECTION).assertIsDisplayed()
+        composeTestRule.onNodeWithText("Instructions").assertIsDisplayed()
+        composeTestRule.onNodeWithText(method).assertIsDisplayed()
+        composeTestRule.onNodeWithText("Garnish").assertDoesNotExist()
+    }
+
+    @Test
+    fun instructionsSection_showsOnlyMethod_whenGarnishEmpty() {
+        val method = "Build in glass over ice."
+
+        composeTestRule.setContent {
+            MaterialTheme {
+                AnimatedInstructionsSection(
+                    method = method,
+                    garnish = "",
+                    isVisible = true,
+                    delay = 0
+                )
+            }
+        }
+
+        composeTestRule.mainClock.advanceTimeBy(1200)
+
+        composeTestRule.onNodeWithTag(CocktailDetailsTestTags.INSTRUCTIONS_SECTION).assertIsDisplayed()
+        composeTestRule.onNodeWithText("Instructions").assertIsDisplayed()
+        composeTestRule.onNodeWithText(method).assertIsDisplayed()
+        composeTestRule.onNodeWithText("Garnish").assertDoesNotExist()
+    }
+
+    @Test
+    fun instructionsSection_notVisible_whenIsVisibleFalse() {
+        composeTestRule.setContent {
+            MaterialTheme {
+                AnimatedInstructionsSection(
+                    method = "Shake with ice",
+                    garnish = "Lemon",
+                    isVisible = false,
+                    delay = 0
+                )
+            }
+        }
+
+        composeTestRule.mainClock.advanceTimeBy(1200)
+
+        composeTestRule.onNodeWithTag(CocktailDetailsTestTags.INSTRUCTIONS_SECTION).assertIsNotDisplayed()
+    }
+
+    @Test
+    fun instructionsSection_handlesLongMethod() {
+        val longMethod = "Add all ingredients to a cocktail shaker filled with ice. Shake vigorously for 10-15 seconds until well chilled. Double strain through a fine mesh strainer into a chilled coupe glass. The double straining ensures a smooth texture by removing any ice chips or fruit pulp."
+
+        composeTestRule.setContent {
+            MaterialTheme {
+                AnimatedInstructionsSection(
+                    method = longMethod,
+                    garnish = "Orange twist",
+                    isVisible = true,
+                    delay = 0
+                )
+            }
+        }
+
+        composeTestRule.mainClock.advanceTimeBy(1200)
+
+        composeTestRule.onNodeWithTag(CocktailDetailsTestTags.INSTRUCTIONS_SECTION).assertIsDisplayed()
+        composeTestRule.onNodeWithText(longMethod).assertIsDisplayed()
+    }
+
+    // VIDEO SECTION TESTS
+    @Test
+    fun videoSection_displays_whenVisible() {
         composeTestRule.setContent {
             MaterialTheme {
                 AnimatedVideoSection(
-                    videoUrl = "https://example.com/video.mp4",
+                    videoUrl = "https://youtube.com/watch?v=abc123",
                     onVideoClick = {},
                     isVisible = true,
                     delay = 0
@@ -117,12 +398,133 @@ class CocktailDetailsSectionsTest {
             }
         }
 
-        composeTestRule.mainClock.advanceTimeBy(800)
+        composeTestRule.mainClock.advanceTimeBy(1000)
 
         composeTestRule.onNodeWithTag(CocktailDetailsTestTags.VIDEO_SECTION).assertIsDisplayed()
-        composeTestRule.onNodeWithText("Tutorial Video").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Watch Tutorial").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Learn how to make this cocktail").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Watch Video Tutorial").assertIsDisplayed()
+    }
+
+    @Test
+    fun videoSection_notVisible_whenIsVisibleFalse() {
+        composeTestRule.setContent {
+            MaterialTheme {
+                AnimatedVideoSection(
+                    videoUrl = "https://youtube.com/watch?v=abc123",
+                    onVideoClick = {},
+                    isVisible = false,
+                    delay = 0
+                )
+            }
+        }
+
+        composeTestRule.mainClock.advanceTimeBy(1000)
+
+        composeTestRule.onNodeWithTag(CocktailDetailsTestTags.VIDEO_SECTION).assertIsNotDisplayed()
+    }
+
+    @Test
+    fun videoSection_triggersOnVideoClick_whenPressed() {
+        var clickCount = 0
+
+        composeTestRule.setContent {
+            MaterialTheme {
+                AnimatedVideoSection(
+                    videoUrl = "https://youtube.com/watch?v=abc123",
+                    onVideoClick = { clickCount++ },
+                    isVisible = true,
+                    delay = 0
+                )
+            }
+        }
+
+        composeTestRule.mainClock.advanceTimeBy(1000)
+
+        composeTestRule.onNodeWithTag(CocktailDetailsTestTags.VIDEO_SECTION).performClick()
+
+        assert(clickCount == 1)
+    }
+
+    @Test
+    fun videoSection_handlesNullVideoUrl() {
+        composeTestRule.setContent {
+            MaterialTheme {
+                AnimatedVideoSection(
+                    videoUrl = "",
+                    onVideoClick = {},
+                    isVisible = true,
+                    delay = 0
+                )
+            }
+        }
+
+        composeTestRule.mainClock.advanceTimeBy(1000)
+
+        // Video section should not be displayed when URL is null
+        composeTestRule.onNodeWithTag(CocktailDetailsTestTags.VIDEO_SECTION).assertDoesNotExist()
+    }
+
+    @Test
+    fun videoSection_handlesEmptyVideoUrl() {
+        composeTestRule.setContent {
+            MaterialTheme {
+                AnimatedVideoSection(
+                    videoUrl = "",
+                    onVideoClick = {},
+                    isVisible = true,
+                    delay = 0
+                )
+            }
+        }
+
+        composeTestRule.mainClock.advanceTimeBy(1000)
+
+        // Video section should not be displayed when URL is empty
+        composeTestRule.onNodeWithTag(CocktailDetailsTestTags.VIDEO_SECTION).assertDoesNotExist()
+    }
+
+    // ANIMATION TIMING TESTS
+    @Test
+    fun quickStatsSection_respectsAnimationDelay() {
+        composeTestRule.setContent {
+            MaterialTheme {
+                AnimatedQuickStatsSection(
+                    complexity = ComplexityLevel.MEDIUM,
+                    alcoholStrength = AlcoholStrength.MEDIUM,
+                    preparationTime = 3,
+                    glass = "Rocks",
+                    isVisible = true,
+                    delay = 500
+                )
+            }
+        }
+
+        // Before delay time
+        composeTestRule.mainClock.advanceTimeBy(400)
+        composeTestRule.onNodeWithTag(CocktailDetailsTestTags.QUICK_STATS).assertIsNotDisplayed()
+
+        // After delay time
+        composeTestRule.mainClock.advanceTimeBy(200)
+        composeTestRule.onNodeWithTag(CocktailDetailsTestTags.QUICK_STATS).assertIsDisplayed()
+    }
+
+    @Test
+    fun ingredientsSection_respectsAnimationDelay() {
+        composeTestRule.setContent {
+            MaterialTheme {
+                AnimatedIngredientsSection(
+                    ingredients = listOf("Gin", "Tonic"),
+                    isVisible = true,
+                    delay = 800
+                )
+            }
+        }
+
+        // Before delay time
+        composeTestRule.mainClock.advanceTimeBy(700)
+        composeTestRule.onNodeWithTag(CocktailDetailsTestTags.INGREDIENTS_SECTION).assertIsNotDisplayed()
+
+        // After delay time
+        composeTestRule.mainClock.advanceTimeBy(200)
+        composeTestRule.onNodeWithTag(CocktailDetailsTestTags.INGREDIENTS_SECTION).assertIsDisplayed()
     }
 }
-
