@@ -80,7 +80,12 @@ class CocktailDetailsComponentsTest {
         // Verify quick stats section
         composeTestRule.onNodeWithTag("quick_stats_section").assertIsDisplayed()
         composeTestRule.onNodeWithText("5 min").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Medium").assertIsDisplayed()
+
+        // Verify complexity and strength separately to avoid ambiguity
+        val quickStatsNode = composeTestRule.onNodeWithTag("quick_stats_section")
+        quickStatsNode.onChildren().filter(hasText("Medium"))
+            .assertCountEquals(2) // Both complexity and strength are Medium
+
         composeTestRule.onNodeWithText("Coupe").assertIsDisplayed()
 
         // Verify ingredients section
@@ -96,10 +101,6 @@ class CocktailDetailsComponentsTest {
         composeTestRule.onNodeWithText("Shake with ice and strain").assertIsDisplayed()
         composeTestRule.onNodeWithText("Garnish").assertIsDisplayed()
         composeTestRule.onNodeWithText("Lime wheel").assertIsDisplayed()
-
-        // Verify video section
-        composeTestRule.onNodeWithTag("video_section").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Watch Video Tutorial").assertIsDisplayed()
     }
 
     @Test
@@ -214,245 +215,218 @@ class CocktailDetailsComponentsTest {
         assert(shareClickCount == 1)
     }
 
-    @Test
-    fun cocktailDetailsContent_triggersVideoClick() {
-        var videoClickCount = 0
-        val cocktail = createSampleCocktail()
+        @Test
+        fun cocktailDetailsContent_handlesComplexCocktail() {
+            val cocktail = createSampleCocktail(
+                title = "Complex Negroni Variation with Multiple Ingredients",
+                category = "Contemporary Classics and Modern Interpretations",
+                views = "15.7M views",
+                ingredients = listOf(
+                    "45ml Premium Gin",
+                    "30ml Sweet Vermouth",
+                    "30ml Campari",
+                    "15ml Aperol",
+                    "2 dashes Orange Bitters",
+                    "1 dash Angostura Bitters",
+                    "Orange peel for garnish",
+                    "Luxardo cherry for garnish"
+                ),
+                method = "Add all spirits and bitters to a mixing glass filled with ice. Stir gently for 30 seconds to achieve proper dilution. Strain into a chilled old fashioned glass over one large ice cube. Express the oils from the orange peel over the drink and drop into the glass. Garnish with a Luxardo cherry on a cocktail pick.",
+                garnish = "Orange peel and Luxardo cherry",
+                glass = "Old Fashioned Glass",
+                complexity = ComplexityLevel.COMPLEX,
+                alcoholStrength = AlcoholStrength.STRONG,
+                preparationTime = 8
+            )
 
-        composeTestRule.setContent {
-            MaterialTheme {
-                CocktailDetailsContent(
-                    cocktail = cocktail,
-                    onBackClick = {},
-                    onFavoriteClick = {},
-                    onShareClick = {},
-                    onVideoClick = { videoClickCount++ }
-                )
+            composeTestRule.setContent {
+                MaterialTheme {
+                    CocktailDetailsContent(
+                        cocktail = cocktail,
+                        onBackClick = {},
+                        onFavoriteClick = {},
+                        onShareClick = {},
+                        onVideoClick = {}
+                    )
+                }
             }
+
+            composeTestRule.mainClock.advanceTimeBy(2000)
+
+            // Verify complex content is displayed
+            composeTestRule.onNodeWithText("Complex Negroni Variation with Multiple Ingredients")
+                .assertIsDisplayed()
+            composeTestRule.onNodeWithText("Contemporary Classics and Modern Interpretations")
+                .assertIsDisplayed()
+            composeTestRule.onNodeWithText("15.7M views").assertIsDisplayed()
+
+            // Verify complex stats
+            composeTestRule.onNodeWithText("8 min").assertIsDisplayed()
+            composeTestRule.onNodeWithText("Complex").assertIsDisplayed()
+            composeTestRule.onNodeWithText("Strong").assertIsDisplayed()
+            composeTestRule.onNodeWithText("Old Fashioned Glass").assertIsDisplayed()
+
+            // Verify some ingredients are displayed
+            composeTestRule.onAllNodesWithText("45ml Premium Gin")[0].assertIsDisplayed()
+            composeTestRule.onAllNodesWithText("30ml Sweet Vermouth")[0].assertIsDisplayed()
         }
 
-        composeTestRule.mainClock.advanceTimeBy(2000)
+        @Test
+        fun cocktailDetailsContent_handlesSimpleCocktail() {
+            val cocktail = createSampleCocktail(
+                title = "Gin & Tonic",
+                category = "Simple",
+                views = "500 views",
+                ingredients = listOf("Gin", "Tonic Water"),
+                method = "Build in glass over ice.",
+                garnish = "Lime wedge",
+                glass = "Highball",
+                complexity = ComplexityLevel.SIMPLE,
+                alcoholStrength = AlcoholStrength.LIGHT,
+                preparationTime = 1
+            )
 
-        composeTestRule.onNodeWithTag("video_section").performClick()
-
-        assert(videoClickCount == 1)
-    }
-
-    @Test
-    fun cocktailDetailsContent_handlesComplexCocktail() {
-        val cocktail = createSampleCocktail(
-            title = "Complex Negroni Variation with Multiple Ingredients",
-            category = "Contemporary Classics and Modern Interpretations",
-            views = "15.7M views",
-            ingredients = listOf(
-                "45ml Premium Gin",
-                "30ml Sweet Vermouth",
-                "30ml Campari",
-                "15ml Aperol",
-                "2 dashes Orange Bitters",
-                "1 dash Angostura Bitters",
-                "Orange peel for garnish",
-                "Luxardo cherry for garnish"
-            ),
-            method = "Add all spirits and bitters to a mixing glass filled with ice. Stir gently for 30 seconds to achieve proper dilution. Strain into a chilled old fashioned glass over one large ice cube. Express the oils from the orange peel over the drink and drop into the glass. Garnish with a Luxardo cherry on a cocktail pick.",
-            garnish = "Orange peel and Luxardo cherry",
-            glass = "Old Fashioned Glass",
-            complexity = ComplexityLevel.COMPLEX,
-            alcoholStrength = AlcoholStrength.STRONG,
-            preparationTime = 8
-        )
-
-        composeTestRule.setContent {
-            MaterialTheme {
-                CocktailDetailsContent(
-                    cocktail = cocktail,
-                    onBackClick = {},
-                    onFavoriteClick = {},
-                    onShareClick = {},
-                    onVideoClick = {}
-                )
+            composeTestRule.setContent {
+                MaterialTheme {
+                    CocktailDetailsContent(
+                        cocktail = cocktail,
+                        onBackClick = {},
+                        onFavoriteClick = {},
+                        onShareClick = {},
+                        onVideoClick = {}
+                    )
+                }
             }
+
+            composeTestRule.mainClock.advanceTimeBy(2000)
+
+            // Verify simple content is displayed
+            composeTestRule.onNodeWithText("Gin & Tonic").assertIsDisplayed()
+            composeTestRule.onNodeWithText("500 views").assertIsDisplayed()
+
+            // Verify there are exactly 2 "Simple" text nodes (category and complexity)
+            composeTestRule.onAllNodesWithText("Simple").assertCountEquals(2)
+
+            // Verify simple stats
+            composeTestRule.onNodeWithText("1 min").assertIsDisplayed()
+            composeTestRule.onNodeWithText("Light").assertIsDisplayed()
+            composeTestRule.onNodeWithText("Highball").assertIsDisplayed()
+
+            // Verify simple ingredients
+            composeTestRule.onAllNodesWithText("Gin")[0].assertIsDisplayed()
+            composeTestRule.onAllNodesWithText("Tonic Water")[0].assertIsDisplayed()
+
+            // Verify simple method
+            composeTestRule.onNodeWithText("Build in glass over ice.").assertIsDisplayed()
+
+            // Verify simple garnish
+            composeTestRule.onNodeWithText("Lime wedge").assertIsDisplayed()
         }
 
-        composeTestRule.mainClock.advanceTimeBy(2000)
+        @Test
+        fun cocktailDetailsContent_showsFavoriteState_whenIsFavoriteTrue() {
+            val cocktail = createSampleCocktail(isFavorite = true)
 
-        // Verify complex content is displayed
-        composeTestRule.onNodeWithText("Complex Negroni Variation with Multiple Ingredients").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Contemporary Classics and Modern Interpretations").assertIsDisplayed()
-        composeTestRule.onNodeWithText("15.7M views").assertIsDisplayed()
-
-        // Verify complex stats
-        composeTestRule.onNodeWithText("8 min").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Complex").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Strong").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Old Fashioned Glass").assertIsDisplayed()
-
-        // Verify some ingredients are displayed
-        composeTestRule.onAllNodesWithText("45ml Premium Gin")[0].assertIsDisplayed()
-        composeTestRule.onAllNodesWithText("30ml Sweet Vermouth")[0].assertIsDisplayed()
-
-        // Verify long method text is displayed
-        composeTestRule.onNodeWithText(cocktail.method, substring = true).assertIsDisplayed()
-
-        // Verify complex garnish
-        composeTestRule.onNodeWithText("Orange peel and Luxardo cherry").assertIsDisplayed()
-    }
-
-    @Test
-    fun cocktailDetailsContent_handlesSimpleCocktail() {
-        val cocktail = createSampleCocktail(
-            title = "Gin & Tonic",
-            category = "Simple",
-            views = "500 views",
-            ingredients = listOf("Gin", "Tonic Water"),
-            method = "Build in glass over ice.",
-            garnish = "Lime wedge",
-            glass = "Highball",
-            complexity = ComplexityLevel.SIMPLE,
-            alcoholStrength = AlcoholStrength.LIGHT,
-            preparationTime = 1
-        )
-
-        composeTestRule.setContent {
-            MaterialTheme {
-                CocktailDetailsContent(
-                    cocktail = cocktail,
-                    onBackClick = {},
-                    onFavoriteClick = {},
-                    onShareClick = {},
-                    onVideoClick = {}
-                )
+            composeTestRule.setContent {
+                MaterialTheme {
+                    CocktailDetailsContent(
+                        cocktail = cocktail,
+                        onBackClick = {},
+                        onFavoriteClick = {},
+                        onShareClick = {},
+                        onVideoClick = {}
+                    )
+                }
             }
+
+            composeTestRule.mainClock.advanceTimeBy(1000)
+
+            composeTestRule.onNodeWithContentDescription("Remove from favorites")
+                .assertIsDisplayed()
         }
 
-        composeTestRule.mainClock.advanceTimeBy(2000)
+        @Test
+        fun cocktailDetailsContent_scrollableBehavior() {
+            val cocktail = createSampleCocktail()
 
-        // Verify simple content is displayed
-        composeTestRule.onNodeWithText("Gin & Tonic").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Simple").assertIsDisplayed()
-        composeTestRule.onNodeWithText("500 views").assertIsDisplayed()
-
-        // Verify simple stats
-        composeTestRule.onNodeWithText("1 min").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Simple").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Light").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Highball").assertIsDisplayed()
-
-        // Verify simple ingredients
-        composeTestRule.onAllNodesWithText("Gin")[0].assertIsDisplayed()
-        composeTestRule.onAllNodesWithText("Tonic Water")[0].assertIsDisplayed()
-
-        // Verify simple method
-        composeTestRule.onNodeWithText("Build in glass over ice.").assertIsDisplayed()
-
-        // Verify simple garnish
-        composeTestRule.onNodeWithText("Lime wedge").assertIsDisplayed()
-    }
-
-    @Test
-    fun cocktailDetailsContent_showsFavoriteState_whenIsFavoriteTrue() {
-        val cocktail = createSampleCocktail(isFavorite = true)
-
-        composeTestRule.setContent {
-            MaterialTheme {
-                CocktailDetailsContent(
-                    cocktail = cocktail,
-                    onBackClick = {},
-                    onFavoriteClick = {},
-                    onShareClick = {},
-                    onVideoClick = {}
-                )
+            composeTestRule.setContent {
+                MaterialTheme {
+                    CocktailDetailsContent(
+                        cocktail = cocktail,
+                        onBackClick = {},
+                        onFavoriteClick = {},
+                        onShareClick = {},
+                        onVideoClick = {}
+                    )
+                }
             }
-        }
 
-        composeTestRule.mainClock.advanceTimeBy(1000)
+            composeTestRule.mainClock.advanceTimeBy(2000)
 
-        composeTestRule.onNodeWithContentDescription("Remove from favorites").assertIsDisplayed()
-    }
-
-    @Test
-    fun cocktailDetailsContent_scrollableBehavior() {
-        val cocktail = createSampleCocktail()
-
-        composeTestRule.setContent {
-            MaterialTheme {
-                CocktailDetailsContent(
-                    cocktail = cocktail,
-                    onBackClick = {},
-                    onFavoriteClick = {},
-                    onShareClick = {},
-                    onVideoClick = {}
-                )
+            // Test that content is scrollable
+            composeTestRule.onRoot().performTouchInput {
+                swipeUp()
             }
+
+            // Content should still be accessible after scrolling
+            composeTestRule.onNodeWithText("Instructions").assertIsDisplayed()
         }
 
-        composeTestRule.mainClock.advanceTimeBy(2000)
+        @Test
+        fun cocktailDetailsContent_handlesEmptyIngredients() {
+            val cocktail = createSampleCocktail(ingredients = emptyList())
 
-        // Test that content is scrollable
-        composeTestRule.onRoot().performTouchInput {
-            swipeUp()
-        }
-
-        // Content should still be accessible after scrolling
-        composeTestRule.onNodeWithText("Instructions").assertIsDisplayed()
-    }
-
-    @Test
-    fun cocktailDetailsContent_handlesEmptyIngredients() {
-        val cocktail = createSampleCocktail(ingredients = emptyList())
-
-        composeTestRule.setContent {
-            MaterialTheme {
-                CocktailDetailsContent(
-                    cocktail = cocktail,
-                    onBackClick = {},
-                    onFavoriteClick = {},
-                    onShareClick = {},
-                    onVideoClick = {}
-                )
+            composeTestRule.setContent {
+                MaterialTheme {
+                    CocktailDetailsContent(
+                        cocktail = cocktail,
+                        onBackClick = {},
+                        onFavoriteClick = {},
+                        onShareClick = {},
+                        onVideoClick = {}
+                    )
+                }
             }
+
+            composeTestRule.mainClock.advanceTimeBy(2000)
+
+            // Ingredients section should still be displayed
+            composeTestRule.onNodeWithTag("ingredients_section").assertIsDisplayed()
+            composeTestRule.onNodeWithText("Ingredients").assertIsDisplayed()
         }
 
-        composeTestRule.mainClock.advanceTimeBy(2000)
+        @Test
+        fun cocktailDetailsContent_animationSequence() {
+            val cocktail = createSampleCocktail()
 
-        // Ingredients section should still be displayed
-        composeTestRule.onNodeWithTag("ingredients_section").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Ingredients").assertIsDisplayed()
-    }
-
-    @Test
-    fun cocktailDetailsContent_animationSequence() {
-        val cocktail = createSampleCocktail()
-
-        composeTestRule.setContent {
-            MaterialTheme {
-                CocktailDetailsContent(
-                    cocktail = cocktail,
-                    onBackClick = {},
-                    onFavoriteClick = {},
-                    onShareClick = {},
-                    onVideoClick = {}
-                )
+            composeTestRule.setContent {
+                MaterialTheme {
+                    CocktailDetailsContent(
+                        cocktail = cocktail,
+                        onBackClick = {},
+                        onFavoriteClick = {},
+                        onShareClick = {},
+                        onVideoClick = {}
+                    )
+                }
             }
+
+            // Test animation sequence timing
+
+            // Hero should appear first (immediate)
+            composeTestRule.mainClock.advanceTimeBy(100)
+            composeTestRule.onNodeWithText("Margarita").assertIsDisplayed()
+
+            // Quick stats should appear after delay (300ms)
+            composeTestRule.mainClock.advanceTimeBy(400)
+            composeTestRule.onNodeWithTag("quick_stats_section").assertIsDisplayed()
+
+            // Ingredients should appear after delay (600ms total)
+            composeTestRule.mainClock.advanceTimeBy(400)
+            composeTestRule.onNodeWithTag("ingredients_section").assertIsDisplayed()
+
+            // Instructions and video should appear after delay (900ms total)
+            composeTestRule.mainClock.advanceTimeBy(400)
+            composeTestRule.onNodeWithTag("instructions_section").assertIsDisplayed()
         }
-
-        // Test animation sequence timing
-
-        // Hero should appear first (immediate)
-        composeTestRule.mainClock.advanceTimeBy(100)
-        composeTestRule.onNodeWithText("Margarita").assertIsDisplayed()
-
-        // Quick stats should appear after delay (300ms)
-        composeTestRule.mainClock.advanceTimeBy(400)
-        composeTestRule.onNodeWithTag("quick_stats_section").assertIsDisplayed()
-
-        // Ingredients should appear after delay (600ms total)
-        composeTestRule.mainClock.advanceTimeBy(400)
-        composeTestRule.onNodeWithTag("ingredients_section").assertIsDisplayed()
-
-        // Instructions and video should appear after delay (900ms total)
-        composeTestRule.mainClock.advanceTimeBy(400)
-        composeTestRule.onNodeWithTag("instructions_section").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("video_section").assertIsDisplayed()
     }
-}

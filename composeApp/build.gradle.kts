@@ -240,7 +240,21 @@ kotlin {
             "**/*\$\$serializer.*"
         )
 
+        // Include both debug classes and commonMain classes compiled for Android
         val debugTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
+            exclude(fileFilter)
+        }
+
+        val androidDebugTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/androidDebug") {
+            exclude(fileFilter)
+        }
+
+        val debugAndroidTestTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debugAndroidTest") {
+            exclude(fileFilter)
+        }
+
+        // Additional class directories for Kotlin Multiplatform
+        val kotlinClassesTree = fileTree("${layout.buildDirectory.get()}/classes/kotlin") {
             exclude(fileFilter)
         }
 
@@ -248,14 +262,19 @@ kotlin {
         val androidMainSrc = "${project.projectDir}/src/androidMain/kotlin"
 
         sourceDirectories.setFrom(files(listOf(mainSrc, androidMainSrc)))
-        classDirectories.setFrom(files(listOf(debugTree)))
+        classDirectories.setFrom(files(listOf(debugTree, androidDebugTree, debugAndroidTestTree, kotlinClassesTree)))
         executionData.setFrom(fileTree(layout.buildDirectory.get()) {
             include(
                 // Unit test execution data
                 "jacoco/testDebugUnitTest.exec",
                 "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
                 // Instrumented test execution data
-                "outputs/code_coverage/debugAndroidTest/connected/*coverage.ec"
+                "outputs/code_coverage/debugAndroidTest/connected/*coverage.ec",
+                "outputs/code_coverage/debugAndroidTest/**/*.ec",
+                // Additional Android test coverage paths
+                "jacoco/testDebugAndroidTest.exec",
+                // Kotlin multiplatform coverage
+                "jacoco/*.exec"
             )
         })
     }
