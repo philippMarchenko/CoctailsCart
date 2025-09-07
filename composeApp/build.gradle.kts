@@ -40,15 +40,8 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = true
         }
-        iosTarget.compilerOptions {
-            freeCompilerArgs.add("-Xexpected-actual-classes")
-        }
     }
 
-    // Add global compiler options for all targets
-    compilerOptions {
-        freeCompilerArgs.add("-Xexpected-actual-classes")
-    }
 
     sourceSets {
         androidMain.dependencies {
@@ -140,6 +133,7 @@ kotlin {
         defaultConfig {
             applicationId = "com.devphill.cocktails"
             minSdk = libs.versions.android.minSdk.get().toInt()
+            //noinspection OldTargetApi
             targetSdk = libs.versions.android.targetSdk.get().toInt()
             versionCode = 1
             versionName = "1.0"
