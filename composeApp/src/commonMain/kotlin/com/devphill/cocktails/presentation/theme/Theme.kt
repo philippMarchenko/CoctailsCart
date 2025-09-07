@@ -10,7 +10,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.material3.Shapes
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Typography
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.background
 import androidx.compose.material3.Card
@@ -231,78 +230,7 @@ fun CocktailsTheme(
 
 @Preview
 @Composable
-fun DarkCocktailThemePreview() {
-    MaterialTheme(
-        colorScheme = DarkCocktailColors,
-        typography = AppTypography,
-        shapes = CocktailsShapes
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .background(color = CocktailColors.DeepNavy)
-                .verticalScroll(rememberScrollState()),
-        ) {
-            Text(
-                "Dark Cocktail Theme",
-                style = MaterialTheme.typography.headlineSmall,
-                color = CocktailColors.GoldenHour,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-
-            // Primary colors showcase
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                colors = androidx.compose.material3.CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                )
-            ) {
-                Text(
-                    "Primary Container - Luxury Purple",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(16.dp)
-                )
-            }
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                colors = androidx.compose.material3.CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer
-                )
-            ) {
-                Text(
-                    "Secondary Container - Deep Surface",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(16.dp)
-                )
-            }
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                colors = androidx.compose.material3.CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
-                )
-            ) {
-                Text(
-                    "Tertiary Container - Card Surface",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(16.dp)
-                )
-            }
-        }
-    }
-}
-
-@Preview
-@Composable
-fun LightCocktailThemePreview() {
+fun LightColorPalettePreview() {
     MaterialTheme(
         colorScheme = LightCocktailColors,
         typography = AppTypography,
@@ -312,60 +240,83 @@ fun LightCocktailThemePreview() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
-                .background(color = CocktailColors.WarmWhite)
-                .verticalScroll(rememberScrollState()),
+                .background(color = Color.White),
         ) {
             Text(
-                "Light Cocktail Theme",
+                "Light Theme",
                 style = MaterialTheme.typography.headlineSmall,
-                color = CocktailColors.LuxuryPurple,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                colors = androidx.compose.material3.CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                )
-            ) {
-                Text(
-                    "Primary Container - Light Purple",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(16.dp)
-                )
-            }
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                colors = androidx.compose.material3.CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer
-                )
-            ) {
-                Text(
-                    "Secondary Container - Warm Orange",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(16.dp)
-                )
-            }
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                colors = androidx.compose.material3.CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
-                )
-            ) {
-                Text(
-                    "Tertiary Container - Mint Green",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(16.dp)
-                )
-            }
+            ColorSchemeDisplay(LightCocktailColors)
         }
     }
 }
+
+@Preview
+@Composable
+fun DarkColorPalettePreview() {
+    MaterialTheme(
+        colorScheme = DarkCocktailColors,
+        typography = AppTypography,
+        shapes = CocktailsShapes
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .background(color = Color(0xFF0F1115)), // Use actual dark background
+        ) {
+            Text(
+                "Dark Theme",
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = 16.dp),
+                color = Color(0xFFE6E6E6) // Light text for dark background
+            )
+            ColorSchemeDisplay(DarkCocktailColors)
+        }
+    }
+}
+
+
+@Composable
+private fun ColorSchemeDisplay(colorScheme: ColorScheme) {
+    Column {
+        ColorItem("Primary", colorScheme.primary, colorScheme.onPrimary)
+        ColorItem("Primary Container", colorScheme.primaryContainer, colorScheme.onPrimaryContainer)
+        ColorItem("Secondary", colorScheme.secondary, colorScheme.onSecondary)
+        ColorItem("Secondary Container", colorScheme.secondaryContainer, colorScheme.onSecondaryContainer)
+        ColorItem("Tertiary", colorScheme.tertiary, colorScheme.onTertiary)
+        ColorItem("Tertiary Container", colorScheme.tertiaryContainer, colorScheme.onTertiaryContainer)
+        ColorItem("Background", colorScheme.background, colorScheme.onBackground)
+        ColorItem("Surface", colorScheme.surface, colorScheme.onSurface)
+        ColorItem("Surface Variant", colorScheme.surfaceVariant, colorScheme.onSurfaceVariant)
+        ColorItem("Outline", colorScheme.outline, colorScheme.outline)
+    }
+}
+
+@Composable
+private fun ColorItem(name: String, backgroundColor: Color, textColor: Color) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(backgroundColor)
+                .padding(16.dp)
+        ) {
+            Text(
+                text = name,
+                color = textColor,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = "#${(backgroundColor.value shr 8).toString(16).uppercase().substring(0, 8)}",
+                color = textColor
+            )
+        }
+    }
+}
+

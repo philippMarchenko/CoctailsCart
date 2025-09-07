@@ -60,6 +60,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.devphill.cocktails.presentation.auth.AuthState
 import com.devphill.cocktails.presentation.auth.AuthViewModel
+import com.devphill.cocktails.presentation.common.AuthTextField
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -177,44 +178,26 @@ private fun SignInForm(
                 color = MaterialTheme.colorScheme.onSurface
             )
 
-            // Email Field
-            OutlinedTextField(
+            AuthTextField(
                 value = email,
                 onValueChange = onEmailChange,
-                label = { Text("Email") },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Email,
-                        contentDescription = null
-                    )
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                label = "Email",
+                leadingIcon = Icons.Default.Email,
+                keyboardType = KeyboardType.Email,
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !isLoading,
                 singleLine = true
             )
 
-            // Password Field
-            OutlinedTextField(
+            AuthTextField(
                 value = password,
                 onValueChange = onPasswordChange,
-                label = { Text("Password") },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Lock,
-                        contentDescription = null
-                    )
-                },
-                trailingIcon = {
-                    IconButton(onClick = onPasswordVisibilityToggle) {
-                        Icon(
-                            imageVector = if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                            contentDescription = if (passwordVisible) "Hide password" else "Show password"
-                        )
-                    }
-                },
+                label = "Password",
+                leadingIcon = Icons.Default.Lock,
+                trailingIcon = if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                onTrailingIconClick = onPasswordVisibilityToggle,
+                keyboardType = KeyboardType.Password,
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !isLoading,
                 singleLine = true

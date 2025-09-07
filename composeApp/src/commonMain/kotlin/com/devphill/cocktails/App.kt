@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -45,6 +46,8 @@ import com.devphill.cocktails.presentation.theme.ThemeMode
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
+import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.NavigationBarItemDefaults
 
 // Navigation routes as constants
 object NavigationRoutes {
@@ -203,7 +206,9 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
         bottomBar = {
             // Only show bottom bar for main screens, not for cocktail details
             if (isBottomNavScreen) {
-                NavigationBar {
+                NavigationBar(
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                ) {
                     bottomNavScreens.forEach { screen ->
                         NavigationBarItem(
                             selected = currentRoute == screen.route,
@@ -220,7 +225,14 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                                 }
                             },
                             icon = { Icon(screen.icon, contentDescription = screen.title) },
-                            label = { CocktailLabel(screen.title) }
+                            label = { CocktailLabel(screen.title) },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.primary,
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                selectedTextColor = MaterialTheme.colorScheme.primary,
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                indicatorColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.12f)
+                            )
                         )
                     }
                 }

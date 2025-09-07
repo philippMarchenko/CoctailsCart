@@ -31,26 +31,3 @@ fun ProfileScreen(
         modifier = modifier
     )
 }
-
-// Preview
-@Preview
-@Composable
-private fun ProfileMainContentPreview() {
-    CocktailsTheme(useDarkTheme = true) {
-        ProfileMainContent(
-            uiState = ProfileUiState(
-                userName = "John Doe",
-                userEmail = "john.doe@example.com",
-                userPhotoUrl = null,
-                isLoggedIn = true,
-                favoriteCategory = "Whiskey Cocktails",
-                totalFavorites = 12,
-                totalCocktailsMade = 45
-            ),
-            viewModel = koinViewModel(),
-            onSignOut = { },
-            onDeleteAccount = { },
-            onNavigateToFavorites = { }
-        )
-    }
-}

@@ -29,7 +29,10 @@ fun CocktailCard(
     Card(
         onClick = onClick,
         modifier = modifier,
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer
+        )
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
