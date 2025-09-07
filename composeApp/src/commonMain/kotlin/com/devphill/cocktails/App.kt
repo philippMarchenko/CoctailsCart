@@ -48,6 +48,7 @@ import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItemDefaults
+import kotlin.text.get
 
 // Navigation routes as constants
 object NavigationRoutes {
@@ -323,7 +324,7 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                 route = NavigationRoutes.NOTIFICATION_DETAILS,
                 arguments = listOf(navArgument("notificationId") { type = NavType.StringType })
             ) { navBackStackEntry ->
-                val notificationId = navBackStackEntry.arguments?.getString("notificationId") ?: ""
+                val notificationId = navBackStackEntry.savedStateHandle.get<String>("notificationId") ?: ""
                 val viewModel: NotificationsViewModel = koinViewModel()
                 NotificationDetailsScreen(
                     notificationId = notificationId,
@@ -343,8 +344,8 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
             composable(
                 route = NavigationRoutes.COCKTAIL_DETAILS,
                 arguments = listOf(navArgument("cocktailId") { type = NavType.StringType })
-            ) { backStackEntry ->
-                val cocktailId = backStackEntry.arguments?.getString("cocktailId") ?: ""
+            ) { navBackStackEntry ->
+                val cocktailId = navBackStackEntry.savedStateHandle.get<String>("cocktailId") ?: ""
                 val viewModel: CocktailDetailsViewModel = koinViewModel()
                 CocktailDetailsScreenContainer(
                     cocktailId = cocktailId,

@@ -57,7 +57,10 @@ fun AnimatedQuickStatsSection(
                 this.alpha = alpha
             }
             .testTag(CocktailDetailsTestTags.QUICK_STATS),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer
+        )
     ) {
         Row(
             modifier = Modifier
