@@ -1,17 +1,14 @@
 package com.devphill.cocktails.di
 
-import com.devphill.cocktails.data.database.datasource.DatabaseCocktailDataSourceImpl
 import com.devphill.cocktails.data.manager.FirstLaunchManager
 import com.devphill.cocktails.data.manager.FirstLaunchManagerImpl
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
 import com.devphill.cocktails.data.preferences.UserPreferencesManagerImpl
 import com.devphill.cocktails.data.repository.NotificationsRepositoryImpl
-import com.devphill.cocktails.domain.datasource.DatabaseCocktailDataSource
 import com.devphill.cocktails.domain.interactor.CocktailInteractor
 import com.devphill.cocktails.domain.interactor.CocktailInteractorImpl
 import com.devphill.cocktails.domain.interactor.NotificationInteractor
 import com.devphill.cocktails.domain.interactor.NotificationInteractorImpl
-import com.devphill.cocktails.domain.repository.CocktailRepository
 import com.devphill.cocktails.domain.repository.NotificationsRepository
 import com.devphill.cocktails.presentation.auth.AuthViewModel
 import com.devphill.cocktails.presentation.cocktail_details.CocktailDetailsViewModel
