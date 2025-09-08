@@ -3,6 +3,8 @@ package com.devphill.cocktails.di
 import com.devphill.cocktails.data.database.datasource.DatabaseCocktailDataSourceImpl
 import com.devphill.cocktails.data.manager.FirstLaunchManager
 import com.devphill.cocktails.data.manager.FirstLaunchManagerImpl
+import com.devphill.cocktails.data.preferences.UserPreferencesManager
+import com.devphill.cocktails.data.preferences.UserPreferencesManagerImpl
 import com.devphill.cocktails.data.repository.NotificationsRepositoryImpl
 import com.devphill.cocktails.domain.datasource.DatabaseCocktailDataSource
 import com.devphill.cocktails.domain.interactor.CocktailInteractor
@@ -33,6 +35,11 @@ val commonModule = module {
     }
 
     // Managers (PushNotificationManager is provided by platform-specific modules)
+    // User Preferences Manager
+    single<UserPreferencesManager> {
+        UserPreferencesManagerImpl()
+    }
+
     single<FirstLaunchManager> {
         FirstLaunchManagerImpl(
             userPreferencesManager = get(),

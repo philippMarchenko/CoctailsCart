@@ -7,7 +7,6 @@ import com.devphill.cocktails.data.database.getDatabaseBuilder
 import com.devphill.cocktails.data.database.datasource.DatabaseCocktailDataSourceImpl
 import com.devphill.cocktails.data.datasource.LocalCocktailsDataSourceImpl
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
-import com.devphill.cocktails.data.preferences.createUserPreferencesManager
 import com.devphill.cocktails.data.repository.AndroidCocktailRepository
 import com.devphill.cocktails.domain.repository.CocktailRepository
 import com.devphill.cocktails.data.platform.UrlOpener
@@ -40,9 +39,6 @@ val platformModule = module {
     }
     single<CocktailRepository> {
         AndroidCocktailRepository(get(), get()) // Inject both data sources
-    }
-    single<UserPreferencesManager> {
-        createUserPreferencesManager(androidContext())
     }
     single<AuthManager> {
         createAuthManager(androidContext())
