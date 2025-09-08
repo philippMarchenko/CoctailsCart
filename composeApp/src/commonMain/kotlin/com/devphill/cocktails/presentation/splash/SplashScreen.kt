@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
+import com.devphill.cocktails.data.preferences.UserPreferencesManagerImpl
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -103,7 +104,7 @@ fun SplashScreen(
         delay(2500)
 
         // Check authentication status
-        val isLoggedIn = userPreferencesManager.isUserLoggedIn()
+        val isLoggedIn = userPreferencesManager.getBoolean(UserPreferencesManagerImpl.IS_LOGGED_IN_KEY,false)
         if (isLoggedIn) {
             onNavigateToMain()
         } else {

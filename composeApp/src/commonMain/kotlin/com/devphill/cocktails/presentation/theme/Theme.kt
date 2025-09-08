@@ -172,7 +172,6 @@ object DialogShapes {
     val large = RoundedCornerShape(32.dp)
 }
 
-val AppTypography = CocktailsTypography.create()
 
 @Composable
 fun CocktailsTheme(
@@ -206,6 +205,8 @@ fun CocktailsTheme(
         }
     }
 
+    val AppTypography = CocktailsTypography.create()
+
     MaterialTheme(
         colorScheme = colorScheme,
         typography = AppTypography,
@@ -231,6 +232,8 @@ fun CocktailsTheme(
 @Preview
 @Composable
 fun LightColorPalettePreview() {
+    val AppTypography = CocktailsTypography.create()
+
     MaterialTheme(
         colorScheme = LightCocktailColors,
         typography = AppTypography,
@@ -255,6 +258,8 @@ fun LightColorPalettePreview() {
 @Preview
 @Composable
 fun DarkColorPalettePreview() {
+    val AppTypography = CocktailsTypography.create()
+
     MaterialTheme(
         colorScheme = DarkCocktailColors,
         typography = AppTypography,

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.devphill.cocktails.data.auth.AuthManager
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
 import com.devphill.cocktails.data.platform.ShareManager
+import com.devphill.cocktails.data.preferences.UserPreferencesManagerImpl
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,7 +38,7 @@ class ProfileViewModel(
                     userName = user?.displayName ?: "Guest",
                     userEmail = user?.email ?: "Not logged in",
                     userPhotoUrl = user?.photoUrl,
-                    isLoggedIn = userPreferencesManager.isUserLoggedIn()
+                    isLoggedIn = userPreferencesManager.getBoolean(UserPreferencesManagerImpl.IS_LOGGED_IN_KEY,false)
                 )
             } catch (exception: Exception) {
                 _uiState.value = _uiState.value.copy(

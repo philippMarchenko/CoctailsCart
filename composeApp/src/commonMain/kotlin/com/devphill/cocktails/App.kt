@@ -79,7 +79,12 @@ sealed class BottomNavScreen(val route: String, val title: String, val icon: Ima
 fun App() {
     val userPreferencesManager: UserPreferencesManager = koinInject()
     val firstLaunchManager: FirstLaunchManager = koinInject()
-    val themeManager = remember { GlobalThemeManager.getThemeManager() }
+
+    // Initialize the theme manager with preferences manager
+    val themeManager = remember(userPreferencesManager) {
+        GlobalThemeManager.initialize(userPreferencesManager)
+        GlobalThemeManager.getThemeManager()
+    }
     val currentTheme by themeManager.currentTheme.collectAsState()
     val navController = rememberNavController()
 

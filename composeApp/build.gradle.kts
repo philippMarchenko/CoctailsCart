@@ -96,6 +96,9 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.compose.viewmodel.navigation)
 
+            // Multiplatform Settings for local storage
+            implementation(libs.multiplatform.settings)
+
             // Room dependencies for Android
             implementation(libs.room.runtime)
             implementation(libs.androidx.sqlite.bundled)

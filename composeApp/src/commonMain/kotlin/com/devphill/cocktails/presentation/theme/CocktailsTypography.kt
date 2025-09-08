@@ -3,7 +3,6 @@ package com.devphill.cocktails.presentation.theme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -19,6 +18,7 @@ object CocktailsTypography {
      * Creates a Material 3 Typography object with custom cocktail-themed text styles.
      * The colors will be automatically applied by the theme system.
      */
+    @Composable
     fun create(): Typography = Typography(
         // Display styles - for very large text like app titles
         displayLarge = TextStyle(
@@ -45,7 +45,7 @@ object CocktailsTypography {
 
         // Headline styles - for section headers like "Discover", "Cocktail of Day"
         headlineLarge = TextStyle(
-            color = CocktailColors.WarmWhite,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             fontFamily = FontFamily.Default,
             fontWeight = FontWeight.Bold,
             fontSize = 32.sp,

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.devphill.cocktails.data.auth.AuthManager
 import com.devphill.cocktails.data.auth.User
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
+import com.devphill.cocktails.data.preferences.UserPreferencesManagerImpl
 import kotlinx.coroutines.launch
 
 sealed class AuthState {
@@ -33,7 +34,7 @@ class AuthViewModel(
 
     private suspend fun saveUserData(user: User) {
         userPreferencesManager.saveUser(user)
-        userPreferencesManager.setUserLoggedIn(true)
+        userPreferencesManager.putBoolean(UserPreferencesManagerImpl.Companion.IS_LOGGED_IN_KEY, true)
     }
 
     fun signInWithEmailAndPassword(email: String, password: String) {

@@ -3,19 +3,29 @@ package com.devphill.cocktails.presentation.theme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import com.devphill.cocktails.data.preferences.UserPreferencesManager
 
 enum class ThemeMode {
     LIGHT, DARK, SYSTEM
 }
 
-class ThemeManager {
+class ThemeManager(private val preferencesManager: UserPreferencesManager) {
     private val _currentTheme = MutableStateFlow(ThemeMode.DARK)
     val currentTheme: StateFlow<ThemeMode> = _currentTheme.asStateFlow()
 
+    init {
+        // Load saved theme on initialization
+        val savedTheme = preferencesManager.getThemeMode()
+        if (savedTheme != null) {
+            _currentTheme.value = savedTheme
+        }
+    }
+
     fun setTheme(theme: ThemeMode) {
         _currentTheme.value = theme
-        // TODO: Save to preferences when UserPreferencesManager is available
-        
+        // Save to preferences
+        preferencesManager.saveThemeMode(theme)
+
         // Update status bar appearance
         updateStatusBarForTheme(theme)
     }
@@ -23,7 +33,10 @@ class ThemeManager {
     fun getCurrentTheme(): ThemeMode = _currentTheme.value
     
     fun initializeTheme(savedTheme: ThemeMode?) {
-        savedTheme?.let { _currentTheme.value = it }
+        savedTheme?.let {
+            _currentTheme.value = it
+            preferencesManager.saveThemeMode(it)
+        }
     }
     
     private fun updateStatusBarForTheme(theme: ThemeMode) {
@@ -48,9 +61,18 @@ class ThemeManager {
 
 // Global theme manager instance
 object GlobalThemeManager {
-    private val themeManager = ThemeManager()
-    
-    fun getThemeManager(): ThemeManager = themeManager
+    private lateinit var themeManager: ThemeManager
+
+    fun initialize(preferencesManager: UserPreferencesManager) {
+        themeManager = ThemeManager(preferencesManager)
+    }
+
+    fun getThemeManager(): ThemeManager {
+        if (!::themeManager.isInitialized) {
+            throw IllegalStateException("ThemeManager must be initialized before use. Call GlobalThemeManager.initialize() first.")
+        }
+        return themeManager
+    }
 }
 
 /**
