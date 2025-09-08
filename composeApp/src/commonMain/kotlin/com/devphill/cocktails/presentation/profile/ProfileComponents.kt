@@ -12,19 +12,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.devphill.cocktails.presentation.common.ErrorMessage
 import com.devphill.cocktails.presentation.common.LoadingIndicator
 import com.devphill.cocktails.presentation.theme.CocktailBodyText
+import com.devphill.cocktails.presentation.theme.CocktailScreenTitle
+import com.devphill.cocktails.presentation.theme.CocktailSubtitle
 import com.devphill.cocktails.presentation.theme.GlobalThemeManager
 import com.devphill.cocktails.presentation.theme.ThemeSettingsDialog
-import com.devphill.cocktails.presentation.theme.CocktailScreenTitle
-import com.devphill.cocktails.presentation.theme.CocktailSectionHeader
-import com.devphill.cocktails.presentation.theme.CocktailSubtitle
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ProfileContent(
@@ -35,24 +31,26 @@ fun ProfileContent(
     onDeleteAccount: () -> Unit,
     onNavigateToFavorites: () -> Unit,
     onNavigateToNotifications: () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     when {
         uiState.isLoading -> LoadingIndicator(modifier = modifier)
-        uiState.errorMessage != null -> ErrorMessage(
-            message = uiState.errorMessage,
-            onRetry = onRetry,
-            modifier = modifier
-        )
-        else -> ProfileMainContent(
-            uiState = uiState,
-            viewModel = viewModel,
-            onSignOut = onSignOut,
-            onDeleteAccount = onDeleteAccount,
-            onNavigateToFavorites = onNavigateToFavorites,
-            onNavigateToNotifications = onNavigateToNotifications,
-            modifier = modifier
-        )
+        uiState.errorMessage != null ->
+            ErrorMessage(
+                message = uiState.errorMessage,
+                onRetry = onRetry,
+                modifier = modifier,
+            )
+        else ->
+            ProfileMainContent(
+                uiState = uiState,
+                viewModel = viewModel,
+                onSignOut = onSignOut,
+                onDeleteAccount = onDeleteAccount,
+                onNavigateToFavorites = onNavigateToFavorites,
+                onNavigateToNotifications = onNavigateToNotifications,
+                modifier = modifier,
+            )
     }
 }
 
@@ -64,7 +62,7 @@ fun ProfileMainContent(
     onDeleteAccount: () -> Unit,
     onNavigateToFavorites: () -> Unit,
     onNavigateToNotifications: () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var showSignOutDialog by remember { mutableStateOf(false) }
     var showThemeDialog by remember { mutableStateOf(false) }
@@ -73,11 +71,12 @@ fun ProfileMainContent(
     val currentTheme by themeManager.currentTheme.collectAsState()
 
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier =
+            modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         ProfileHeader()
 
@@ -89,12 +88,12 @@ fun ProfileMainContent(
 
         AppSettingsCard(
             onThemeClick = { showThemeDialog = true },
-            onNotificationsClick = onNavigateToNotifications
+            onNotificationsClick = onNavigateToNotifications,
         )
 
         AccountActionsCard(
             onSignOutClick = { showSignOutDialog = true },
-            onDeleteAccountClick = { showDeleteAccountDialog = true }
+            onDeleteAccountClick = { showDeleteAccountDialog = true },
         )
     }
 
@@ -107,7 +106,7 @@ fun ProfileMainContent(
             },
             onDismiss = {
                 showSignOutDialog = false
-            }
+            },
         )
     }
 
@@ -121,7 +120,7 @@ fun ProfileMainContent(
             },
             onDismiss = {
                 showThemeDialog = false
-            }
+            },
         )
     }
 
@@ -134,7 +133,7 @@ fun ProfileMainContent(
             },
             onDismiss = {
                 showDeleteAccountDialog = false
-            }
+            },
         )
     }
 
@@ -147,7 +146,7 @@ fun ProfileMainContent(
             },
             onDismiss = {
                 viewModel.dismissReauthDialog()
-            }
+            },
         )
     }
 }
@@ -156,15 +155,15 @@ fun ProfileMainContent(
 internal fun ProfileHeader() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         CocktailScreenTitle(
-            text = "Profile"
+            text = "Profile",
         )
 
         CocktailSubtitle(
             text = "Manage your cocktail journey",
-            modifier = Modifier.padding(top = 4.dp)
+            modifier = Modifier.padding(top = 4.dp),
         )
     }
 }
@@ -173,28 +172,29 @@ internal fun ProfileHeader() {
 internal fun AvatarSection(uiState: ProfileUiState) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         // Profile Image
         Box(
-            modifier = Modifier
-                .size(80.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.surfaceVariant),
-            contentAlignment = Alignment.Center
+            modifier =
+                Modifier
+                    .size(80.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
+            contentAlignment = Alignment.Center,
         ) {
             if (!uiState.userPhotoUrl.isNullOrEmpty()) {
                 AsyncImage(
                     model = uiState.userPhotoUrl,
                     contentDescription = "User Avatar",
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 )
             } else {
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = "Default Avatar",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(40.dp),
                 )
             }
         }

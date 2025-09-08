@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.Flow
  * Provides access to cocktail information including favorites and search functionality.
  */
 interface CocktailRepository {
-
     /**
      * Retrieves all available cocktails as a reactive stream.
      * @return Flow emitting list of all cocktails

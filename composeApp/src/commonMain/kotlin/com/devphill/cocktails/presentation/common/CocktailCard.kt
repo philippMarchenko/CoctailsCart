@@ -24,25 +24,26 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun CocktailCard(
     cocktail: Cocktail,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Card(
         onClick = onClick,
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer
-        )
+        colors =
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            ),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
         ) {
             Text(
                 text = cocktail.title,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
 
             Text(
@@ -51,7 +52,7 @@ fun CocktailCard(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(top = 4.dp)
+                modifier = Modifier.padding(top = 4.dp),
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -59,40 +60,39 @@ fun CocktailCard(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-
                     ComplexityChip(complexity = cocktail.complexity)
 
                     cocktail.views?.let { views ->
                         Text(
                             text = "👁️ $views",
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 }
 
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     if (cocktail.alcoholStrength != com.devphill.cocktails.domain.model.AlcoholStrength.NON_ALCOHOLIC) {
                         Text(
                             text = "🍺 ${cocktail.alcoholStrength.name}",
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
 
                     if (cocktail.isFavorite) {
                         Text(
                             text = "❤️",
-                            style = MaterialTheme.typography.bodySmall
+                            style = MaterialTheme.typography.bodySmall,
                         )
                     }
                 }
@@ -106,27 +106,28 @@ fun CocktailCard(
 fun CocktailCardPreview() {
     MaterialTheme {
         CocktailCard(
-            cocktail = Cocktail(
-                id = "1",
-                title = "Margarita",
-                imageUrl = null,
-                cocktailUrl = null,
-                category = "Classic",
-                categoryEnum = "CLASSIC",
-                views = "1.2k",
-                ingredients = listOf("Tequila", "Lime juice", "Triple sec"),
-                ingredientsEnums = listOf("TEQUILA", "LIME_JUICE", "TRIPLE_SEC"),
-                method = "Shake with ice and strain into a salt-rimmed glass",
-                garnish = "Lime wheel",
-                glass = "Margarita glass",
-                videoUrl = null,
-                complexity = ComplexityLevel.SIMPLE,
-                alcoholStrength = com.devphill.cocktails.domain.model.AlcoholStrength.MEDIUM,
-                searchText = "margarita tequila lime",
-                isFavorite = true,
-                preparationTime = 5
-            ),
-            onClick = { }
+            cocktail =
+                Cocktail(
+                    id = "1",
+                    title = "Margarita",
+                    imageUrl = null,
+                    cocktailUrl = null,
+                    category = "Classic",
+                    categoryEnum = "CLASSIC",
+                    views = "1.2k",
+                    ingredients = listOf("Tequila", "Lime juice", "Triple sec"),
+                    ingredientsEnums = listOf("TEQUILA", "LIME_JUICE", "TRIPLE_SEC"),
+                    method = "Shake with ice and strain into a salt-rimmed glass",
+                    garnish = "Lime wheel",
+                    glass = "Margarita glass",
+                    videoUrl = null,
+                    complexity = ComplexityLevel.SIMPLE,
+                    alcoholStrength = com.devphill.cocktails.domain.model.AlcoholStrength.MEDIUM,
+                    searchText = "margarita tequila lime",
+                    isFavorite = true,
+                    preparationTime = 5,
+                ),
+            onClick = { },
         )
     }
 }

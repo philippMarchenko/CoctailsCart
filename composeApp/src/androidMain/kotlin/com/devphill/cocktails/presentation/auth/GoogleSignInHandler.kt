@@ -3,20 +3,20 @@ package com.devphill.cocktails.presentation.auth
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.lifecycleScope
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialException
+import androidx.lifecycle.lifecycleScope
+import com.devphill.cocktails.data.auth.AuthConstants
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import kotlinx.coroutines.launch
-import com.devphill.cocktails.data.auth.AuthConstants
 
 @Composable
 fun GoogleSignInHandler(
     onSignInResult: (Result<String>) -> Unit,
-    content: @Composable (onClick: () -> Unit) -> Unit
+    content: @Composable (onClick: () -> Unit) -> Unit,
 ) {
     val context = LocalContext.current
     val activity = context as? ComponentActivity
@@ -30,20 +30,23 @@ fun GoogleSignInHandler(
                 try {
                     val credentialManager = CredentialManager.create(activity)
 
-                    val googleIdOption = GetGoogleIdOption.Builder()
-                        .setFilterByAuthorizedAccounts(false)
-                        .setServerClientId(AuthConstants.GOOGLE_WEB_CLIENT_ID)
-                        .setAutoSelectEnabled(false)
-                        .build()
+                    val googleIdOption =
+                        GetGoogleIdOption.Builder()
+                            .setFilterByAuthorizedAccounts(false)
+                            .setServerClientId(AuthConstants.GOOGLE_WEB_CLIENT_ID)
+                            .setAutoSelectEnabled(false)
+                            .build()
 
-                    val request = GetCredentialRequest.Builder()
-                        .addCredentialOption(googleIdOption)
-                        .build()
+                    val request =
+                        GetCredentialRequest.Builder()
+                            .addCredentialOption(googleIdOption)
+                            .build()
 
-                    val result = credentialManager.getCredential(
-                        request = request,
-                        context = activity,
-                    )
+                    val result =
+                        credentialManager.getCredential(
+                            request = request,
+                            context = activity,
+                        )
 
                     val credential = result.credential
                     when (credential.type) {
@@ -58,19 +61,20 @@ fun GoogleSignInHandler(
                     }
                 } catch (e: GetCredentialException) {
                     // Handle the specific "Cannot find a matching credential" error
-                    val errorMessage = when {
-                        e.type == "android.credentials.GetCredentialException.TYPE_NO_CREDENTIAL" -> {
-                            if (e.message?.contains("Cannot find a matching credential") == true) {
-                                "No Google accounts found on this device. Please add a Google account in Settings > Accounts."
-                            } else {
-                                "No Google accounts available on this device"
+                    val errorMessage =
+                        when {
+                            e.type == "android.credentials.GetCredentialException.TYPE_NO_CREDENTIAL" -> {
+                                if (e.message?.contains("Cannot find a matching credential") == true) {
+                                    "No Google accounts found on this device. Please add a Google account in Settings > Accounts."
+                                } else {
+                                    "No Google accounts available on this device"
+                                }
                             }
+                            e.message?.contains("User canceled") == true -> "Sign-in canceled by user"
+                            e.message?.contains("16") == true -> "User dismissed the sign-in dialog"
+                            e.message?.contains("10") == true -> "Developer configuration error - check Firebase setup"
+                            else -> "Google Sign-In failed: ${e.message}"
                         }
-                        e.message?.contains("User canceled") == true -> "Sign-in canceled by user"
-                        e.message?.contains("16") == true -> "User dismissed the sign-in dialog"
-                        e.message?.contains("10") == true -> "Developer configuration error - check Firebase setup"
-                        else -> "Google Sign-In failed: ${e.message}"
-                    }
                     onSignInResult(Result.failure(Exception(errorMessage)))
                 } catch (e: GoogleIdTokenParsingException) {
                     onSignInResult(Result.failure(Exception("Failed to parse Google credentials")))

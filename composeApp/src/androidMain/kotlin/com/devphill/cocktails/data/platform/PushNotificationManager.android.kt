@@ -14,12 +14,10 @@ import androidx.core.app.NotificationManagerCompat
 import com.devphill.cocktails.MainActivity
 import com.devphill.cocktails.domain.model.Notification
 import com.devphill.cocktails.domain.model.NotificationType
-import kotlinx.coroutines.delay
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 actual class PushNotificationManager : KoinComponent {
-
     private val context: Context by inject()
     private val channelId = "cocktails_craft_notifications"
     private val channelName = "CocktailsCraft Notifications"
@@ -32,11 +30,12 @@ actual class PushNotificationManager : KoinComponent {
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(channelId, channelName, importance).apply {
-                description = channelDescription
-                enableLights(true)
-                enableVibration(true)
-            }
+            val channel =
+                NotificationChannel(channelId, channelName, importance).apply {
+                    description = channelDescription
+                    enableLights(true)
+                    enableVibration(true)
+                }
 
             val notificationManager: NotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -55,34 +54,37 @@ actual class PushNotificationManager : KoinComponent {
 
         println("PushNotificationManager: Permission granted, creating notification...")
 
-        val intent = Intent(context, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            putExtra("notification_id", notification.id)
-            putExtra("cocktail_id", notification.cocktailId)
-        }
+        val intent =
+            Intent(context, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                putExtra("notification_id", notification.id)
+                putExtra("cocktail_id", notification.cocktailId)
+            }
 
-        val pendingIntent = PendingIntent.getActivity(
-            context,
-            notification.id.hashCode(),
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
+        val pendingIntent =
+            PendingIntent.getActivity(
+                context,
+                notification.id.hashCode(),
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+            )
 
-        val builder = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(getNotificationIcon(notification.type))
-            .setContentTitle(notification.title)
-            .setContentText(notification.message)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(notification.message))
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setAutoCancel(true)
-            .setContentIntent(pendingIntent)
-            .setVibrate(longArrayOf(0, 250, 250, 250))
+        val builder =
+            NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(getNotificationIcon(notification.type))
+                .setContentTitle(notification.title)
+                .setContentText(notification.message)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(notification.message))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setVibrate(longArrayOf(0, 250, 250, 250))
 
         try {
             with(NotificationManagerCompat.from(context)) {
                 if (ActivityCompat.checkSelfPermission(
                         context,
-                        Manifest.permission.POST_NOTIFICATIONS
+                        Manifest.permission.POST_NOTIFICATIONS,
                     ) == PackageManager.PERMISSION_GRANTED || Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
                 ) {
                     println("PushNotificationManager: Posting notification with ID: ${notification.id.hashCode()}")
@@ -101,14 +103,15 @@ actual class PushNotificationManager : KoinComponent {
 
     actual suspend fun showWelcomeNotification(): Notification {
         println("PushNotificationManager: Creating welcome notification...")
-        val welcomeNotification = Notification(
-            id = "welcome_${System.currentTimeMillis()}",
-            title = "Welcome to CocktailsCraft! 🍹",
-            message = "Discover amazing cocktail recipes and start your mixology journey today!",
-            type = NotificationType.SYSTEM_MESSAGE,
-            timestamp = System.currentTimeMillis().toString(),
-            isRead = false
-        )
+        val welcomeNotification =
+            Notification(
+                id = "welcome_${System.currentTimeMillis()}",
+                title = "Welcome to CocktailsCraft! 🍹",
+                message = "Discover amazing cocktail recipes and start your mixology journey today!",
+                type = NotificationType.SYSTEM_MESSAGE,
+                timestamp = System.currentTimeMillis().toString(),
+                isRead = false,
+            )
 
         showNotification(welcomeNotification)
 
@@ -124,7 +127,7 @@ actual class PushNotificationManager : KoinComponent {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.checkSelfPermission(
                 context,
-                Manifest.permission.POST_NOTIFICATIONS
+                Manifest.permission.POST_NOTIFICATIONS,
             ) == PackageManager.PERMISSION_GRANTED
         } else {
             NotificationManagerCompat.from(context).areNotificationsEnabled()

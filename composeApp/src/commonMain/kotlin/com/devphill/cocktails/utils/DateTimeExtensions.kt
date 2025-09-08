@@ -7,21 +7,6 @@ import kotlinx.datetime.toLocalDateTime
 /**
  * Utility extension functions for date and time formatting.
  */
-
-/**
- * Formats a Unix timestamp string to European date format (DD.MM.YYYY, HH:MM).
- *
- * This function handles both Unix timestamps (milliseconds since epoch) and
- * fallback string date formats.
- *
- * @param timestamp Unix timestamp as string (milliseconds) or date string format
- * @return Formatted date string in European format "DD.MM.YYYY, HH:MM"
- *
- * Examples:
- * - "1725364200000" -> "03.09.2024, 14:30"
- * - "2024-08-27 10:30:00" -> "27.08.2024, 10:30"
- * - "2024-08-27" -> "27.08.2024"
- */
 fun String.formatToEuropeanDateTime(): String {
     return try {
         // Parse Unix timestamp (milliseconds since epoch)

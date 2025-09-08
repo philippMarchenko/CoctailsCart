@@ -54,7 +54,10 @@ class FakeCocktailInteractor : CocktailInteractor {
 
     override suspend fun getCocktailsByCategory(category: String): Flow<List<Cocktail>> = flowOf(emptyList())
 
-    override suspend fun toggleFavorite(cocktail: Cocktail, isFavorite: Boolean) {
+    override suspend fun toggleFavorite(
+        cocktail: Cocktail,
+        isFavorite: Boolean,
+    ) {
         toggleFavoriteCallCount++
         lastToggleFavoriteCall = Pair(cocktail, isFavorite)
 
@@ -74,31 +77,31 @@ class FakeCocktailInteractor : CocktailInteractor {
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CocktailDetailsViewModelTest {
-
     private lateinit var viewModel: CocktailDetailsViewModel
     private lateinit var fakeCocktailInteractor: FakeCocktailInteractor
     private val testDispatcher = StandardTestDispatcher()
 
-    private val sampleCocktail = Cocktail(
-        id = "1",
-        title = "Mojito",
-        imageUrl = "https://example.com/mojito.jpg",
-        cocktailUrl = "https://example.com/mojito",
-        category = "Refreshing",
-        categoryEnum = "REFRESHING",
-        views = "1000",
-        ingredients = listOf("White Rum", "Sugar", "Lime Juice", "Soda Water", "Mint"),
-        ingredientsEnums = listOf("WHITE_RUM", "SUGAR", "LIME_JUICE", "SODA_WATER", "MINT"),
-        method = "Muddle mint leaves with sugar and lime juice. Add rum and top with soda water.",
-        garnish = "Fresh mint sprig",
-        glass = "Highball glass",
-        videoUrl = "https://example.com/mojito-video",
-        complexity = ComplexityLevel.SIMPLE,
-        alcoholStrength = AlcoholStrength.MEDIUM,
-        searchText = "mojito rum mint lime refreshing",
-        isFavorite = false,
-        preparationTime = 5
-    )
+    private val sampleCocktail =
+        Cocktail(
+            id = "1",
+            title = "Mojito",
+            imageUrl = "https://example.com/mojito.jpg",
+            cocktailUrl = "https://example.com/mojito",
+            category = "Refreshing",
+            categoryEnum = "REFRESHING",
+            views = "1000",
+            ingredients = listOf("White Rum", "Sugar", "Lime Juice", "Soda Water", "Mint"),
+            ingredientsEnums = listOf("WHITE_RUM", "SUGAR", "LIME_JUICE", "SODA_WATER", "MINT"),
+            method = "Muddle mint leaves with sugar and lime juice. Add rum and top with soda water.",
+            garnish = "Fresh mint sprig",
+            glass = "Highball glass",
+            videoUrl = "https://example.com/mojito-video",
+            complexity = ComplexityLevel.SIMPLE,
+            alcoholStrength = AlcoholStrength.MEDIUM,
+            searchText = "mojito rum mint lime refreshing",
+            isFavorite = false,
+            preparationTime = 5,
+        )
 
     @BeforeTest
     fun setup() {
@@ -114,357 +117,372 @@ class CocktailDetailsViewModelTest {
     }
 
     @Test
-    fun initialStateShouldBeCorrect() = runTest {
-        viewModel.uiState.test {
-            val initialState = awaitItem()
-            assertNull(initialState.cocktail)
-            assertFalse(initialState.isLoading)
-            assertNull(initialState.error)
+    fun initialStateShouldBeCorrect() =
+        runTest {
+            viewModel.uiState.test {
+                val initialState = awaitItem()
+                assertNull(initialState.cocktail)
+                assertFalse(initialState.isLoading)
+                assertNull(initialState.error)
+            }
         }
-    }
 
     @Test
-    fun loadCocktailShouldShowLoadingStateAndThenSuccessStateWhenCocktailIsFound() = runTest {
-        // Given
-        fakeCocktailInteractor.getCocktailByIdResult = sampleCocktail
+    fun loadCocktailShouldShowLoadingStateAndThenSuccessStateWhenCocktailIsFound() =
+        runTest {
+            // Given
+            fakeCocktailInteractor.getCocktailByIdResult = sampleCocktail
 
-        // When
-        viewModel.uiState.test {
-            val initialState = awaitItem()
-            assertNull(initialState.cocktail)
-            assertFalse(initialState.isLoading)
+            // When
+            viewModel.uiState.test {
+                val initialState = awaitItem()
+                assertNull(initialState.cocktail)
+                assertFalse(initialState.isLoading)
 
-            viewModel.loadCocktail("1")
+                viewModel.loadCocktail("1")
 
-            val loadingState = awaitItem()
-            assertTrue(loadingState.isLoading)
-            assertNull(loadingState.error)
+                val loadingState = awaitItem()
+                assertTrue(loadingState.isLoading)
+                assertNull(loadingState.error)
 
-            val successState = awaitItem()
-            assertFalse(successState.isLoading)
-            assertNull(successState.error)
-            assertEquals(sampleCocktail, successState.cocktail)
+                val successState = awaitItem()
+                assertFalse(successState.isLoading)
+                assertNull(successState.error)
+                assertEquals(sampleCocktail, successState.cocktail)
+            }
+
+            // Then
+            assertEquals(1, fakeCocktailInteractor.getCocktailByIdCallCount)
+            assertEquals("1", fakeCocktailInteractor.lastCocktailIdRequested)
         }
-
-        // Then
-        assertEquals(1, fakeCocktailInteractor.getCocktailByIdCallCount)
-        assertEquals("1", fakeCocktailInteractor.lastCocktailIdRequested)
-    }
 
     @Test
-    fun loadCocktailShouldNotShowLoadingWhenReloadingTheSameCocktail() = runTest {
-        // Given
-        fakeCocktailInteractor.getCocktailByIdResult = sampleCocktail
+    fun loadCocktailShouldNotShowLoadingWhenReloadingTheSameCocktail() =
+        runTest {
+            // Given
+            fakeCocktailInteractor.getCocktailByIdResult = sampleCocktail
 
-        viewModel.uiState.test {
-            awaitItem() // initial state
+            viewModel.uiState.test {
+                awaitItem() // initial state
 
-            // Load cocktail first time
-            viewModel.loadCocktail("1")
-            awaitItem() // loading state
-            val firstLoadState = awaitItem() // success state
-            assertEquals(sampleCocktail, firstLoadState.cocktail)
+                // Load cocktail first time
+                viewModel.loadCocktail("1")
+                awaitItem() // loading state
+                val firstLoadState = awaitItem() // success state
+                assertEquals(sampleCocktail, firstLoadState.cocktail)
 
-            // Reset call count to track the second call
-            val initialCallCount = fakeCocktailInteractor.getCocktailByIdCallCount
+                // Reset call count to track the second call
+                val initialCallCount = fakeCocktailInteractor.getCocktailByIdCallCount
 
-            // Load same cocktail again
-            viewModel.loadCocktail("1")
+                // Load same cocktail again
+                viewModel.loadCocktail("1")
 
-            // Should still make the call but not show loading
-            // We need to advance the test scheduler to process the coroutine
-            testScheduler.advanceUntilIdle()
+                // Should still make the call but not show loading
+                // We need to advance the test scheduler to process the coroutine
+                testScheduler.advanceUntilIdle()
 
-            // Verify the call was made
-            assertEquals(initialCallCount + 1, fakeCocktailInteractor.getCocktailByIdCallCount)
+                // Verify the call was made
+                assertEquals(initialCallCount + 1, fakeCocktailInteractor.getCocktailByIdCallCount)
 
-            // The current state should still have the cocktail and not be loading
-            val currentState = viewModel.uiState.value
-            assertFalse(currentState.isLoading)
-            assertEquals(sampleCocktail, currentState.cocktail)
-            assertNull(currentState.error)
+                // The current state should still have the cocktail and not be loading
+                val currentState = viewModel.uiState.value
+                assertFalse(currentState.isLoading)
+                assertEquals(sampleCocktail, currentState.cocktail)
+                assertNull(currentState.error)
+            }
         }
-    }
 
     @Test
-    fun loadCocktailShouldShowLoadingWhenLoadingADifferentCocktail() = runTest {
-        // Given
-        val cocktail2 = sampleCocktail.copy(id = "2", title = "Margarita")
-        fakeCocktailInteractor.getCocktailByIdResult = sampleCocktail
+    fun loadCocktailShouldShowLoadingWhenLoadingADifferentCocktail() =
+        runTest {
+            // Given
+            val cocktail2 = sampleCocktail.copy(id = "2", title = "Margarita")
+            fakeCocktailInteractor.getCocktailByIdResult = sampleCocktail
 
-        viewModel.uiState.test {
-            awaitItem() // initial state
+            viewModel.uiState.test {
+                awaitItem() // initial state
 
-            // Load first cocktail
-            viewModel.loadCocktail("1")
-            awaitItem() // loading state
-            awaitItem() // success state
+                // Load first cocktail
+                viewModel.loadCocktail("1")
+                awaitItem() // loading state
+                awaitItem() // success state
 
-            // Change the mock result for the second cocktail
-            fakeCocktailInteractor.getCocktailByIdResult = cocktail2
+                // Change the mock result for the second cocktail
+                fakeCocktailInteractor.getCocktailByIdResult = cocktail2
 
-            // Load different cocktail
-            viewModel.loadCocktail("2")
-            val loadingState = awaitItem()
-            assertTrue(loadingState.isLoading)
+                // Load different cocktail
+                viewModel.loadCocktail("2")
+                val loadingState = awaitItem()
+                assertTrue(loadingState.isLoading)
 
-            val successState = awaitItem()
-            assertFalse(successState.isLoading)
-            assertEquals(cocktail2, successState.cocktail)
+                val successState = awaitItem()
+                assertFalse(successState.isLoading)
+                assertEquals(cocktail2, successState.cocktail)
+            }
         }
-    }
 
     @Test
-    fun loadCocktailShouldSetErrorWhenCocktailIsNotFound() = runTest {
-        // Given
-        fakeCocktailInteractor.getCocktailByIdResult = null
+    fun loadCocktailShouldSetErrorWhenCocktailIsNotFound() =
+        runTest {
+            // Given
+            fakeCocktailInteractor.getCocktailByIdResult = null
 
-        // When
-        viewModel.uiState.test {
-            awaitItem() // initial state
+            // When
+            viewModel.uiState.test {
+                awaitItem() // initial state
 
-            viewModel.loadCocktail("999")
-            awaitItem() // loading state
+                viewModel.loadCocktail("999")
+                awaitItem() // loading state
 
-            val errorState = awaitItem()
-            assertFalse(errorState.isLoading)
-            assertNull(errorState.cocktail)
-            assertEquals("Cocktail not found", errorState.error)
+                val errorState = awaitItem()
+                assertFalse(errorState.isLoading)
+                assertNull(errorState.cocktail)
+                assertEquals("Cocktail not found", errorState.error)
+            }
+
+            // Then
+            assertEquals("999", fakeCocktailInteractor.lastCocktailIdRequested)
         }
-
-        // Then
-        assertEquals("999", fakeCocktailInteractor.lastCocktailIdRequested)
-    }
 
     @Test
-    fun loadCocktailShouldSetErrorWhenExceptionOccurs() = runTest {
-        // Given
-        val errorMessage = "Network error"
-        fakeCocktailInteractor.getCocktailByIdException = RuntimeException(errorMessage)
+    fun loadCocktailShouldSetErrorWhenExceptionOccurs() =
+        runTest {
+            // Given
+            val errorMessage = "Network error"
+            fakeCocktailInteractor.getCocktailByIdException = RuntimeException(errorMessage)
 
-        // When
-        viewModel.uiState.test {
-            awaitItem() // initial state
+            // When
+            viewModel.uiState.test {
+                awaitItem() // initial state
 
-            viewModel.loadCocktail("1")
-            awaitItem() // loading state
+                viewModel.loadCocktail("1")
+                awaitItem() // loading state
 
-            val errorState = awaitItem()
-            assertFalse(errorState.isLoading)
-            assertNull(errorState.cocktail)
-            assertEquals(errorMessage, errorState.error)
+                val errorState = awaitItem()
+                assertFalse(errorState.isLoading)
+                assertNull(errorState.cocktail)
+                assertEquals(errorMessage, errorState.error)
+            }
         }
-    }
 
     @Test
-    fun loadCocktailShouldSetUnknownErrorWhenExceptionHasNoMessage() = runTest {
-        // Given
-        fakeCocktailInteractor.getCocktailByIdException = RuntimeException()
+    fun loadCocktailShouldSetUnknownErrorWhenExceptionHasNoMessage() =
+        runTest {
+            // Given
+            fakeCocktailInteractor.getCocktailByIdException = RuntimeException()
 
-        // When
-        viewModel.uiState.test {
-            awaitItem() // initial state
+            // When
+            viewModel.uiState.test {
+                awaitItem() // initial state
 
-            viewModel.loadCocktail("1")
-            awaitItem() // loading state
+                viewModel.loadCocktail("1")
+                awaitItem() // loading state
 
-            val errorState = awaitItem()
-            assertFalse(errorState.isLoading)
-            assertNull(errorState.cocktail)
-            assertEquals("Unknown error occurred", errorState.error)
+                val errorState = awaitItem()
+                assertFalse(errorState.isLoading)
+                assertNull(errorState.cocktail)
+                assertEquals("Unknown error occurred", errorState.error)
+            }
         }
-    }
 
     @Test
-    fun toggleFavoriteShouldDoNothingWhenNoCocktailIsLoaded() = runTest {
-        // When
-        viewModel.uiState.test {
-            awaitItem()
+    fun toggleFavoriteShouldDoNothingWhenNoCocktailIsLoaded() =
+        runTest {
+            // When
+            viewModel.uiState.test {
+                awaitItem()
 
-            viewModel.toggleFavorite()
+                viewModel.toggleFavorite()
 
-            // Should not emit any new state
-            expectNoEvents()
+                // Should not emit any new state
+                expectNoEvents()
+            }
+
+            // Then
+            assertEquals(0, fakeCocktailInteractor.toggleFavoriteCallCount)
         }
-
-        // Then
-        assertEquals(0, fakeCocktailInteractor.toggleFavoriteCallCount)
-    }
 
     @Test
-    fun toggleFavoriteShouldAddToFavoritesWhenCocktailIsNotFavorite() = runTest {
-        // Given
-        val nonFavoriteCocktail = sampleCocktail.copy(isFavorite = false)
-        fakeCocktailInteractor.getCocktailByIdResult = nonFavoriteCocktail
+    fun toggleFavoriteShouldAddToFavoritesWhenCocktailIsNotFavorite() =
+        runTest {
+            // Given
+            val nonFavoriteCocktail = sampleCocktail.copy(isFavorite = false)
+            fakeCocktailInteractor.getCocktailByIdResult = nonFavoriteCocktail
 
-        viewModel.uiState.test {
-            awaitItem() // initial state
+            viewModel.uiState.test {
+                awaitItem() // initial state
 
-            // Load cocktail first
-            viewModel.loadCocktail("1")
-            awaitItem() // loading state
-            val loadedState = awaitItem() // success state
-            assertFalse(loadedState.cocktail!!.isFavorite)
+                // Load cocktail first
+                viewModel.loadCocktail("1")
+                awaitItem() // loading state
+                val loadedState = awaitItem() // success state
+                assertFalse(loadedState.cocktail!!.isFavorite)
 
-            // Toggle favorite
-            viewModel.toggleFavorite()
+                // Toggle favorite
+                viewModel.toggleFavorite()
 
-            val favoriteState = awaitItem()
-            assertTrue(favoriteState.cocktail!!.isFavorite)
-            assertNull(favoriteState.error)
+                val favoriteState = awaitItem()
+                assertTrue(favoriteState.cocktail!!.isFavorite)
+                assertNull(favoriteState.error)
+            }
+
+            // Then
+            assertEquals(1, fakeCocktailInteractor.toggleFavoriteCallCount)
+            assertEquals(Pair(nonFavoriteCocktail, false), fakeCocktailInteractor.lastToggleFavoriteCall)
         }
-
-        // Then
-        assertEquals(1, fakeCocktailInteractor.toggleFavoriteCallCount)
-        assertEquals(Pair(nonFavoriteCocktail, false), fakeCocktailInteractor.lastToggleFavoriteCall)
-    }
 
     @Test
-    fun toggleFavoriteShouldRemoveFromFavoritesWhenCocktailIsFavorite() = runTest {
-        // Given
-        val favoriteCocktail = sampleCocktail.copy(isFavorite = true)
-        fakeCocktailInteractor.getCocktailByIdResult = favoriteCocktail
+    fun toggleFavoriteShouldRemoveFromFavoritesWhenCocktailIsFavorite() =
+        runTest {
+            // Given
+            val favoriteCocktail = sampleCocktail.copy(isFavorite = true)
+            fakeCocktailInteractor.getCocktailByIdResult = favoriteCocktail
 
-        viewModel.uiState.test {
-            awaitItem() // initial state
+            viewModel.uiState.test {
+                awaitItem() // initial state
 
-            // Load cocktail first
-            viewModel.loadCocktail("1")
-            awaitItem() // loading state
-            val loadedState = awaitItem() // success state
-            assertTrue(loadedState.cocktail!!.isFavorite)
+                // Load cocktail first
+                viewModel.loadCocktail("1")
+                awaitItem() // loading state
+                val loadedState = awaitItem() // success state
+                assertTrue(loadedState.cocktail!!.isFavorite)
 
-            // Toggle favorite
-            viewModel.toggleFavorite()
+                // Toggle favorite
+                viewModel.toggleFavorite()
 
-            val nonFavoriteState = awaitItem()
-            assertFalse(nonFavoriteState.cocktail!!.isFavorite)
-            assertNull(nonFavoriteState.error)
+                val nonFavoriteState = awaitItem()
+                assertFalse(nonFavoriteState.cocktail!!.isFavorite)
+                assertNull(nonFavoriteState.error)
+            }
+
+            // Then
+            assertEquals(1, fakeCocktailInteractor.toggleFavoriteCallCount)
+            assertEquals(Pair(favoriteCocktail, true), fakeCocktailInteractor.lastToggleFavoriteCall)
         }
-
-        // Then
-        assertEquals(1, fakeCocktailInteractor.toggleFavoriteCallCount)
-        assertEquals(Pair(favoriteCocktail, true), fakeCocktailInteractor.lastToggleFavoriteCall)
-    }
 
     @Test
-    fun toggleFavoriteShouldSetErrorWhenExceptionOccurs() = runTest {
-        // Given
-        val favoriteCocktail = sampleCocktail.copy(isFavorite = false)
-        fakeCocktailInteractor.getCocktailByIdResult = favoriteCocktail
-        fakeCocktailInteractor.toggleFavoriteException = RuntimeException("Database error")
+    fun toggleFavoriteShouldSetErrorWhenExceptionOccurs() =
+        runTest {
+            // Given
+            val favoriteCocktail = sampleCocktail.copy(isFavorite = false)
+            fakeCocktailInteractor.getCocktailByIdResult = favoriteCocktail
+            fakeCocktailInteractor.toggleFavoriteException = RuntimeException("Database error")
 
-        viewModel.uiState.test {
-            awaitItem() // initial state
+            viewModel.uiState.test {
+                awaitItem() // initial state
 
-            // Load cocktail first
-            viewModel.loadCocktail("1")
-            awaitItem() // loading state
-            awaitItem() // success state
+                // Load cocktail first
+                viewModel.loadCocktail("1")
+                awaitItem() // loading state
+                awaitItem() // success state
 
-            // Toggle favorite
-            viewModel.toggleFavorite()
+                // Toggle favorite
+                viewModel.toggleFavorite()
 
-            val errorState = awaitItem()
-            // Cocktail state should remain unchanged
-            assertEquals(favoriteCocktail, errorState.cocktail)
-            assertEquals("Failed to update favorite status", errorState.error)
+                val errorState = awaitItem()
+                // Cocktail state should remain unchanged
+                assertEquals(favoriteCocktail, errorState.cocktail)
+                assertEquals("Failed to update favorite status", errorState.error)
+            }
         }
-    }
 
     @Test
-    fun clearErrorShouldRemoveErrorFromState() = runTest {
-        // Given - first create an error state
-        fakeCocktailInteractor.getCocktailByIdResult = null
+    fun clearErrorShouldRemoveErrorFromState() =
+        runTest {
+            // Given - first create an error state
+            fakeCocktailInteractor.getCocktailByIdResult = null
 
-        viewModel.uiState.test {
-            awaitItem() // initial state
+            viewModel.uiState.test {
+                awaitItem() // initial state
 
-            // Create error state
-            viewModel.loadCocktail("999")
-            awaitItem() // loading state
-            val errorState = awaitItem() // error state
-            assertNotNull(errorState.error)
+                // Create error state
+                viewModel.loadCocktail("999")
+                awaitItem() // loading state
+                val errorState = awaitItem() // error state
+                assertNotNull(errorState.error)
 
-            // Clear error
-            viewModel.clearError()
+                // Clear error
+                viewModel.clearError()
 
-            val clearedState = awaitItem()
-            assertNull(clearedState.error)
-            // Other state should remain the same
-            assertEquals(errorState.cocktail, clearedState.cocktail)
-            assertEquals(errorState.isLoading, clearedState.isLoading)
+                val clearedState = awaitItem()
+                assertNull(clearedState.error)
+                // Other state should remain the same
+                assertEquals(errorState.cocktail, clearedState.cocktail)
+                assertEquals(errorState.isLoading, clearedState.isLoading)
+            }
         }
-    }
 
     @Test
-    fun clearErrorShouldNotEmitWhenThereIsNoError() = runTest {
-        // When
-        viewModel.uiState.test {
-            val initialState = awaitItem()
-            assertNull(initialState.error)
+    fun clearErrorShouldNotEmitWhenThereIsNoError() =
+        runTest {
+            // When
+            viewModel.uiState.test {
+                val initialState = awaitItem()
+                assertNull(initialState.error)
 
-            viewModel.clearError()
+                viewModel.clearError()
 
-            // Should not emit any new state since there's no error to clear
-            expectNoEvents()
+                // Should not emit any new state since there's no error to clear
+                expectNoEvents()
+            }
         }
-    }
 
     @Test
-    fun multipleLoadCocktailCallsShouldHandleConcurrentRequestsCorrectly() = runTest {
-        // Given
-        val cocktail1 = sampleCocktail.copy(id = "1", title = "Mojito")
-        val cocktail2 = sampleCocktail.copy(id = "2", title = "Margarita")
+    fun multipleLoadCocktailCallsShouldHandleConcurrentRequestsCorrectly() =
+        runTest {
+            // Given
+            val cocktail1 = sampleCocktail.copy(id = "1", title = "Mojito")
+            val cocktail2 = sampleCocktail.copy(id = "2", title = "Margarita")
 
-        fakeCocktailInteractor.getCocktailByIdResult = cocktail2 // Last call wins
+            fakeCocktailInteractor.getCocktailByIdResult = cocktail2 // Last call wins
 
-        viewModel.uiState.test {
-            awaitItem() // initial state
+            viewModel.uiState.test {
+                awaitItem() // initial state
 
-            // Start multiple concurrent loads
-            viewModel.loadCocktail("1")
-            viewModel.loadCocktail("2")
+                // Start multiple concurrent loads
+                viewModel.loadCocktail("1")
+                viewModel.loadCocktail("2")
 
-            // Should see loading state
-            val loadingState = awaitItem()
-            assertTrue(loadingState.isLoading)
+                // Should see loading state
+                val loadingState = awaitItem()
+                assertTrue(loadingState.isLoading)
 
-            // Final state should be from the last request
-            val finalState = awaitItem()
-            assertFalse(finalState.isLoading)
-            assertEquals("2", finalState.cocktail?.id)
-            assertEquals("Margarita", finalState.cocktail?.title)
+                // Final state should be from the last request
+                val finalState = awaitItem()
+                assertFalse(finalState.isLoading)
+                assertEquals("2", finalState.cocktail?.id)
+                assertEquals("Margarita", finalState.cocktail?.title)
+            }
         }
-    }
 
     @Test
-    fun stateShouldMaintainCocktailDataWhenClearingError() = runTest {
-        // Given
-        fakeCocktailInteractor.getCocktailByIdResult = sampleCocktail
-        fakeCocktailInteractor.toggleFavoriteException = RuntimeException("Error")
+    fun stateShouldMaintainCocktailDataWhenClearingError() =
+        runTest {
+            // Given
+            fakeCocktailInteractor.getCocktailByIdResult = sampleCocktail
+            fakeCocktailInteractor.toggleFavoriteException = RuntimeException("Error")
 
-        viewModel.uiState.test {
-            awaitItem() // initial state
+            viewModel.uiState.test {
+                awaitItem() // initial state
 
-            // Load cocktail
-            viewModel.loadCocktail("1")
-            awaitItem() // loading state
-            awaitItem() // success state
+                // Load cocktail
+                viewModel.loadCocktail("1")
+                awaitItem() // loading state
+                awaitItem() // success state
 
-            // Create error through toggleFavorite
-            viewModel.toggleFavorite()
-            val errorState = awaitItem()
-            assertNotNull(errorState.error)
-            assertEquals(sampleCocktail, errorState.cocktail)
+                // Create error through toggleFavorite
+                viewModel.toggleFavorite()
+                val errorState = awaitItem()
+                assertNotNull(errorState.error)
+                assertEquals(sampleCocktail, errorState.cocktail)
 
-            // Clear error
-            viewModel.clearError()
-            val clearedState = awaitItem()
+                // Clear error
+                viewModel.clearError()
+                val clearedState = awaitItem()
 
-            assertNull(clearedState.error)
-            assertEquals(sampleCocktail, clearedState.cocktail)
-            assertFalse(clearedState.isLoading)
+                assertNull(clearedState.error)
+                assertEquals(sampleCocktail, clearedState.cocktail)
+                assertFalse(clearedState.isLoading)
+            }
         }
-    }
 }

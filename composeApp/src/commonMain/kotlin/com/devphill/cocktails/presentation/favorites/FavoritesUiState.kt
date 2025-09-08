@@ -6,5 +6,5 @@ data class FavoritesUiState(
     val isLoading: Boolean = false,
     val favorites: List<Cocktail> = emptyList(),
     val errorMessage: String? = null,
-    val isEmpty: Boolean = false
+    val isEmpty: Boolean = false,
 )

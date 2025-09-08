@@ -30,19 +30,22 @@ class AndroidAuthManager(private val context: Context) : AuthManager {
 
     override suspend fun signInWithGoogle(): Result<User> {
         return try {
-            val googleIdOption = GetGoogleIdOption.Builder()
-                .setFilterByAuthorizedAccounts(false)
-                .setServerClientId(WEB_CLIENT_ID)
-                .build()
+            val googleIdOption =
+                GetGoogleIdOption.Builder()
+                    .setFilterByAuthorizedAccounts(false)
+                    .setServerClientId(WEB_CLIENT_ID)
+                    .build()
 
-            val request = GetCredentialRequest.Builder()
-                .addCredentialOption(googleIdOption)
-                .build()
+            val request =
+                GetCredentialRequest.Builder()
+                    .addCredentialOption(googleIdOption)
+                    .build()
 
-            val result = credentialManager.getCredential(
-                request = request,
-                context = context
-            )
+            val result =
+                credentialManager.getCredential(
+                    request = request,
+                    context = context,
+                )
 
             handleSignIn(result)
         } catch (e: GetCredentialException) {
@@ -82,7 +85,10 @@ class AndroidAuthManager(private val context: Context) : AuthManager {
         }
     }
 
-    override suspend fun signInWithEmailAndPassword(email: String, password: String): Result<User> {
+    override suspend fun signInWithEmailAndPassword(
+        email: String,
+        password: String,
+    ): Result<User> {
         return try {
             val result = auth.signInWithEmailAndPassword(email, password).await()
             result.user?.let {
@@ -93,14 +99,19 @@ class AndroidAuthManager(private val context: Context) : AuthManager {
         }
     }
 
-    override suspend fun createUserWithEmailAndPassword(email: String, password: String, displayName: String): Result<User> {
+    override suspend fun createUserWithEmailAndPassword(
+        email: String,
+        password: String,
+        displayName: String,
+    ): Result<User> {
         return try {
             val result = auth.createUserWithEmailAndPassword(email, password).await()
             result.user?.let { firebaseUser ->
                 // Update the user's display name
-                val profileUpdates = UserProfileChangeRequest.Builder()
-                    .setDisplayName(displayName)
-                    .build()
+                val profileUpdates =
+                    UserProfileChangeRequest.Builder()
+                        .setDisplayName(displayName)
+                        .build()
                 firebaseUser.updateProfile(profileUpdates).await()
 
                 // Return the user with updated profile
@@ -125,7 +136,10 @@ class AndroidAuthManager(private val context: Context) : AuthManager {
         }
     }
 
-    override suspend fun reauthenticateWithEmailAndPassword(email: String, password: String): Result<Unit> {
+    override suspend fun reauthenticateWithEmailAndPassword(
+        email: String,
+        password: String,
+    ): Result<Unit> {
         return try {
             val currentUser = auth.currentUser
             if (currentUser == null) {
@@ -149,19 +163,22 @@ class AndroidAuthManager(private val context: Context) : AuthManager {
             }
 
             // Get Google credentials using the same flow as sign in
-            val googleIdOption = GetGoogleIdOption.Builder()
-                .setFilterByAuthorizedAccounts(false)
-                .setServerClientId(WEB_CLIENT_ID)
-                .build()
+            val googleIdOption =
+                GetGoogleIdOption.Builder()
+                    .setFilterByAuthorizedAccounts(false)
+                    .setServerClientId(WEB_CLIENT_ID)
+                    .build()
 
-            val request = GetCredentialRequest.Builder()
-                .addCredentialOption(googleIdOption)
-                .build()
+            val request =
+                GetCredentialRequest.Builder()
+                    .addCredentialOption(googleIdOption)
+                    .build()
 
-            val result = credentialManager.getCredential(
-                request = request,
-                context = context
-            )
+            val result =
+                credentialManager.getCredential(
+                    request = request,
+                    context = context,
+                )
 
             val credential = result.credential
             when (credential.type) {
@@ -191,7 +208,7 @@ class AndroidAuthManager(private val context: Context) : AuthManager {
             uid = uid,
             email = email,
             displayName = displayName,
-            photoUrl = photoUrl?.toString()
+            photoUrl = photoUrl?.toString(),
         )
     }
 }

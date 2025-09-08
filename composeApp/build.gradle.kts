@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidx.room)
+    alias(libs.plugins.ktlint)
     jacoco
 }
 
@@ -34,14 +35,13 @@ kotlin {
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
         }
     }
-
 
     sourceSets {
         androidMain.dependencies {
@@ -136,7 +136,7 @@ kotlin {
         defaultConfig {
             applicationId = "com.devphill.cocktails"
             minSdk = libs.versions.android.minSdk.get().toInt()
-            //noinspection OldTargetApi
+            // noinspection OldTargetApi
             targetSdk = libs.versions.android.targetSdk.get().toInt()
             versionCode = 1
             versionName = "1.0"
@@ -173,9 +173,27 @@ kotlin {
         testOptions.unitTests.isIncludeAndroidResources = true
     }
 
-// Configure JaCoCo
+    // Configure JaCoCo
     jacoco {
         toolVersion = "0.8.11"
+    }
+
+    // Configure Ktlint
+    ktlint {
+        version.set("1.0.1")
+        android.set(true)
+        ignoreFailures.set(false)
+        reporters {
+            reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
+            reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+            reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.SARIF)
+        }
+        filter {
+            exclude("**/generated/**")
+            exclude("**/build/**")
+            exclude("**/ksp/**")
+            exclude("**/*_Impl.kt")
+        }
     }
 
     /**
@@ -210,7 +228,7 @@ kotlin {
         outputs.upToDateWhen { false }
     }
 
-// Custom task to generate unified test coverage report
+    // Custom task to generate unified test coverage report
     tasks.register<JacocoReport>("jacocoTestReport") {
         // Depend on both unit tests and connected Android tests
         dependsOn("testDebugUnitTest", "connectedDebugAndroidTest")
@@ -221,59 +239,82 @@ kotlin {
             csv.required.set(false)
         }
 
-        val fileFilter = listOf(
-            "**/R.class",
-            "**/R$*.class",
-            "**/BuildConfig.*",
-            "**/Manifest*.*",
-            "**/*Test*.*",
-            "**/lambda$*.class",
-            "**/lambda.class",
-            "**/*lambda.class",
-            "**/*lambda*.class",
-            "**/*\$WhenMappings.*",
-            "**/*\$WhenMappings\$*.*",
-            "**/serializer.*",
-            "**/*\$\$serializer.*"
-        )
+        val fileFilter =
+            listOf(
+                "**/R.class",
+                "**/R$*.class",
+                "**/BuildConfig.*",
+                "**/Manifest*.*",
+                "**/*Test*.*",
+                "**/lambda$*.class",
+                "**/lambda.class",
+                "**/*lambda.class",
+                "**/*lambda*.class",
+                "**/*\$WhenMappings.*",
+                "**/*\$WhenMappings\$*.*",
+                "**/serializer.*",
+                "**/*\$\$serializer.*",
+            )
 
         // Include both debug classes and commonMain classes compiled for Android
-        val debugTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
-            exclude(fileFilter)
-        }
+        val debugTree =
+            fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
+                exclude(fileFilter)
+            }
 
-        val androidDebugTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/androidDebug") {
-            exclude(fileFilter)
-        }
+        val androidDebugTree =
+            fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/androidDebug") {
+                exclude(fileFilter)
+            }
 
-        val debugAndroidTestTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debugAndroidTest") {
-            exclude(fileFilter)
-        }
+        val debugAndroidTestTree =
+            fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debugAndroidTest") {
+                exclude(fileFilter)
+            }
 
         // Additional class directories for Kotlin Multiplatform
-        val kotlinClassesTree = fileTree("${layout.buildDirectory.get()}/classes/kotlin") {
-            exclude(fileFilter)
-        }
+        val kotlinClassesTree =
+            fileTree("${layout.buildDirectory.get()}/classes/kotlin") {
+                exclude(fileFilter)
+            }
 
         val mainSrc = "${project.projectDir}/src/commonMain/kotlin"
         val androidMainSrc = "${project.projectDir}/src/androidMain/kotlin"
 
-        sourceDirectories.setFrom(files(listOf(mainSrc, androidMainSrc)))
-        classDirectories.setFrom(files(listOf(debugTree, androidDebugTree, debugAndroidTestTree, kotlinClassesTree)))
-        executionData.setFrom(fileTree(layout.buildDirectory.get()) {
-            include(
-                // Unit test execution data
-                "jacoco/testDebugUnitTest.exec",
-                "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
-                // Instrumented test execution data
-                "outputs/code_coverage/debugAndroidTest/connected/*coverage.ec",
-                "outputs/code_coverage/debugAndroidTest/**/*.ec",
-                // Additional Android test coverage paths
-                "jacoco/testDebugAndroidTest.exec",
-                // Kotlin multiplatform coverage
-                "jacoco/*.exec"
-            )
-        })
+        sourceDirectories.setFrom(
+            files(
+                listOf(
+                    mainSrc,
+                    androidMainSrc,
+                ),
+            ),
+        )
+        classDirectories.setFrom(
+            files(
+                listOf(
+                    debugTree,
+                    androidDebugTree,
+                    debugAndroidTestTree,
+                    kotlinClassesTree,
+                ),
+            ),
+        )
+        executionData.setFrom(
+            fileTree(layout.buildDirectory.get()) {
+                include(
+                    // Unit test execution data
+                    "jacoco/testDebugUnitTest.exec",
+                    "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
+                    // Instrumented test execution data
+                    "outputs/code_coverage/debugAndroidTest/connected/*coverage.ec",
+                    "outputs/code_coverage/debugAndroidTest/**/*.ec",
+                    // Additional Android test coverage paths
+                    "jacoco/testDebugAndroidTest.exec",
+                    // Kotlin multiplatform coverage
+                    "jacoco/*.exec",
+                )
+            },
+        )
     }
 
     /**

@@ -15,11 +15,18 @@ class IosAuthManager : AuthManager {
         return Result.failure(Exception("Not implemented on iOS yet"))
     }
 
-    override suspend fun signInWithEmailAndPassword(email: String, password: String): Result<User> {
+    override suspend fun signInWithEmailAndPassword(
+        email: String,
+        password: String,
+    ): Result<User> {
         return Result.failure(Exception("Not implemented on iOS yet"))
     }
 
-    override suspend fun createUserWithEmailAndPassword(email: String, password: String, displayName: String): Result<User> {
+    override suspend fun createUserWithEmailAndPassword(
+        email: String,
+        password: String,
+        displayName: String,
+    ): Result<User> {
         return Result.failure(Exception("Not implemented on iOS yet"))
     }
 
@@ -31,7 +38,10 @@ class IosAuthManager : AuthManager {
         return Result.failure(Exception("Not implemented on iOS yet"))
     }
 
-    override suspend fun reauthenticateWithEmailAndPassword(email: String, password: String): Result<Unit> {
+    override suspend fun reauthenticateWithEmailAndPassword(
+        email: String,
+        password: String,
+    ): Result<Unit> {
         return Result.failure(Exception("Not implemented on iOS yet"))
     }
 

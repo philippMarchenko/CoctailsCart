@@ -27,7 +27,7 @@ fun NotificationDetailsScreen(
     viewModel: NotificationsViewModel = koinViewModel(),
     onBackClick: () -> Unit,
     onCocktailClick: (String) -> Unit = {},
-    onActionClick: (String) -> Unit = {}
+    onActionClick: (String) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val notification = uiState.notifications.find { it.id == notificationId }
@@ -50,7 +50,7 @@ fun NotificationDetailsScreen(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = "Back",
                         )
                     }
                 },
@@ -62,42 +62,44 @@ fun NotificationDetailsScreen(
                                 viewModel.deleteNotification(it.id)
                                 onBackClick()
                             }
-                        }
+                        },
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete notification"
+                            contentDescription = "Delete notification",
                         )
                     }
-                }
+                },
             )
-        }
+        },
     ) { paddingValues ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
         ) {
             if (notification != null) {
                 NotificationDetailsContent(
                     notification = notification,
                     onCocktailClick = onCocktailClick,
-                    onActionClick = onActionClick
+                    onActionClick = onActionClick,
                 )
             } else {
                 // Notification not found
                 Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    verticalArrangement = Arrangement.Center,
                 ) {
                     Icon(
                         imageVector = Icons.Default.ErrorOutline,
                         contentDescription = null,
                         modifier = Modifier.size(64.dp),
-                        tint = MaterialTheme.colorScheme.error
+                        tint = MaterialTheme.colorScheme.error,
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     CocktailCardTitle("Notification Not Found")
@@ -105,11 +107,11 @@ fun NotificationDetailsScreen(
                     Text(
                         text = "The notification you're looking for might have been deleted or doesn't exist.",
                         textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium,
                     )
                     Spacer(modifier = Modifier.height(24.dp))
                     Button(
-                        onClick = onBackClick
+                        onClick = onBackClick,
                     ) {
                         CocktailLabel("Go Back")
                     }
@@ -123,14 +125,15 @@ fun NotificationDetailsScreen(
 private fun NotificationDetailsContent(
     notification: Notification,
     onCocktailClick: (String) -> Unit,
-    onActionClick: (String) -> Unit
+    onActionClick: (String) -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         // Notification Header
         NotificationHeader(notification = notification)
@@ -145,7 +148,7 @@ private fun NotificationDetailsContent(
         NotificationActions(
             notification = notification,
             onCocktailClick = onCocktailClick,
-            onActionClick = onActionClick
+            onActionClick = onActionClick,
         )
     }
 }
@@ -154,40 +157,42 @@ private fun NotificationDetailsContent(
 private fun NotificationHeader(notification: Notification) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = getNotificationBackgroundColor(notification.type)
-        )
+        colors =
+            CardDefaults.cardColors(
+                containerColor = getNotificationBackgroundColor(notification.type),
+            ),
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             // Notification type icon
             Icon(
                 imageVector = getNotificationIcon(notification.type),
                 contentDescription = null,
                 tint = getNotificationColor(notification.type),
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(32.dp),
             )
 
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             ) {
                 CocktailCardTitle(notification.title)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = notification.timestamp.formatToEuropeanDateTime(),
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = getNotificationTypeLabel(notification.type),
                     style = MaterialTheme.typography.labelSmall,
-                    color = getNotificationColor(notification.type)
+                    color = getNotificationColor(notification.type),
                 )
             }
         }
@@ -197,19 +202,20 @@ private fun NotificationHeader(notification: Notification) {
 @Composable
 private fun NotificationContent(notification: Notification) {
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
         ) {
             CocktailSubtitle("Message")
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = notification.message,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
     }
@@ -219,21 +225,21 @@ private fun NotificationContent(notification: Notification) {
 private fun NotificationActions(
     notification: Notification,
     onCocktailClick: (String) -> Unit,
-    onActionClick: (String) -> Unit
+    onActionClick: (String) -> Unit,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         // Cocktail action button
         notification.cocktailId?.let { cocktailId ->
             Button(
                 onClick = { onCocktailClick(cocktailId) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Icon(
                     imageVector = Icons.Default.LocalBar,
                     contentDescription = null,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(18.dp),
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 CocktailLabel("View Cocktail")
@@ -244,12 +250,12 @@ private fun NotificationActions(
         notification.actionUrl?.let { actionUrl ->
             OutlinedButton(
                 onClick = { onActionClick(actionUrl) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.OpenInNew,
                     contentDescription = null,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(18.dp),
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 CocktailLabel("Open Link")
@@ -260,36 +266,40 @@ private fun NotificationActions(
 
 // Helper functions for notification styling
 @Composable
-private fun getNotificationIcon(type: NotificationType) = when (type) {
-    NotificationType.NEW_COCKTAIL -> Icons.Default.LocalBar
-    NotificationType.FAVORITE_UPDATE -> Icons.Default.Star
-    NotificationType.SYSTEM_MESSAGE -> Icons.Default.Settings
-    NotificationType.PROMOTION -> Icons.Default.LocalOffer
-    NotificationType.REMINDER -> Icons.Default.NotificationImportant
-}
+private fun getNotificationIcon(type: NotificationType) =
+    when (type) {
+        NotificationType.NEW_COCKTAIL -> Icons.Default.LocalBar
+        NotificationType.FAVORITE_UPDATE -> Icons.Default.Star
+        NotificationType.SYSTEM_MESSAGE -> Icons.Default.Settings
+        NotificationType.PROMOTION -> Icons.Default.LocalOffer
+        NotificationType.REMINDER -> Icons.Default.NotificationImportant
+    }
 
 @Composable
-private fun getNotificationColor(type: NotificationType) = when (type) {
-    NotificationType.NEW_COCKTAIL -> MaterialTheme.colorScheme.primary
-    NotificationType.FAVORITE_UPDATE -> MaterialTheme.colorScheme.secondary
-    NotificationType.SYSTEM_MESSAGE -> MaterialTheme.colorScheme.tertiary
-    NotificationType.PROMOTION -> MaterialTheme.colorScheme.error
-    NotificationType.REMINDER -> MaterialTheme.colorScheme.outline
-}
+private fun getNotificationColor(type: NotificationType) =
+    when (type) {
+        NotificationType.NEW_COCKTAIL -> MaterialTheme.colorScheme.primary
+        NotificationType.FAVORITE_UPDATE -> MaterialTheme.colorScheme.secondary
+        NotificationType.SYSTEM_MESSAGE -> MaterialTheme.colorScheme.tertiary
+        NotificationType.PROMOTION -> MaterialTheme.colorScheme.error
+        NotificationType.REMINDER -> MaterialTheme.colorScheme.outline
+    }
 
 @Composable
-private fun getNotificationBackgroundColor(type: NotificationType) = when (type) {
-    NotificationType.NEW_COCKTAIL -> MaterialTheme.colorScheme.primaryContainer
-    NotificationType.FAVORITE_UPDATE -> MaterialTheme.colorScheme.secondaryContainer
-    NotificationType.SYSTEM_MESSAGE -> MaterialTheme.colorScheme.tertiaryContainer
-    NotificationType.PROMOTION -> MaterialTheme.colorScheme.errorContainer
-    NotificationType.REMINDER -> MaterialTheme.colorScheme.surfaceVariant
-}
+private fun getNotificationBackgroundColor(type: NotificationType) =
+    when (type) {
+        NotificationType.NEW_COCKTAIL -> MaterialTheme.colorScheme.primaryContainer
+        NotificationType.FAVORITE_UPDATE -> MaterialTheme.colorScheme.secondaryContainer
+        NotificationType.SYSTEM_MESSAGE -> MaterialTheme.colorScheme.tertiaryContainer
+        NotificationType.PROMOTION -> MaterialTheme.colorScheme.errorContainer
+        NotificationType.REMINDER -> MaterialTheme.colorScheme.surfaceVariant
+    }
 
-private fun getNotificationTypeLabel(type: NotificationType) = when (type) {
-    NotificationType.NEW_COCKTAIL -> "New Cocktail"
-    NotificationType.FAVORITE_UPDATE -> "Favorite Update"
-    NotificationType.SYSTEM_MESSAGE -> "System Message"
-    NotificationType.PROMOTION -> "Promotion"
-    NotificationType.REMINDER -> "Reminder"
-}
+private fun getNotificationTypeLabel(type: NotificationType) =
+    when (type) {
+        NotificationType.NEW_COCKTAIL -> "New Cocktail"
+        NotificationType.FAVORITE_UPDATE -> "Favorite Update"
+        NotificationType.SYSTEM_MESSAGE -> "System Message"
+        NotificationType.PROMOTION -> "Promotion"
+        NotificationType.REMINDER -> "Reminder"
+    }

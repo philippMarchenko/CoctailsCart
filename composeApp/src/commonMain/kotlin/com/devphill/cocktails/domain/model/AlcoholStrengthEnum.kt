@@ -9,5 +9,5 @@ package com.devphill.cocktails.domain.model
  */
 data class AlcoholStrengthEnum(
     val key: String,
-    val value: String
+    val value: String,
 )

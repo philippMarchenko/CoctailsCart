@@ -8,5 +8,5 @@ data class SearchUiState(
     val searchResults: List<Cocktail> = emptyList(),
     val recentSearches: List<String> = emptyList(),
     val errorMessage: String? = null,
-    val isSearchActive: Boolean = false
+    val isSearchActive: Boolean = false,
 )

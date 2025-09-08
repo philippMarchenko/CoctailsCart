@@ -9,7 +9,6 @@ import kotlinx.coroutines.withContext
  * Loads resources from the assets folder
  */
 actual class PlatformResourceLoader {
-
     private var context: Context? = null
 
     actual fun initialize(context: Any?) {
@@ -17,16 +16,18 @@ actual class PlatformResourceLoader {
             ?: throw IllegalArgumentException("Android PlatformResourceLoader requires a Context")
     }
 
-    actual suspend fun loadResource(fileName: String): String = withContext(Dispatchers.IO) {
-        try {
-            val appContext = context
-                ?: throw IllegalStateException("PlatformResourceLoader not initialized. Call initialize(context) first.")
+    actual suspend fun loadResource(fileName: String): String =
+        withContext(Dispatchers.IO) {
+            try {
+                val appContext =
+                    context
+                        ?: throw IllegalStateException("PlatformResourceLoader not initialized. Call initialize(context) first.")
 
-            appContext.assets.open(fileName).bufferedReader().use { reader ->
-                reader.readText()
+                appContext.assets.open(fileName).bufferedReader().use { reader ->
+                    reader.readText()
+                }
+            } catch (e: Exception) {
+                throw Exception("Failed to load resource file: $fileName", e)
             }
-        } catch (e: Exception) {
-            throw Exception("Failed to load resource file: $fileName", e)
         }
-    }
 }

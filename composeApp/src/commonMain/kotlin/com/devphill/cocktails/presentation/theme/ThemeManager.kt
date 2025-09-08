@@ -1,12 +1,14 @@
 package com.devphill.cocktails.presentation.theme
 
+import com.devphill.cocktails.data.preferences.UserPreferencesManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import com.devphill.cocktails.data.preferences.UserPreferencesManager
 
 enum class ThemeMode {
-    LIGHT, DARK, SYSTEM
+    LIGHT,
+    DARK,
+    SYSTEM,
 }
 
 class ThemeManager(private val preferencesManager: UserPreferencesManager) {
@@ -31,14 +33,14 @@ class ThemeManager(private val preferencesManager: UserPreferencesManager) {
     }
 
     fun getCurrentTheme(): ThemeMode = _currentTheme.value
-    
+
     fun initializeTheme(savedTheme: ThemeMode?) {
         savedTheme?.let {
             _currentTheme.value = it
             preferencesManager.saveThemeMode(it)
         }
     }
-    
+
     private fun updateStatusBarForTheme(theme: ThemeMode) {
         // This will be implemented by platform-specific code
         when (theme) {
@@ -69,7 +71,9 @@ object GlobalThemeManager {
 
     fun getThemeManager(): ThemeManager {
         if (!::themeManager.isInitialized) {
-            throw IllegalStateException("ThemeManager must be initialized before use. Call GlobalThemeManager.initialize() first.")
+            throw IllegalStateException(
+                "ThemeManager must be initialized before use. Call GlobalThemeManager.initialize() first.",
+            )
         }
         return themeManager
     }

@@ -2,9 +2,8 @@ package com.devphill.cocktails.presentation.notifications
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.devphill.cocktails.domain.model.Notification
-import com.devphill.cocktails.domain.model.NotificationType
 import com.devphill.cocktails.domain.interactor.NotificationInteractor
+import com.devphill.cocktails.domain.model.Notification
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,13 +14,12 @@ data class NotificationsUiState(
     val notifications: List<Notification> = emptyList(),
     val isLoading: Boolean = true,
     val unreadCount: Int = 0,
-    val error: String? = null
+    val error: String? = null,
 )
 
 class NotificationsViewModel(
-    private val notificationInteractor: NotificationInteractor
+    private val notificationInteractor: NotificationInteractor,
 ) : ViewModel() {
-
     private val _uiState = MutableStateFlow(NotificationsUiState())
     val uiState: StateFlow<NotificationsUiState> = _uiState.asStateFlow()
 
@@ -34,18 +32,20 @@ class NotificationsViewModel(
             try {
                 notificationInteractor.getAllNotifications().collectLatest { notifications ->
                     val unreadCount = notificationInteractor.getUnreadCount()
-                    _uiState.value = _uiState.value.copy(
-                        notifications = notifications, // Already sorted in interactor
-                        isLoading = false,
-                        unreadCount = unreadCount,
-                        error = null
-                    )
+                    _uiState.value =
+                        _uiState.value.copy(
+                            notifications = notifications, // Already sorted in interactor
+                            isLoading = false,
+                            unreadCount = unreadCount,
+                            error = null,
+                        )
                 }
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    error = e.message ?: "Unknown error occurred"
-                )
+                _uiState.value =
+                    _uiState.value.copy(
+                        isLoading = false,
+                        error = e.message ?: "Unknown error occurred",
+                    )
             }
         }
     }
@@ -55,9 +55,10 @@ class NotificationsViewModel(
             try {
                 notificationInteractor.markNotificationAsRead(notificationId)
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    error = e.message ?: "Failed to mark notification as read"
-                )
+                _uiState.value =
+                    _uiState.value.copy(
+                        error = e.message ?: "Failed to mark notification as read",
+                    )
             }
         }
     }
@@ -67,9 +68,10 @@ class NotificationsViewModel(
             try {
                 notificationInteractor.markAllNotificationsAsRead()
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    error = e.message ?: "Failed to mark all notifications as read"
-                )
+                _uiState.value =
+                    _uiState.value.copy(
+                        error = e.message ?: "Failed to mark all notifications as read",
+                    )
             }
         }
     }
@@ -79,9 +81,10 @@ class NotificationsViewModel(
             try {
                 notificationInteractor.deleteNotification(notificationId)
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    error = e.message ?: "Failed to delete notification"
-                )
+                _uiState.value =
+                    _uiState.value.copy(
+                        error = e.message ?: "Failed to delete notification",
+                    )
             }
         }
     }

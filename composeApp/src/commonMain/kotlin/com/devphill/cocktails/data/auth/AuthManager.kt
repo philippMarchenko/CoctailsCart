@@ -50,7 +50,10 @@ interface AuthManager {
      * @param password User's password
      * @return Result containing User on successful authentication or error on failure
      */
-    suspend fun signInWithEmailAndPassword(email: String, password: String): Result<User>
+    suspend fun signInWithEmailAndPassword(
+        email: String,
+        password: String,
+    ): Result<User>
 
     /**
      * Creates a new user account with email, password, and display name.
@@ -60,7 +63,11 @@ interface AuthManager {
      * @param displayName New user's display name
      * @return Result containing User on successful account creation or error on failure
      */
-    suspend fun createUserWithEmailAndPassword(email: String, password: String, displayName: String): Result<User>
+    suspend fun createUserWithEmailAndPassword(
+        email: String,
+        password: String,
+        displayName: String,
+    ): Result<User>
 
     /**
      * Permanently deletes the current user's account.
@@ -76,7 +83,10 @@ interface AuthManager {
      * @param password User's current password
      * @return Result indicating success or error details on failure
      */
-    suspend fun reauthenticateWithEmailAndPassword(email: String, password: String): Result<Unit>
+    suspend fun reauthenticateWithEmailAndPassword(
+        email: String,
+        password: String,
+    ): Result<Unit>
 
     /**
      * Re-authenticates the current user using Google OAuth.
@@ -106,5 +116,5 @@ data class User(
     val uid: String,
     val email: String?,
     val displayName: String?,
-    val photoUrl: String?
+    val photoUrl: String?,
 )

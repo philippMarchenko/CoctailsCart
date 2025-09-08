@@ -24,49 +24,51 @@ import org.koin.dsl.module
  * Common Koin module that provides shared dependencies across all platforms.
  * This module contains business logic dependencies like interactors and ViewModels.
  */
-val commonModule = module {
+val commonModule =
+    module {
 
-    // Repositories
-    single<NotificationsRepository> {
-        NotificationsRepositoryImpl(get()) // Inject database
+        // Repositories
+        single<NotificationsRepository> {
+            NotificationsRepositoryImpl(get()) // Inject database
+        }
+
+        // Managers (PushNotificationManager is provided by platform-specific modules)
+        // User Preferences Manager
+        single<UserPreferencesManager> {
+            UserPreferencesManagerImpl()
+        }
+
+        single<FirstLaunchManager> {
+            FirstLaunchManagerImpl(
+                userPreferencesManager = get(),
+                pushNotificationManager = get(),
+                notificationInteractor = get(),
+            )
+        }
+
+        // Interactors
+        single<CocktailInteractor> {
+            CocktailInteractorImpl(get())
+        }
+
+        single<NotificationInteractor> {
+            NotificationInteractorImpl(get())
+        }
+
+        // ViewModels
+        viewModel { AuthViewModel(get(), get()) }
+        viewModel { DiscoverViewModel(get()) }
+        viewModel { SearchViewModel(get()) }
+        viewModel { FavoritesViewModel(get()) }
+        viewModel { ProfileViewModel(get(), get(), get()) }
+        viewModel { CocktailDetailsViewModel(get()) }
+        viewModel { NotificationsViewModel(get()) }
     }
-
-    // Managers (PushNotificationManager is provided by platform-specific modules)
-    // User Preferences Manager
-    single<UserPreferencesManager> {
-        UserPreferencesManagerImpl()
-    }
-
-    single<FirstLaunchManager> {
-        FirstLaunchManagerImpl(
-            userPreferencesManager = get(),
-            pushNotificationManager = get(),
-            notificationInteractor = get()
-        )
-    }
-
-    // Interactors
-    single<CocktailInteractor> {
-        CocktailInteractorImpl(get())
-    }
-
-    single<NotificationInteractor> {
-        NotificationInteractorImpl(get())
-    }
-
-    // ViewModels
-    viewModel { AuthViewModel(get(), get()) }
-    viewModel { DiscoverViewModel(get()) }
-    viewModel { SearchViewModel(get()) }
-    viewModel { FavoritesViewModel(get()) }
-    viewModel { ProfileViewModel(get(), get(), get()) }
-    viewModel { CocktailDetailsViewModel(get()) }
-    viewModel { NotificationsViewModel(get()) }
-}
 
 /**
  * All application modules combined
  */
-val appModules = listOf(
-    commonModule
-)
+val appModules =
+    listOf(
+        commonModule,
+    )

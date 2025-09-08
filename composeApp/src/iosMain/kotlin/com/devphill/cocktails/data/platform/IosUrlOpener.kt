@@ -1,8 +1,7 @@
 package com.devphill.cocktails.data.platform
 
-import com.devphill.cocktails.data.platform.UrlOpener
-import platform.UIKit.UIApplication
 import platform.Foundation.NSURL
+import platform.UIKit.UIApplication
 
 /**
  * iOS implementation for opening URLs.
@@ -10,7 +9,6 @@ import platform.Foundation.NSURL
  * otherwise falls back to Safari browser.
  */
 class IosUrlOpener : UrlOpener {
-
     override fun openUrl(url: String) {
         try {
             val nsUrl = NSURL.URLWithString(url)

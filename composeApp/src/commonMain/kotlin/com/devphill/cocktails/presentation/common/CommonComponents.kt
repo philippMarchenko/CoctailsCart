@@ -1,40 +1,29 @@
 package com.devphill.cocktails.presentation.common
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
-import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.domain.model.ComplexityLevel
 import com.devphill.cocktails.presentation.theme.*
 
 @Composable
 fun TagChip(
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Surface(
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
         contentColor = MaterialTheme.colorScheme.onSurface,
         shape = RoundedCornerShape(10.dp),
-        modifier = modifier
+        modifier = modifier,
     ) {
         CocktailLabel(
             text = text,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
         )
     }
 }
@@ -43,7 +32,7 @@ fun TagChip(
 fun CategoryChip(
     category: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     FilterChip(
         onClick = onClick,
@@ -51,29 +40,30 @@ fun CategoryChip(
             CocktailLabel(text = category)
         },
         selected = false,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
 @Composable
 fun ComplexityChip(
     complexity: ComplexityLevel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    val (text, color) = when (complexity) {
-        ComplexityLevel.SIMPLE -> "Simple" to MaterialTheme.colorScheme.secondary
-        ComplexityLevel.MEDIUM -> "Medium" to MaterialTheme.colorScheme.tertiary
-        ComplexityLevel.COMPLEX -> "Complex" to MaterialTheme.colorScheme.error
-    }
+    val (text, color) =
+        when (complexity) {
+            ComplexityLevel.SIMPLE -> "Simple" to MaterialTheme.colorScheme.secondary
+            ComplexityLevel.MEDIUM -> "Medium" to MaterialTheme.colorScheme.tertiary
+            ComplexityLevel.COMPLEX -> "Complex" to MaterialTheme.colorScheme.error
+        }
 
     Surface(
         color = color.copy(alpha = 0.1f),
         shape = RoundedCornerShape(12.dp),
-        modifier = modifier
+        modifier = modifier,
     ) {
         CocktailLabel(
             text = text,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
         )
     }
 }
@@ -81,28 +71,29 @@ fun ComplexityChip(
 @Composable
 fun CocktailIngredientsList(
     ingredients: List<String>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         CocktailSectionHeader(
             text = "Ingredients",
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = 8.dp),
         )
 
         ingredients.forEach { ingredient ->
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 2.dp),
-                verticalAlignment = Alignment.CenterVertically
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 2.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 CocktailBodyText(
                     text = "• ",
-                    modifier = Modifier
+                    modifier = Modifier,
                 )
                 CocktailBodyText(
                     text = ingredient,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
         }
@@ -110,12 +101,10 @@ fun CocktailIngredientsList(
 }
 
 @Composable
-fun LoadingIndicator(
-    modifier: Modifier = Modifier
-) {
+fun LoadingIndicator(modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
     ) {
         CircularProgressIndicator()
     }
@@ -125,27 +114,27 @@ fun LoadingIndicator(
 fun ErrorMessage(
     message: String,
     onRetry: (() -> Unit)? = null,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
     ) {
         CocktailScreenTitle(
             text = "⚠️",
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = 8.dp),
         )
 
         ErrorText(
             text = message,
-            modifier = Modifier.padding(horizontal = 24.dp)
+            modifier = Modifier.padding(horizontal = 24.dp),
         )
 
         onRetry?.let { retry ->
             Button(
                 onClick = retry,
-                modifier = Modifier.padding(top = 16.dp)
+                modifier = Modifier.padding(top = 16.dp),
             ) {
                 CocktailBodyText("Retry")
             }

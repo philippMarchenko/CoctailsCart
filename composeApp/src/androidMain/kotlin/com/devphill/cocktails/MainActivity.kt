@@ -20,18 +20,18 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 class MainActivity : ComponentActivity() {
-
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        // Handle permission result - this is intentionally simple
-        println("Notification permission granted: $isGranted")
-    }
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission(),
+        ) { isGranted: Boolean ->
+            // Handle permission result - this is intentionally simple
+            println("Notification permission granted: $isGranted")
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        
+
         // Configure window for proper keyboard handling
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
 
         // Set initial status bar appearance for dark theme
         statusBarController.setStatusBarAppearance(isLight = false) // Start with light icons for dark theme
-        
+
         // Initialize Koin
         startKoin {
             androidContext(this@MainActivity)
@@ -62,13 +62,17 @@ class MainActivity : ComponentActivity() {
     }
 
     fun requestNotificationPermissionIfNeeded() {
-        println("Checking notification permission... SDK: ${Build.VERSION.SDK_INT}, Required: ${Build.VERSION_CODES.TIRAMISU}")
+        println(
+            "Checking notification permission... SDK: ${Build.VERSION.SDK_INT}, " +
+                "Required: ${Build.VERSION_CODES.TIRAMISU}",
+        )
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            val hasPermission = ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) == PackageManager.PERMISSION_GRANTED
+            val hasPermission =
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS,
+                ) == PackageManager.PERMISSION_GRANTED
 
             println("Notification permission status: $hasPermission")
 

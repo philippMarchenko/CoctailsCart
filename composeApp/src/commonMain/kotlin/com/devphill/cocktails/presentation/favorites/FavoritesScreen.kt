@@ -1,8 +1,6 @@
 package com.devphill.cocktails.presentation.favorites
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.presentation.common.LoadingIndicator
-import com.devphill.cocktails.presentation.theme.CocktailGradients
 import com.devphill.cocktails.presentation.theme.CocktailScreenTitle
 import com.devphill.cocktails.presentation.theme.CocktailSectionHeader
 import com.devphill.cocktails.presentation.theme.CocktailSubtitle
@@ -29,7 +26,7 @@ fun FavoritesScreen(
     viewModel: FavoritesViewModel,
     modifier: Modifier = Modifier,
     onNavigateToDiscover: () -> Unit = {},
-    onNavigateToCocktailDetails: (String) -> Unit = {}
+    onNavigateToCocktailDetails: (String) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -39,7 +36,7 @@ fun FavoritesScreen(
         onRetry = viewModel::loadFavorites,
         onNavigateToDiscover = onNavigateToDiscover,
         onNavigateToCocktailDetails = onNavigateToCocktailDetails,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -50,12 +47,13 @@ private fun FavoritesContent(
     onRetry: () -> Unit,
     onNavigateToDiscover: () -> Unit,
     onNavigateToCocktailDetails: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp)
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(16.dp),
     ) {
         FavoritesHeader()
 
@@ -64,7 +62,7 @@ private fun FavoritesContent(
         when {
             uiState.isLoading -> {
                 LoadingIndicator(
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
             }
 
@@ -72,16 +70,17 @@ private fun FavoritesContent(
                 ErrorState(
                     message = uiState.errorMessage,
                     onRetry = onRetry,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
             }
 
             uiState.isEmpty -> {
                 EmptyFavoritesState(
                     onNavigateToDiscover = onNavigateToDiscover,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .wrapContentSize(Alignment.Center)
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .wrapContentSize(Alignment.Center),
                 )
             }
 
@@ -90,7 +89,7 @@ private fun FavoritesContent(
                     favorites = uiState.favorites,
                     onRemoveFavorite = onRemoveFavorite,
                     onNavigateToCocktailDetails = onNavigateToCocktailDetails,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
         }
@@ -101,11 +100,11 @@ private fun FavoritesContent(
 private fun FavoritesHeader() {
     Column {
         CocktailScreenTitle(
-            text = "Favorites"
+            text = "Favorites",
         )
         CocktailSubtitle(
             text = "Your saved cocktails",
-            modifier = Modifier.padding(top = 4.dp)
+            modifier = Modifier.padding(top = 4.dp),
         )
     }
 }
@@ -115,23 +114,23 @@ private fun FavoritesList(
     favorites: List<Cocktail>,
     onRemoveFavorite: (Cocktail) -> Unit,
     onNavigateToCocktailDetails: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         CocktailSectionHeader(
             text = "${favorites.size} Favorite${if (favorites.size != 1) "s" else ""}",
-            modifier = Modifier.padding(bottom = 12.dp)
+            modifier = Modifier.padding(bottom = 12.dp),
         )
 
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(favorites) { cocktail ->
                 FavoriteItem(
                     cocktail = cocktail,
                     onRemoveFavorite = { onRemoveFavorite(cocktail) },
                     onCocktailClick = { onNavigateToCocktailDetails(cocktail.id) },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
         }
@@ -144,48 +143,48 @@ private fun FavoriteItem(
     cocktail: Cocktail,
     onRemoveFavorite: () -> Unit,
     onCocktailClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Card(
-        modifier = modifier
-            .clickable { onCocktailClick() },
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        modifier =
+            modifier
+                .clickable { onCocktailClick() },
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Top
+                verticalAlignment = Alignment.Top,
             ) {
                 Column(
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 ) {
                     Text(
                         text = cocktail.title,
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
                     )
 
                     Text(
                         text = cocktail.method,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(top = 4.dp)
+                        modifier = Modifier.padding(top = 4.dp),
                     )
 
                     Row(
                         modifier = Modifier.padding(top = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
-
                         Spacer(modifier = Modifier.width(12.dp))
 
                         Text(
                             text = cocktail.category,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.primary,
                         )
 
                         Spacer(modifier = Modifier.width(12.dp))
@@ -193,19 +192,19 @@ private fun FavoriteItem(
                         Text(
                             text = "${cocktail.preparationTime} min",
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 }
 
                 IconButton(
                     onClick = onRemoveFavorite,
-                    modifier = Modifier.padding(start = 8.dp)
+                    modifier = Modifier.padding(start = 8.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Favorite,
                         contentDescription = "Remove from favorites",
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = MaterialTheme.colorScheme.primary,
                     )
                 }
             }
@@ -216,17 +215,17 @@ private fun FavoriteItem(
 @Composable
 private fun EmptyFavoritesState(
     onNavigateToDiscover: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
             imageVector = Icons.Default.FavoriteBorder,
             contentDescription = null,
             modifier = Modifier.size(80.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -240,13 +239,13 @@ private fun EmptyFavoritesState(
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(top = 8.dp, start = 32.dp, end = 32.dp)
+            modifier = Modifier.padding(top = 8.dp, start = 32.dp, end = 32.dp),
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
-            onClick = onNavigateToDiscover
+            onClick = onNavigateToDiscover,
         ) {
             Text("Discover Cocktails")
         }
@@ -257,17 +256,17 @@ private fun EmptyFavoritesState(
 private fun ErrorState(
     message: String,
     onRetry: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = "Error Loading Favorites",
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.error,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
 
         Text(
@@ -275,7 +274,7 @@ private fun ErrorState(
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(top = 8.dp, start = 32.dp, end = 32.dp)
+            modifier = Modifier.padding(top = 8.dp, start = 32.dp, end = 32.dp),
         )
 
         Spacer(modifier = Modifier.height(24.dp))

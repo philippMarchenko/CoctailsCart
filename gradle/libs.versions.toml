@@ -40,6 +40,9 @@ koin = "4.1.0"
 # JaCoCo Test Coverage
 jacoco = "0.8.11"
 
+# Ktlint
+ktlint = "12.1.2"
+
 # Testing
 junit = "4.13.2"
 androidx-test-ext-junit = "1.3.0"
@@ -124,3 +127,4 @@ serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref 
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 androidx-room = { id = "androidx.room", version.ref = "room" }
 jacoco = { id = "jacoco", version.ref = "jacoco" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }

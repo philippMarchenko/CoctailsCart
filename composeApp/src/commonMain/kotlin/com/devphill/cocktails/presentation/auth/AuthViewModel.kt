@@ -13,23 +13,26 @@ import kotlinx.coroutines.launch
 
 sealed class AuthState {
     object Unauthenticated : AuthState()
+
     object Loading : AuthState()
+
     object GoogleSignInRequired : AuthState()
+
     data class Authenticated(val user: User) : AuthState()
+
     data class Error(val message: String) : AuthState()
 }
 
 class AuthViewModel(
     private val authManager: AuthManager,
-    private val userPreferencesManager: UserPreferencesManager
+    private val userPreferencesManager: UserPreferencesManager,
 ) : ViewModel() {
-
     var authState by mutableStateOf<AuthState>(
         if (authManager.isUserSignedIn()) {
             AuthState.Authenticated(authManager.getCurrentUser()!!)
         } else {
             AuthState.Unauthenticated
-        }
+        },
     )
 
     private suspend fun saveUserData(user: User) {
@@ -37,7 +40,10 @@ class AuthViewModel(
         userPreferencesManager.putBoolean(UserPreferencesManagerImpl.Companion.IS_LOGGED_IN_KEY, true)
     }
 
-    fun signInWithEmailAndPassword(email: String, password: String) {
+    fun signInWithEmailAndPassword(
+        email: String,
+        password: String,
+    ) {
         viewModelScope.launch {
             authState = AuthState.Loading
             try {
@@ -49,7 +55,7 @@ class AuthViewModel(
                     },
                     onFailure = { exception ->
                         authState = AuthState.Error(exception.message ?: "Sign in failed")
-                    }
+                    },
                 )
             } catch (e: Exception) {
                 authState = AuthState.Error(e.message ?: "Sign in failed")
@@ -57,7 +63,11 @@ class AuthViewModel(
         }
     }
 
-    fun signUpWithEmailAndPassword(email: String, password: String, displayName: String) {
+    fun signUpWithEmailAndPassword(
+        email: String,
+        password: String,
+        displayName: String,
+    ) {
         viewModelScope.launch {
             authState = AuthState.Loading
             try {
@@ -69,7 +79,7 @@ class AuthViewModel(
                     },
                     onFailure = { exception ->
                         authState = AuthState.Error(exception.message ?: "Sign up failed")
-                    }
+                    },
                 )
             } catch (e: Exception) {
                 authState = AuthState.Error(e.message ?: "Sign up failed")
@@ -90,7 +100,7 @@ class AuthViewModel(
                     onFailure = { exception ->
                         println("Google sign-in failed: ${exception.message}")
                         authState = AuthState.Error(exception.message ?: "Google sign in failed")
-                    }
+                    },
                 )
             } catch (e: Exception) {
                 authState = AuthState.Error(e.message ?: "Google sign in failed")
@@ -110,7 +120,7 @@ class AuthViewModel(
                     },
                     onFailure = { exception ->
                         authState = AuthState.Error(exception.message ?: "Google sign in with token failed")
-                    }
+                    },
                 )
             } catch (e: Exception) {
                 authState = AuthState.Error(e.message ?: "Google sign in with token failed")

@@ -7,5 +7,5 @@ import androidx.compose.ui.Modifier
 expect fun PlatformSignUpScreen(
     onSignUpSuccess: () -> Unit,
     onNavigateToSignIn: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 )

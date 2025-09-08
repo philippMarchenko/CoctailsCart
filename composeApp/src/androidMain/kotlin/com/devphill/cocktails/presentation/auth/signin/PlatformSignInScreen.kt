@@ -7,11 +7,11 @@ import androidx.compose.ui.Modifier
 actual fun PlatformSignInScreen(
     onSignInSuccess: () -> Unit,
     onNavigateToSignUp: () -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     AndroidSignInScreen(
         onSignInSuccess = onSignInSuccess,
         onNavigateToSignUp = onNavigateToSignUp,
-        modifier = modifier
+        modifier = modifier,
     )
 }

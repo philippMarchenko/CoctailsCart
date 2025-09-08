@@ -11,7 +11,10 @@ interface ShareManager {
      * @param text The text content to share
      * @param subject Optional subject line for the shared content (used in email clients)
      */
-    fun shareText(text: String, subject: String? = null)
+    fun shareText(
+        text: String,
+        subject: String? = null,
+    )
 
     /**
      * Shares the application with others using platform-specific app store links.
@@ -19,5 +22,8 @@ interface ShareManager {
      * @param appName The display name of the application
      * @param appUrl The platform-specific app store URL for downloading the app
      */
-    fun shareApp(appName: String, appUrl: String)
+    fun shareApp(
+        appName: String,
+        appUrl: String,
+    )
 }

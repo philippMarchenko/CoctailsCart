@@ -4,15 +4,13 @@ import com.devphill.cocktails.data.database.CocktailDatabase
 import com.devphill.cocktails.data.database.mapper.toDomain
 import com.devphill.cocktails.data.database.mapper.toEntity
 import com.devphill.cocktails.domain.model.Notification
-import com.devphill.cocktails.domain.model.NotificationType
 import com.devphill.cocktails.domain.repository.NotificationsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class NotificationsRepositoryImpl(
-    database: CocktailDatabase
+    database: CocktailDatabase,
 ) : NotificationsRepository {
-
     private val notificationDao = database.notificationDao()
 
     override fun getNotifications(): Flow<List<Notification>> {
@@ -48,5 +46,4 @@ class NotificationsRepositoryImpl(
     override suspend fun insertNotification(notification: Notification) {
         notificationDao.insertNotification(notification.toEntity())
     }
-
 }

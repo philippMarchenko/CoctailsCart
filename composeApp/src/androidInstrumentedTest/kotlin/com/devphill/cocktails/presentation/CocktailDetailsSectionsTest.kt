@@ -13,7 +13,6 @@ import org.junit.Test
  * Comprehensive UI tests for the Cocktail Details sections.
  */
 class CocktailDetailsSectionsTest {
-
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -28,7 +27,7 @@ class CocktailDetailsSectionsTest {
                     preparationTime = 5,
                     glass = "Coupe",
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -56,7 +55,7 @@ class CocktailDetailsSectionsTest {
                     preparationTime = 5,
                     glass = "Coupe",
                     isVisible = false,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -76,7 +75,7 @@ class CocktailDetailsSectionsTest {
                     preparationTime = 2,
                     glass = null,
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -97,7 +96,7 @@ class CocktailDetailsSectionsTest {
                     preparationTime = 3,
                     glass = "Rocks",
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -116,7 +115,7 @@ class CocktailDetailsSectionsTest {
                     preparationTime = 3,
                     glass = "Rocks",
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -135,7 +134,7 @@ class CocktailDetailsSectionsTest {
                     preparationTime = 10,
                     glass = "Rocks",
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -154,7 +153,7 @@ class CocktailDetailsSectionsTest {
                 AnimatedIngredientsSection(
                     ingredients = ingredients,
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -178,7 +177,7 @@ class CocktailDetailsSectionsTest {
                 AnimatedIngredientsSection(
                     ingredients = ingredients,
                     isVisible = false,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -195,7 +194,7 @@ class CocktailDetailsSectionsTest {
                 AnimatedIngredientsSection(
                     ingredients = emptyList(),
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -215,7 +214,7 @@ class CocktailDetailsSectionsTest {
                 AnimatedIngredientsSection(
                     ingredients = ingredients,
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -228,18 +227,19 @@ class CocktailDetailsSectionsTest {
 
     @Test
     fun ingredientsSection_handlesLongIngredientsList() {
-        val ingredients = listOf(
-            "Gin", "Dry Vermouth", "Sweet Vermouth", "Campari",
-            "Orange Peel", "Lemon Twist", "Angostura Bitters",
-            "Simple Syrup", "Fresh Lime Juice", "Egg White"
-        )
+        val ingredients =
+            listOf(
+                "Gin", "Dry Vermouth", "Sweet Vermouth", "Campari",
+                "Orange Peel", "Lemon Twist", "Angostura Bitters",
+                "Simple Syrup", "Fresh Lime Juice", "Egg White",
+            )
 
         composeTestRule.setContent {
             MaterialTheme {
                 AnimatedIngredientsSection(
                     ingredients = ingredients,
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -265,7 +265,7 @@ class CocktailDetailsSectionsTest {
                     method = method,
                     garnish = garnish,
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -289,7 +289,7 @@ class CocktailDetailsSectionsTest {
                     method = method,
                     garnish = null,
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -312,7 +312,7 @@ class CocktailDetailsSectionsTest {
                     method = method,
                     garnish = "",
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -333,7 +333,7 @@ class CocktailDetailsSectionsTest {
                     method = "Shake with ice",
                     garnish = "Lemon",
                     isVisible = false,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -353,7 +353,7 @@ class CocktailDetailsSectionsTest {
                     method = longMethod,
                     garnish = "Orange twist",
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -373,7 +373,7 @@ class CocktailDetailsSectionsTest {
                     videoUrl = "https://youtube.com/watch?v=abc123",
                     onVideoClick = {},
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -391,7 +391,7 @@ class CocktailDetailsSectionsTest {
                     videoUrl = "https://youtube.com/watch?v=abc123",
                     onVideoClick = {},
                     isVisible = false,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -411,7 +411,7 @@ class CocktailDetailsSectionsTest {
                     videoUrl = "https://youtube.com/watch?v=abc123",
                     onVideoClick = { clickCount++ },
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -434,7 +434,7 @@ class CocktailDetailsSectionsTest {
                     preparationTime = 3,
                     glass = "Rocks",
                     isVisible = true,
-                    delay = 500
+                    delay = 500,
                 )
             }
         }
@@ -451,7 +451,7 @@ class CocktailDetailsSectionsTest {
                 AnimatedIngredientsSection(
                     ingredients = listOf("Gin", "Tonic"),
                     isVisible = true,
-                    delay = 800
+                    delay = 800,
                 )
             }
         }

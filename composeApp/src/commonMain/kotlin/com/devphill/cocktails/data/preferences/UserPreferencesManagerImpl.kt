@@ -6,7 +6,6 @@ import com.russhwolf.settings.Settings
 import kotlinx.serialization.json.Json
 
 class UserPreferencesManagerImpl() : UserPreferencesManager {
-
     val settings: Settings = Settings()
 
     companion object {
@@ -63,11 +62,17 @@ class UserPreferencesManagerImpl() : UserPreferencesManager {
         }
     }
 
-    override suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean {
+    override suspend fun getBoolean(
+        key: String,
+        defaultValue: Boolean,
+    ): Boolean {
         return settings.getBoolean(key, defaultValue)
     }
 
-    override suspend fun putBoolean(key: String, value: Boolean) {
+    override suspend fun putBoolean(
+        key: String,
+        value: Boolean,
+    ) {
         settings.putBoolean(key, value)
     }
 

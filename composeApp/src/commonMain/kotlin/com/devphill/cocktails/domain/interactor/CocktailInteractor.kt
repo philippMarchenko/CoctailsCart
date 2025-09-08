@@ -1,7 +1,6 @@
 package com.devphill.cocktails.domain.interactor
 
 import com.devphill.cocktails.domain.model.Cocktail
-import com.devphill.cocktails.domain.repository.CocktailRepository
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -62,5 +61,8 @@ interface CocktailInteractor {
      * @param cocktail The cocktail to toggle favorite status for
      * @param isFavorite Current favorite status (true if currently favorite)
      */
-    suspend fun toggleFavorite(cocktail: Cocktail, isFavorite: Boolean)
+    suspend fun toggleFavorite(
+        cocktail: Cocktail,
+        isFavorite: Boolean,
+    )
 }

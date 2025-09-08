@@ -7,6 +7,6 @@ import platform.Foundation.NSHomeDirectory
 actual fun getDatabaseBuilder(context: Any): RoomDatabase.Builder<CocktailDatabase> {
     val dbFilePath = NSHomeDirectory() + "/Documents/cocktail_database.db"
     return Room.databaseBuilder<CocktailDatabase>(
-        name = dbFilePath
+        name = dbFilePath,
     )
 }

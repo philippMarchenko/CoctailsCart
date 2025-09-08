@@ -6,5 +6,5 @@ data class DiscoverUiState(
     val isLoading: Boolean = false,
     val cocktails: List<Cocktail> = emptyList(),
     val cocktailOfDay: Cocktail? = null,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
 )

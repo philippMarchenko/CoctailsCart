@@ -3,6 +3,7 @@ package com.devphill.cocktails.data.database.mapper
 import com.devphill.cocktails.data.database.entity.NotificationEntity
 import com.devphill.cocktails.domain.model.Notification
 import com.devphill.cocktails.domain.model.NotificationType
+import kotlinx.datetime.Clock
 
 /**
  * Mapper functions to convert between domain models and database entities for notifications
@@ -17,7 +18,7 @@ fun NotificationEntity.toDomain(): Notification {
         timestamp = timestamp.toString(),
         isRead = isRead,
         cocktailId = cocktailId,
-        actionUrl = actionUrl
+        actionUrl = actionUrl,
     )
 }
 
@@ -27,10 +28,10 @@ fun Notification.toEntity(): NotificationEntity {
         title = title,
         message = message,
         type = type.name,
-        timestamp = timestamp.toLongOrNull() ?: System.currentTimeMillis(),
+        timestamp = timestamp.toLongOrNull() ?: Clock.System.now().toEpochMilliseconds(),
         isRead = isRead,
         cocktailId = cocktailId,
-        actionUrl = actionUrl
+        actionUrl = actionUrl,
     )
 }
 

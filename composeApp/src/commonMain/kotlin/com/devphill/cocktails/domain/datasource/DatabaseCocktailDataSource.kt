@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.Flow
  * This abstraction allows the domain layer to be independent of specific storage implementations.
  */
 interface DatabaseCocktailDataSource {
-
     /**
      * Retrieves all cocktails from the data source.
      * @return Flow emitting list of all cocktails
@@ -53,7 +52,10 @@ interface DatabaseCocktailDataSource {
      * @param cocktailId The ID of the cocktail to update
      * @param isFavorite New favorite status
      */
-    suspend fun updateFavoriteStatus(cocktailId: String, isFavorite: Boolean)
+    suspend fun updateFavoriteStatus(
+        cocktailId: String,
+        isFavorite: Boolean,
+    )
 
     /**
      * Gets the total count of cocktails in the data source.

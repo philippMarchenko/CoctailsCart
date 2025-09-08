@@ -8,7 +8,6 @@ import com.devphill.cocktails.MainActivity
 import org.koin.core.component.KoinComponent
 
 actual class NotificationPermissionManager : KoinComponent {
-
     // Store reference to MainActivity for permission requests
     companion object {
         private var mainActivity: MainActivity? = null
@@ -32,7 +31,7 @@ actual class NotificationPermissionManager : KoinComponent {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ContextCompat.checkSelfPermission(
                 activity,
-                Manifest.permission.POST_NOTIFICATIONS
+                Manifest.permission.POST_NOTIFICATIONS,
             ) == PackageManager.PERMISSION_GRANTED
         } else {
             true // Pre-Android 13 doesn't require explicit notification permission

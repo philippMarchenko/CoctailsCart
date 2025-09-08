@@ -15,5 +15,5 @@ data class CocktailsData(
     val categories: List<CategoryEnum>,
     val ingredients: IngredientsStructure,
     val complexityLevels: List<ComplexityEnum>,
-    val alcoholStrengths: List<AlcoholStrengthEnum>
+    val alcoholStrengths: List<AlcoholStrengthEnum>,
 )

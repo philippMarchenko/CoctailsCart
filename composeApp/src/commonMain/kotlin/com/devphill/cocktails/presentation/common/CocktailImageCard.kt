@@ -39,17 +39,18 @@ fun CocktailImageCard(
     cocktail: Cocktail,
     tags: List<String>,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Card(
         onClick = onClick,
         shape = RoundedCornerShape(20.dp),
-        modifier = modifier
+        modifier = modifier,
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surfaceVariant)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
         ) {
             var isLoading by remember { mutableStateOf(true) }
 
@@ -61,21 +62,22 @@ fun CocktailImageCard(
                     onLoading = { isLoading = true },
                     onSuccess = { isLoading = false },
                     onError = { isLoading = false },
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 )
 
                 // Show progress indicator while image is loading
                 if (isLoading) {
                     Box(
                         contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f))
+                        modifier =
+                            Modifier
+                                .fillMaxSize()
+                                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f)),
                     ) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(24.dp), // Smaller progress indicator
                             color = MaterialTheme.colorScheme.primary,
-                            strokeWidth = 2.dp // Thinner stroke for better performance
+                            strokeWidth = 2.dp, // Thinner stroke for better performance
                         )
                     }
                 }
@@ -83,17 +85,20 @@ fun CocktailImageCard(
 
             // Dark gradient overlay to improve text contrast
             Box(
-                modifier = Modifier
-                    .matchParentSize()
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Black.copy(alpha = 0.4f),
-                                Color.Transparent,
-                                Color.Black.copy(alpha = 0.6f)
-                            )
-                        )
-                    )
+                modifier =
+                    Modifier
+                        .matchParentSize()
+                        .background(
+                            brush =
+                                Brush.verticalGradient(
+                                    colors =
+                                        listOf(
+                                            Color.Black.copy(alpha = 0.4f),
+                                            Color.Transparent,
+                                            Color.Black.copy(alpha = 0.6f),
+                                        ),
+                                ),
+                        ),
             )
 
             // Title at the top
@@ -104,10 +109,11 @@ fun CocktailImageCard(
                 color = Color.White,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .fillMaxWidth()
-                    .padding(12.dp)
+                modifier =
+                    Modifier
+                        .align(Alignment.TopStart)
+                        .fillMaxWidth()
+                        .padding(12.dp),
             )
 
             // Tags at the bottom with proper wrapping
@@ -115,10 +121,11 @@ fun CocktailImageCard(
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
-                    modifier = Modifier
-                        .align(Alignment.BottomStart)
-                        .fillMaxWidth()
-                        .padding(12.dp)
+                    modifier =
+                        Modifier
+                            .align(Alignment.BottomStart)
+                            .fillMaxWidth()
+                            .padding(12.dp),
                 ) {
                     tags.take(6).forEach { tag ->
                         TagChip(text = tag)
@@ -134,31 +141,29 @@ fun CocktailImageCard(
 fun CocktailImageCardPreview() {
     MaterialTheme {
         CocktailImageCard(
-            cocktail = Cocktail(
-                id = "1",
-                title = "Mojito",
-                imageUrl = "https://example.com/mojito.jpg",
-                cocktailUrl = null,
-                category = "Classic",
-                categoryEnum = "CLASSIC",
-                views = "2.5k",
-                ingredients = listOf("White rum", "Lime juice", "Mint", "Sugar", "Soda water"),
-                ingredientsEnums = listOf("WHITE_RUM", "LIME_JUICE", "MINT", "SUGAR", "SODA_WATER"),
-                method = "Muddle mint and sugar, add rum and lime juice, top with soda water",
-                garnish = "Mint sprig",
-                glass = "Highball glass",
-                videoUrl = null,
-                complexity = ComplexityLevel.SIMPLE,
-                alcoholStrength = AlcoholStrength.LIGHT,
-                searchText = "mojito rum mint lime",
-                isFavorite = true,
-                preparationTime = 3
-            ),
+            cocktail =
+                Cocktail(
+                    id = "1",
+                    title = "Mojito",
+                    imageUrl = "https://example.com/mojito.jpg",
+                    cocktailUrl = null,
+                    category = "Classic",
+                    categoryEnum = "CLASSIC",
+                    views = "2.5k",
+                    ingredients = listOf("White rum", "Lime juice", "Mint", "Sugar", "Soda water"),
+                    ingredientsEnums = listOf("WHITE_RUM", "LIME_JUICE", "MINT", "SUGAR", "SODA_WATER"),
+                    method = "Muddle mint and sugar, add rum and lime juice, top with soda water",
+                    garnish = "Mint sprig",
+                    glass = "Highball glass",
+                    videoUrl = null,
+                    complexity = ComplexityLevel.SIMPLE,
+                    alcoholStrength = AlcoholStrength.LIGHT,
+                    searchText = "mojito rum mint lime",
+                    isFavorite = true,
+                    preparationTime = 3,
+                ),
             tags = listOf("Refreshing", "Minty", "Summer"),
-            onClick = { }
+            onClick = { },
         )
     }
 }
-
-
-
