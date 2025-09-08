@@ -1,4 +1,4 @@
-package com.devphill.cocktails.presentation.cocktail_details
+package com.devphill.cocktails.presentation.cocktailDetails
 
 import app.cash.turbine.test
 import com.devphill.cocktails.domain.interactor.CocktailInteractor

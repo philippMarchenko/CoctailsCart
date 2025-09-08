@@ -195,7 +195,12 @@ private fun SignInForm(
                 trailingIcon = if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                 onTrailingIconClick = onPasswordVisibilityToggle,
                 keyboardType = KeyboardType.Password,
-                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                visualTransformation =
+                    if (passwordVisible) {
+                        VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation()
+                    },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !isLoading,
                 singleLine = true,

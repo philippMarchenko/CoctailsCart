@@ -20,8 +20,9 @@ actual class PlatformResourceLoader {
         withContext(Dispatchers.IO) {
             try {
                 val appContext =
-                    context
-                        ?: throw IllegalStateException("PlatformResourceLoader not initialized. Call initialize(context) first.")
+                    context ?: throw IllegalStateException(
+                        "PlatformResourceLoader not initialized. Call initialize(context) first.",
+                    )
 
                 appContext.assets.open(fileName).bufferedReader().use { reader ->
                     reader.readText()

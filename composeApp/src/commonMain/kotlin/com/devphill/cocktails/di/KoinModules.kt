@@ -11,7 +11,7 @@ import com.devphill.cocktails.domain.interactor.NotificationInteractor
 import com.devphill.cocktails.domain.interactor.NotificationInteractorImpl
 import com.devphill.cocktails.domain.repository.NotificationsRepository
 import com.devphill.cocktails.presentation.auth.AuthViewModel
-import com.devphill.cocktails.presentation.cocktail_details.CocktailDetailsViewModel
+import com.devphill.cocktails.presentation.cocktailDetails.CocktailDetailsViewModel
 import com.devphill.cocktails.presentation.discover.DiscoverViewModel
 import com.devphill.cocktails.presentation.favorites.FavoritesViewModel
 import com.devphill.cocktails.presentation.notifications.NotificationsViewModel

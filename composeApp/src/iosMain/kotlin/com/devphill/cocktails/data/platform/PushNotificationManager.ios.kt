@@ -40,7 +40,7 @@ actual class PushNotificationManager {
             UNNotificationRequest.requestWithIdentifier(
                 identifier = notification.id,
                 content = content,
-                trigger = null, // Show immediately
+                trigger = null,
             )
 
         notificationCenter.addNotificationRequest(request) { error ->

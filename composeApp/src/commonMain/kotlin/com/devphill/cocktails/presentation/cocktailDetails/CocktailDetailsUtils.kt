@@ -1,4 +1,4 @@
-package com.devphill.cocktails.presentation.cocktail_details
+package com.devphill.cocktails.presentation.cocktailDetails
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Engineering

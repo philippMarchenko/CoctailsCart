@@ -222,8 +222,6 @@ kotlin {
      * - Includes: All production code in commonMain and androidMain
      * - Excludes: Test files, generated code, Android R classes, BuildConfig, Manifest files
      */
-
-    // Make sure test tasks always run and are not considered up-to-date
     tasks.withType<Test>().configureEach {
         outputs.upToDateWhen { false }
     }

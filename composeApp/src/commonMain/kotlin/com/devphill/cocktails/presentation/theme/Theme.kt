@@ -2,7 +2,12 @@ package com.devphill.cocktails.presentation.theme
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ColorScheme
@@ -11,8 +16,8 @@ import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
-import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -53,9 +58,9 @@ object CocktailGradients {
         Brush.verticalGradient(
             colors =
                 listOf(
-                    Color(0xFF1A1A2E), // Your splash screen deep navy
-                    Color(0xFF2D1B69), // Your splash screen luxury purple
-                    Color(0xFF16213E), // Your splash screen royal blue
+                    Color(0xFF1A1A2E),
+                    Color(0xFF2D1B69),
+                    Color(0xFF16213E),
                 ),
         )
 
@@ -63,9 +68,9 @@ object CocktailGradients {
         Brush.verticalGradient(
             colors =
                 listOf(
-                    Color(0xFFF8F6FF), // Light purple tint
-                    Color(0xFFEADDFF), // Soft purple
-                    Color(0xFFE6F7F6), // Light mint tint
+                    Color(0xFFF8F6FF),
+                    Color(0xFFEADDFF),
+                    Color(0xFFE6F7F6),
                 ),
         )
 }
@@ -86,11 +91,11 @@ private val DarkCocktailColors: ColorScheme =
         tertiaryContainer = CocktailColors.CardSurface,
         onTertiaryContainer = CocktailColors.PlatinumText,
         background = CocktailColors.DeepNavy,
-        onBackground = CocktailColors.PlatinumText, // Light text on dark background
+        onBackground = CocktailColors.PlatinumText,
         surface = CocktailColors.GlassSurface,
-        onSurface = CocktailColors.WarmWhite, // Light text on surfaces
+        onSurface = CocktailColors.WarmWhite,
         surfaceVariant = CocktailColors.CardSurface,
-        onSurfaceVariant = CocktailColors.PlatinumText, // Fixed: Light text for titles
+        onSurfaceVariant = CocktailColors.PlatinumText,
         outline = CocktailColors.LuxuryPurple.copy(alpha = 0.5f),
         surfaceBright = CocktailColors.CardSurface,
         surfaceTint = CocktailColors.GoldenHour,
@@ -275,7 +280,7 @@ fun DarkColorPalettePreview() {
                 "Dark Theme",
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.padding(bottom = 16.dp),
-                color = Color(0xFFE6E6E6), // Light text for dark background
+                color = Color(0xFFE6E6E6),
             )
             ColorSchemeDisplay(DarkCocktailColors)
         }

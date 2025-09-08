@@ -1,4 +1,4 @@
-package com.devphill.cocktails.presentation.cocktail_details
+package com.devphill.cocktails.presentation.cocktailDetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -18,7 +18,7 @@ import androidx.test.espresso.action.ViewActions.swipeUp
 import com.devphill.cocktails.domain.model.AlcoholStrength
 import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.domain.model.ComplexityLevel
-import com.devphill.cocktails.presentation.cocktail_details.CocktailDetailsContent
+import com.devphill.cocktails.presentation.cocktailDetails.CocktailDetailsContent
 import org.junit.Rule
 import org.junit.Test
 
@@ -245,7 +245,11 @@ class CocktailDetailsComponentsTest {
                         "Orange peel for garnish",
                         "Luxardo cherry for garnish",
                     ),
-                method = "Add all spirits and bitters to a mixing glass filled with ice. Stir gently for 30 seconds to achieve proper dilution. Strain into a chilled old fashioned glass over one large ice cube. Express the oils from the orange peel over the drink and drop into the glass. Garnish with a Luxardo cherry on a cocktail pick.",
+                method =
+                    "Add all spirits and bitters to a mixing glass filled with ice. Stir gently for" +
+                        " 30 seconds to achieve proper dilution. Strain into a chilled old fashioned glass over one " +
+                        "large ice cube. Express the oils from the orange peel over the drink and drop into the " +
+                        "glass. Garnish with a Luxardo cherry on a cocktail pick.",
                 garnish = "Orange peel and Luxardo cherry",
                 glass = "Old Fashioned Glass",
                 complexity = ComplexityLevel.COMPLEX,

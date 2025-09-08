@@ -1,13 +1,13 @@
 package com.devphill.cocktails.presentation
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onRoot
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.devphill.cocktails.domain.interactor.CocktailInteractor
 import com.devphill.cocktails.domain.model.Cocktail
-import com.devphill.cocktails.presentation.cocktail_details.CocktailDetailsScreenContainer
-import com.devphill.cocktails.presentation.cocktail_details.CocktailDetailsViewModel
+import com.devphill.cocktails.presentation.cocktailDetails.CocktailDetailsScreenContainer
+import com.devphill.cocktails.presentation.cocktailDetails.CocktailDetailsViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule

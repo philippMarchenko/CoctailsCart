@@ -24,3 +24,5 @@ trim_trailing_whitespace = false
 ktlint_disabled_rules = import-ordering,no-wildcard-imports
 ktlint_standard_function-naming = disabled
 ktlint_standard_property-naming = disabled
+# Ensure max line length is enforced
+ktlint_standard_max-line-length = enabled

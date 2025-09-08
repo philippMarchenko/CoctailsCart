@@ -1,6 +1,7 @@
 package com.devphill.cocktails.domain.model
 
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class CocktailTest {
     @Test
@@ -14,9 +15,9 @@ class CocktailTest {
                 category = "Test",
                 categoryEnum = "test",
                 views = null,
-                ingredients = listOf("Tequila", "Lime Juice", "Triple Sec"), // 3 ingredients
+                ingredients = listOf("Tequila", "Lime Juice", "Triple Sec"),
                 ingredientsEnums = listOf("tequila", "lime_juice", "triple_sec"),
-                method = "Shake all ingredients with ice and strain", // Contains "shake"
+                method = "Shake all ingredients with ice and strain",
                 garnish = null,
                 glass = null,
                 videoUrl = null,
@@ -41,9 +42,9 @@ class CocktailTest {
                 category = "Test",
                 categoryEnum = "test",
                 views = null,
-                ingredients = listOf("Gin", "Vermouth"), // 2 ingredients
+                ingredients = listOf("Gin", "Vermouth"),
                 ingredientsEnums = listOf("gin", "vermouth"),
-                method = "Stir ingredients with ice and strain", // Contains "stir"
+                method = "Stir ingredients with ice and strain",
                 garnish = null,
                 glass = null,
                 videoUrl = null,
@@ -95,9 +96,9 @@ class CocktailTest {
                 category = "Test",
                 categoryEnum = "test",
                 views = null,
-                ingredients = listOf("Rum", "Coconut Cream", "Pineapple Juice"), // 3 ingredients
+                ingredients = listOf("Rum", "Coconut Cream", "Pineapple Juice"),
                 ingredientsEnums = listOf("rum", "coconut_cream", "pineapple_juice"),
-                method = "Blend all ingredients with ice", // Contains "blend"
+                method = "Blend all ingredients with ice",
                 garnish = null,
                 glass = null,
                 videoUrl = null,
@@ -122,9 +123,9 @@ class CocktailTest {
                 category = "Test",
                 categoryEnum = "test",
                 views = null,
-                ingredients = listOf("Vodka", "Juice"), // 2 ingredients
+                ingredients = listOf("Vodka", "Juice"),
                 ingredientsEnums = listOf("vodka", "juice"),
-                method = "Pour ingredients over ice", // No special keywords
+                method = "Pour ingredients over ice",
                 garnish = null,
                 glass = null,
                 videoUrl = null,

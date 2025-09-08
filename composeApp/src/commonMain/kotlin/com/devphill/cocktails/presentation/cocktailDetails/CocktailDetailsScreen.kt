@@ -1,4 +1,4 @@
-package com.devphill.cocktails.presentation.cocktail_details
+package com.devphill.cocktails.presentation.cocktailDetails
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -48,8 +48,16 @@ private fun CocktailDetailsScreenPreview() {
                         "15 ml Fresh Lemon Juice",
                         "Few Drops of Egg White",
                     ),
-                ingredientsEnums = listOf("gin", "raspberry_syrup", "fresh_lemon_juice", "few_drops_of_egg_white"),
-                method = "Pour all ingredients into cocktails shaker, shake well with ice, strain into chilled cocktail glass.",
+                ingredientsEnums =
+                    listOf(
+                        "gin",
+                        "raspberry_syrup",
+                        "fresh_lemon_juice",
+                        "few_drops_of_egg_white",
+                    ),
+                method =
+                    "Pour all ingredients into cocktails shaker, shake well with ice, " +
+                        "strain into chilled cocktail glass.",
                 garnish = "Garnish with fresh raspberries and lemon twist",
                 glass = "Cocktail Glass",
                 videoUrl = "https://www.youtube.com/watch?v=oo9R082EgGs",

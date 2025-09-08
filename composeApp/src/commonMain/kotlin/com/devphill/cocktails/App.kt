@@ -12,7 +12,13 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavType
@@ -26,8 +32,8 @@ import com.devphill.cocktails.data.platform.UrlOpener
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
 import com.devphill.cocktails.presentation.auth.signin.PlatformSignInScreen
 import com.devphill.cocktails.presentation.auth.signup.PlatformSignUpScreen
-import com.devphill.cocktails.presentation.cocktail_details.CocktailDetailsScreenContainer
-import com.devphill.cocktails.presentation.cocktail_details.CocktailDetailsViewModel
+import com.devphill.cocktails.presentation.cocktailDetails.CocktailDetailsScreenContainer
+import com.devphill.cocktails.presentation.cocktailDetails.CocktailDetailsViewModel
 import com.devphill.cocktails.presentation.discover.DiscoverScreen
 import com.devphill.cocktails.presentation.discover.DiscoverViewModel
 import com.devphill.cocktails.presentation.favorites.FavoritesScreen
@@ -47,7 +53,6 @@ import com.devphill.cocktails.presentation.theme.ThemeMode
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
-import kotlin.text.get
 
 // Navigation routes as constants
 object NavigationRoutes {
@@ -213,7 +218,7 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
     val isBottomNavScreen = bottomNavScreens.any { it.route == currentRoute }
 
     Scaffold(
-        containerColor = androidx.compose.ui.graphics.Color.Transparent, // Make scaffold transparent
+        containerColor = androidx.compose.ui.graphics.Color.Transparent,
         bottomBar = {
             // Only show bottom bar for main screens, not for cocktail details
             if (isBottomNavScreen) {
@@ -254,12 +259,12 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
         NavHost(
             navController = navController,
             startDestination = NavigationRoutes.DISCOVER,
-            modifier = Modifier, // Remove padding to allow edge-to-edge for detail screens
+            modifier = Modifier,
         ) {
             composable(NavigationRoutes.DISCOVER) {
                 val viewModel: DiscoverViewModel = koinViewModel()
                 DiscoverScreen(
-                    modifier = Modifier.padding(paddingValues), // Add padding for main screen
+                    modifier = Modifier.padding(paddingValues),
                     viewModel = viewModel,
                     onCocktailClick = { cocktailId ->
                         navController.navigate(NavigationRoutes.cocktailDetails(cocktailId))
@@ -363,7 +368,7 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                     onBackClick = { navController.navigateUp() },
                     onVideoClick = handleVideoClick,
                     onShareClick = handleShareClick,
-                    modifier = Modifier, // No padding for edge-to-edge display
+                    modifier = Modifier,
                     viewModel = viewModel,
                 )
             }

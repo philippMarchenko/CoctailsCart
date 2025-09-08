@@ -13,7 +13,7 @@ import androidx.test.espresso.action.ViewActions.swipeUp
 import com.devphill.cocktails.domain.model.AlcoholStrength
 import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.domain.model.ComplexityLevel
-import com.devphill.cocktails.presentation.cocktail_details.CocktailDetailsScreen
+import com.devphill.cocktails.presentation.cocktailDetails.CocktailDetailsScreen
 import org.junit.Rule
 import org.junit.Test
 
@@ -210,10 +210,25 @@ class CocktailDetailsScreenTest {
     fun cocktailDetailsScreen_handlesLongContent() {
         val cocktail =
             createSampleCocktail(
-                title = "The Most Incredibly Long and Complex Cocktail Name That Should Wrap Properly in the UI Without Breaking Layout",
-                category = "Extremely Long Category Name That Tests UI Layout Boundaries and Text Wrapping Capabilities",
-                method = "This is an extremely long method description that includes many detailed steps for cocktail preparation. First, you must carefully select the finest ingredients from reputable sources. Then, ensure all glassware is properly chilled to the optimal temperature. Next, measure each ingredient with precision using appropriate jiggers and measuring tools. Add the base spirit first, followed by modifiers in order of sweetness. Incorporate bitters drop by drop to achieve the perfect balance. Stir or shake according to the cocktail's requirements, ensuring proper dilution and temperature. Finally, strain into the prepared glass and garnish with the specified accompaniments, ensuring visual appeal and aromatic enhancement.",
-                garnish = "A complex garnish consisting of an orange peel twist, a luxardo cherry, and a sprig of fresh mint",
+                title =
+                    "The Most Incredibly Long and Complex Cocktail Name That Should Wrap Properly " +
+                        "in the UI Without Breaking Layout",
+                category =
+                    "Extremely Long Category Name That Tests UI Layout Boundaries and Text " +
+                        "Wrapping Capabilities",
+                method =
+                    "This is an extremely long method description that includes many detailed steps" +
+                        " for cocktail preparation. First, you must carefully select the finest ingredients" +
+                        " from reputable sources. Then, ensure all glassware is properly chilled to the " +
+                        "optimal temperature. Next, measure each ingredient with precision using appropriate" +
+                        " jiggers and measuring tools. Add the base spirit first, followed by modifiers in" +
+                        " order of sweetness. Incorporate bitters drop by drop to achieve the perfect balance. " +
+                        "Stir or shake according to the cocktail's requirements, ensuring proper dilution" +
+                        " and temperature. Finally, strain into the prepared glass and garnish with the" +
+                        " specified accompaniments, ensuring visual appeal and aromatic enhancement.",
+                garnish =
+                    "A complex garnish consisting of an orange peel twist, a luxardo cherry, " +
+                        "and a sprig of fresh mint",
             )
 
         composeTestRule.setContent {

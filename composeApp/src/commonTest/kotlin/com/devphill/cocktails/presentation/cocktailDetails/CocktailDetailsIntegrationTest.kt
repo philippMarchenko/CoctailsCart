@@ -1,9 +1,11 @@
-package com.devphill.cocktails.presentation.cocktail_details
+package com.devphill.cocktails.presentation.cocktailDetails
 
 import com.devphill.cocktails.domain.model.AlcoholStrength
 import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.domain.model.ComplexityLevel
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 class CocktailDetailsIntegrationTest {
     private val sampleCocktails =
@@ -18,14 +20,17 @@ class CocktailDetailsIntegrationTest {
                 views = "123K views",
                 ingredients = listOf("50ml White Rum", "10ml Lime Juice", "6 Mint leaves", "2tsp Sugar", "Soda Water"),
                 ingredientsEnums = listOf("white_rum", "lime_juice", "mint_leaves", "sugar", "soda_water"),
-                method = "Muddle mint leaves with sugar and lime juice. Add a splash of soda water and fill the glass with cracked ice. Pour the rum and top with soda water.",
                 garnish = "Sprig of mint",
-                glass = "Highball glass",
+                method =
+                    "Muddle mint leaves with sugar and lime juice. Add a splash of soda water and fill the glass " +
+                        "with cracked ice. Pour the rum and top with soda water.",
                 videoUrl = "https://youtube.com/watch?v=mojito",
                 complexity = ComplexityLevel.MEDIUM,
                 alcoholStrength = AlcoholStrength.LIGHT,
                 searchText = "mojito mint rum",
                 isFavorite = false,
+                glass = "Cocktail glass",
+                preparationTime = 6,
             ),
             Cocktail(
                 id = "martini",

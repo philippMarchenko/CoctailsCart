@@ -1,11 +1,20 @@
 package com.devphill.cocktails.presentation
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import com.devphill.cocktails.domain.model.AlcoholStrength
 import com.devphill.cocktails.domain.model.ComplexityLevel
-import com.devphill.cocktails.presentation.cocktail_details.*
+import com.devphill.cocktails.presentation.cocktailDetails.AnimatedIngredientsSection
+import com.devphill.cocktails.presentation.cocktailDetails.AnimatedInstructionsSection
+import com.devphill.cocktails.presentation.cocktailDetails.AnimatedQuickStatsSection
+import com.devphill.cocktails.presentation.cocktailDetails.AnimatedVideoSection
+import com.devphill.cocktails.presentation.cocktailDetails.CocktailDetailsTestTags
 import org.junit.Rule
 import org.junit.Test
 
@@ -345,7 +354,11 @@ class CocktailDetailsSectionsTest {
 
     @Test
     fun instructionsSection_handlesLongMethod() {
-        val longMethod = "Add all ingredients to a cocktail shaker filled with ice. Shake vigorously for 10-15 seconds until well chilled. Double strain through a fine mesh strainer into a chilled coupe glass. The double straining ensures a smooth texture by removing any ice chips or fruit pulp."
+        val longMethod =
+            "Add all ingredients to a cocktail shaker filled with ice. Shake" +
+                " vigorously for 10-15 seconds until well chilled. Double strain through a fine" +
+                " mesh strainer into a chilled coupe glass. The double straining ensures a smooth" +
+                " texture by removing any ice chips or fruit pulp."
 
         composeTestRule.setContent {
             MaterialTheme {
