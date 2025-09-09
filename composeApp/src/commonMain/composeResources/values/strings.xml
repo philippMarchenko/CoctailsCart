@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General -->
+    <string name="app_name">Cocktails Cart</string>
+    <string name="loading">Loading...</string>
+    <string name="error">Error</string>
+    <string name="retry">Retry</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="search">Search</string>
+    <string name="close">Close</string>
+    <string name="or">OR</string>
+
+    <!-- Profile Screen -->
+    <string name="profile">Profile</string>
+    <string name="profile_subtitle">Manage your cocktail journey</string>
+    <string name="profile_information">Profile Information</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="quick_actions">Quick Actions</string>
+    <string name="favourite_drinks">Favourite Drinks</string>
+    <string name="invite_friends">Invite Friends</string>
+    <string name="app_settings">App Settings</string>
+    <string name="theme">Theme</string>
+    <string name="notifications">Notifications</string>
+    <string name="language">Language</string>
+    <string name="account_actions">Account Actions</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="user_avatar">User Avatar</string>
+    <string name="default_avatar">Default Avatar</string>
+
+    <!-- Authentication -->
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="create_account">Create Account</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="create_your_account">Create Your Account</string>
+
+    <!-- Dialogs -->
+    <string name="sign_out_title">Sign Out</string>
+    <string name="sign_out_message">Are you sure you want to sign out?</string>
+    <string name="delete_account_title">Delete Account</string>
+    <string name="delete_account_message">Are you sure you want to delete your account? This action cannot be undone.</string>
+    <string name="re_authentication_title">Re-authentication Required</string>
+    <string name="re_authentication_message">Please enter your password to continue</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="theme_settings">Theme Settings</string>
+    <string name="select_theme">Select Theme</string>
+    <string name="light_theme">Light</string>
+    <string name="dark_theme">Dark</string>
+    <string name="system_theme">System</string>
+    <string name="language_settings">Language Settings</string>
+    <string name="select_language">Select Language</string>
+
+    <!-- Search -->
+    <string name="search_cocktails">Search Cocktails</string>
+    <string name="search_hint">Search...</string>
+    <string name="find_cocktails_by_name_or_ingredients">Find cocktails by name or ingredients</string>
+    <string name="start_typing_to_search">Start typing to search</string>
+    <string name="search_by_name_or_ingredients">Search by name or ingredients</string>
+    <string name="recent_searches">Recent Searches</string>
+    <string name="no_results">No Results</string>
+    <string name="search_results_for">Search results for</string>
+
+    <!-- Cocktail Details -->
+    <string name="ingredients">Ingredients</string>
+    <string name="instructions">Instructions</string>
+    <string name="add_to_favorites">Add to Favorites</string>
+    <string name="remove_from_favorites">Remove from Favorites</string>
+    <string name="share">Share</string>
+    <string name="cocktail_details">Cocktail Details</string>
+    <string name="time">Time</string>
+    <string name="complexity">Complexity</string>
+    <string name="strength">Strength</string>
+    <string name="glass">Glass</string>
+    <string name="garnish">Garnish</string>
+    <string name="tutorial_video">Tutorial Video</string>
+    <string name="watch_tutorial">Watch Tutorial</string>
+    <string name="learn_how_to_make">Learn how to make</string>
+    <string name="minutes">minutes</string>
+
+    <!-- Discover -->
+    <string name="discover">Discover</string>
+
+    <!-- Parameterized strings -->
+    <string name="hello_user">Hello, %1$s!</string>
+    <string name="welcome_user">Welcome back, %1$s</string>
+    <string name="search_results_count">%1$d results found</string>
+    <string name="preparation_time">%1$d minutes</string>
+
+    <!-- Plurals -->
+    <plurals name="items_count">
+        <item quantity="one">%1$d item</item>
+        <item quantity="other">%1$d items</item>
+    </plurals>
+
+    <plurals name="favorites_count">
+        <item quantity="one">%1$d favorite</item>
+        <item quantity="other">%1$d favorites</item>
+    </plurals>
+</resources>

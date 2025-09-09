@@ -6,6 +6,8 @@ import com.devphill.cocktails.data.auth.AuthManager
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
 import com.devphill.cocktails.data.platform.ShareManager
 import com.devphill.cocktails.data.preferences.UserPreferencesManagerImpl
+import com.devphill.cocktails.localization.Language
+import com.devphill.cocktails.localization.LocalizationManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +17,8 @@ import kotlinx.coroutines.launch
 class ProfileViewModel(
     private val userPreferencesManager: UserPreferencesManager,
     private val authManager: AuthManager,
-    private val shareManager: ShareManager
+    private val shareManager: ShareManager,
+    private val localizationManager: LocalizationManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
@@ -185,5 +188,13 @@ class ProfileViewModel(
         val appUrl = "https://play.google.com/store/apps/details?id=com.devphill.cocktails"
 
         shareManager.shareApp(appName, appUrl)
+    }
+
+    fun saveLanguage(language: Language) {
+        localizationManager.setLanguage(language)
+    }
+
+    fun getCurrentLanguage(): Language {
+        return localizationManager.getCurrentLanguage()
     }
 }

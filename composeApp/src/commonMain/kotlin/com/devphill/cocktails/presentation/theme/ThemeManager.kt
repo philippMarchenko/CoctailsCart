@@ -57,24 +57,18 @@ class ThemeManager(private val preferencesManager: UserPreferencesManager) {
             }
         }
     }
-}
 
-// Global theme manager instance
-object GlobalThemeManager {
-    private lateinit var themeManager: ThemeManager
+    companion object {
+        private var INSTANCE: ThemeManager? = null
 
-    fun initialize(preferencesManager: UserPreferencesManager) {
-        themeManager = ThemeManager(preferencesManager)
-    }
-
-    fun getThemeManager(): ThemeManager {
-        if (!::themeManager.isInitialized) {
-            throw IllegalStateException("ThemeManager must be initialized before use. Call GlobalThemeManager.initialize() first.")
+        fun getInstance(preferencesManager: UserPreferencesManager): ThemeManager {
+            if (INSTANCE == null) {
+                INSTANCE = ThemeManager(preferencesManager)
+            }
+            return INSTANCE!!
         }
-        return themeManager
     }
 }
-
 /**
  * Platform-specific function to update status bar appearance
  */

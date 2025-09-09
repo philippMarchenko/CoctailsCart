@@ -16,5 +16,7 @@ interface UserPreferencesManager {
     // Theme preferences
     fun saveThemeMode(themeMode: ThemeMode)
     fun getThemeMode(): ThemeMode?
+    fun saveLanguage(languageCode: String)
+    fun getLanguage(): String?
     fun clearThemeMode()
 }

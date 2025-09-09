@@ -1,4 +1,4 @@
-rootProject.name = "CoctailsCart"
+rootProject.name = "CocktailsCart"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {

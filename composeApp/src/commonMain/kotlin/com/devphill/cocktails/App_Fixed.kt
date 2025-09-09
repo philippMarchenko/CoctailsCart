@@ -1,3 +1,4 @@
+/*
 package com.devphill.cocktails
 
 import androidx.compose.foundation.layout.padding
@@ -169,16 +170,15 @@ fun App() {
                 }
 
                 // Main app screens with bottom navigation
-                    // Main app screens with bottom navigation
-                    composable(NavigationRoutes.DISCOVER) {
-                        MainApp(
-                            onNavigateToAuth = {
-                                navController.navigate(NavigationRoutes.SIGN_IN) {
-                                    popUpTo(0) { inclusive = true }
-                        }
+                composable(NavigationRoutes.DISCOVER) {
+                    MainApp(
+                        onNavigateToAuth = {
+                            navController.navigate(NavigationRoutes.SIGN_IN) {
+                                popUpTo(0) { inclusive = true }
                             }
-                        )
-                    }
+                        }
+                    )
+                }
             }
         }
     }
@@ -243,7 +243,7 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                         NavigationBarItem(
                             selected = currentRoute == screen.route,
                             onClick = {
-                                // Pop up to the start destination to keep only one instance of each tab
+                                    // Pop up to the start destination to keep only one instance of each tab
                                 navController.navigate(screen.route) {
                                     popUpTo(NavigationRoutes.DISCOVER) {
                                         saveState = true
@@ -387,3 +387,4 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
         }
     }
 }
+*/

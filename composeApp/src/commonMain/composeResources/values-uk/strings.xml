@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General -->
+    <string name="app_name">Кошик Коктейлів</string>
+    <string name="loading">Завантаження...</string>
+    <string name="error">Помилка</string>
+    <string name="retry">Повторити</string>
+    <string name="cancel">Скасувати</string>
+    <string name="confirm">Підтвердити</string>
+    <string name="ok">ОК</string>
+    <string name="yes">Так</string>
+    <string name="no">Ні</string>
+    <string name="save">Зберегти</string>
+    <string name="delete">Видалити</string>
+    <string name="edit">Редагувати</string>
+    <string name="search">Пошук</string>
+    <string name="close">Закрити</string>
+    <string name="or">АБО</string>
+
+    <!-- Profile Screen -->
+    <string name="profile">Профіль</string>
+    <string name="profile_subtitle">Керуйте своєю коктейльною подорожжю</string>
+    <string name="profile_information">Інформація профілю</string>
+    <string name="name">Ім\'я</string>
+    <string name="email">Електронна пошта</string>
+    <string name="quick_actions">Швидкі дії</string>
+    <string name="favourite_drinks">Улюблені напої</string>
+    <string name="invite_friends">Запросити друзів</string>
+    <string name="app_settings">Налаштування програми</string>
+    <string name="theme">Тема</string>
+    <string name="notifications">Сповіщення</string>
+    <string name="language">Мова</string>
+    <string name="account_actions">Дії з обліковим записом</string>
+    <string name="sign_out">Вийти</string>
+    <string name="delete_account">Видалити обліковий запис</string>
+    <string name="user_avatar">Аватар користувача</string>
+    <string name="default_avatar">Стандартний аватар</string>
+
+    <!-- Authentication -->
+    <string name="sign_in">Увійти</string>
+    <string name="sign_up">Зареєструватися</string>
+    <string name="email_address">Адреса електронної пошти</string>
+    <string name="password">Пароль</string>
+    <string name="confirm_password">Підтвердити пароль</string>
+    <string name="forgot_password">Забули пароль</string>
+    <string name="create_account">Створити обліковий запис</string>
+    <string name="already_have_account">Вже маєте обліковий запис?</string>
+    <string name="dont_have_account">Немає облікового запису?</string>
+    <string name="sign_in_with_google">Увійти через Google</string>
+    <string name="welcome_back">З поверненням</string>
+    <string name="create_your_account">Створіть свій обліковий запис</string>
+
+    <!-- Dialogs -->
+    <string name="sign_out_title">Вийти</string>
+    <string name="sign_out_message">Ви впевнені, що хочете вийти?</string>
+    <string name="delete_account_title">Видалити обліковий запис</string>
+    <string name="delete_account_message">Ви впевнені, що хочете видалити свій обліковий запис? Цю дію неможливо скасувати.</string>
+    <string name="re_authentication_title">Потрібна повторна аутентифікація</string>
+    <string name="re_authentication_message">Будь ласка, введіть свій пароль для продовження</string>
+    <string name="enter_password">Введіть пароль</string>
+    <string name="theme_settings">Налаштування теми</string>
+    <string name="select_theme">Оберіть тему</string>
+    <string name="light_theme">Світла</string>
+    <string name="dark_theme">Темна</string>
+    <string name="system_theme">Системна</string>
+    <string name="language_settings">Налаштування мови</string>
+    <string name="select_language">Оберіть мову</string>
+
+    <!-- Search -->
+    <string name="search_cocktails">Пошук коктейлів</string>
+    <string name="search_hint">Пошук...</string>
+    <string name="find_cocktails_by_name_or_ingredients">Знайдіть коктейлі за назвою або інгредієнтами</string>
+    <string name="start_typing_to_search">Почніть вводити для пошуку</string>
+    <string name="search_by_name_or_ingredients">Пошук за назвою або інгредієнтами</string>
+    <string name="recent_searches">Останні пошуки</string>
+    <string name="no_results">Немає результатів</string>
+    <string name="search_results_for">Результати пошуку для</string>
+
+    <!-- Cocktail Details -->
+    <string name="ingredients">Інгредієнти</string>
+    <string name="instructions">Інструкції</string>
+    <string name="add_to_favorites">Додати до улюблених</string>
+    <string name="remove_from_favorites">Видалити з улюблених</string>
+    <string name="share">Поділитися</string>
+    <string name="cocktail_details">Деталі коктейлю</string>
+    <string name="time">Час</string>
+    <string name="complexity">Складність</string>
+    <string name="strength">Міцність</string>
+    <string name="glass">Склянка</string>
+    <string name="garnish">Гарнір</string>
+    <string name="tutorial_video">Навчальне відео</string>
+    <string name="watch_tutorial">Дивитися навчання</string>
+    <string name="learn_how_to_make">Дізнайтеся, як приготувати</string>
+    <string name="minutes">хвилин</string>
+
+    <!-- Discover -->
+    <string name="discover">Відкрити</string>
+
+    <!-- Parameterized strings -->
+    <string name="hello_user">Привіт, %1$s!</string>
+    <string name="welcome_user">З поверненням, %1$s</string>
+    <string name="search_results_count">Знайдено %1$d результатів</string>
+    <string name="preparation_time">%1$d хвилин</string>
+
+    <!-- Plurals for Ukrainian -->
+    <plurals name="items_count">
+        <item quantity="one">%1$d елемент</item>
+        <item quantity="few">%1$d елементи</item>
+        <item quantity="many">%1$d елементів</item>
+        <item quantity="other">%1$d елементів</item>
+    </plurals>
+
+    <plurals name="favorites_count">
+        <item quantity="one">%1$d улюблений</item>
+        <item quantity="few">%1$d улюблені</item>
+        <item quantity="many">%1$d улюблених</item>
+        <item quantity="other">%1$d улюблених</item>
+    </plurals>
+</resources>

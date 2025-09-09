@@ -11,7 +11,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.*
 import com.devphill.cocktails.presentation.theme.DialogShapes
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun SignOutConfirmationDialog(
@@ -31,14 +34,14 @@ internal fun SignOutConfirmationDialog(
         },
         title = {
             Text(
-                text = "Sign Out",
+                text = stringResource(Res.string.sign_out_title),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.SemiBold
             )
         },
         text = {
             Text(
-                text = "Are you sure you want to sign out of your account? You'll need to sign in again to access your favorites and settings.",
+                text = stringResource(Res.string.sign_out_message),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -50,12 +53,12 @@ internal fun SignOutConfirmationDialog(
                     containerColor = MaterialTheme.colorScheme.primary
                 )
             ) {
-                Text("Sign Out")
+                Text(stringResource(Res.string.sign_out))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(Res.string.cancel))
             }
         }
     )
@@ -79,14 +82,14 @@ internal fun DeleteAccountConfirmationDialog(
         },
         title = {
             Text(
-                text = "Delete Account",
+                text = stringResource(Res.string.delete_account_title),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.SemiBold
             )
         },
         text = {
             Text(
-                text = "Are you sure you want to delete your account? This action is irreversible and will remove all your data.",
+                text = stringResource(Res.string.delete_account_message),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -98,12 +101,12 @@ internal fun DeleteAccountConfirmationDialog(
                     containerColor = MaterialTheme.colorScheme.error
                 )
             ) {
-                Text("Delete Account")
+                Text(stringResource(Res.string.delete_account))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(Res.string.cancel))
             }
         }
     )
@@ -131,7 +134,7 @@ internal fun ReAuthenticationDialog(
         },
         title = {
             Text(
-                text = "Re-authenticate",
+                text = stringResource(Res.string.re_authentication_title),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.SemiBold
             )
@@ -139,25 +142,17 @@ internal fun ReAuthenticationDialog(
         text = {
             Column {
                 Text(
-                    text = "For security, please re-enter your password to confirm account deletion.",
+                    text = stringResource(Res.string.re_authentication_message),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text(
-                    text = "Email: $userEmail",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Password") },
+                    label = { Text(stringResource(Res.string.enter_password)) },
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     trailingIcon = {
                         IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -167,7 +162,6 @@ internal fun ReAuthenticationDialog(
                             )
                         }
                     },
-                    singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -177,15 +171,15 @@ internal fun ReAuthenticationDialog(
                 onClick = { onConfirm(password) },
                 enabled = password.isNotBlank(),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.error
+                    containerColor = MaterialTheme.colorScheme.primary
                 )
             ) {
-                Text("Confirm Delete")
+                Text(stringResource(Res.string.confirm))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(Res.string.cancel))
             }
         }
     )

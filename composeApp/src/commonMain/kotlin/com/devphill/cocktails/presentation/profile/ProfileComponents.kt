@@ -12,19 +12,20 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.*
 import coil3.compose.AsyncImage
 import com.devphill.cocktails.presentation.common.ErrorMessage
 import com.devphill.cocktails.presentation.common.LoadingIndicator
 import com.devphill.cocktails.presentation.theme.CocktailBodyText
-import com.devphill.cocktails.presentation.theme.GlobalThemeManager
 import com.devphill.cocktails.presentation.theme.ThemeSettingsDialog
 import com.devphill.cocktails.presentation.theme.CocktailScreenTitle
-import com.devphill.cocktails.presentation.theme.CocktailSectionHeader
 import com.devphill.cocktails.presentation.theme.CocktailSubtitle
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import com.devphill.cocktails.localization.*
+import com.devphill.cocktails.presentation.theme.ThemeManager
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 
 @Composable
 fun ProfileContent(
@@ -68,8 +69,9 @@ fun ProfileMainContent(
 ) {
     var showSignOutDialog by remember { mutableStateOf(false) }
     var showThemeDialog by remember { mutableStateOf(false) }
+    var showLanguageDialog by remember { mutableStateOf(false) }
     var showDeleteAccountDialog by remember { mutableStateOf(false) }
-    val themeManager = GlobalThemeManager.getThemeManager()
+    val themeManager = koinInject<ThemeManager>()
     val currentTheme by themeManager.currentTheme.collectAsState()
 
     Column(
@@ -89,6 +91,7 @@ fun ProfileMainContent(
 
         AppSettingsCard(
             onThemeClick = { showThemeDialog = true },
+            onLanguageClick = { showLanguageDialog = true },
             onNotificationsClick = onNavigateToNotifications
         )
 
@@ -107,6 +110,20 @@ fun ProfileMainContent(
             },
             onDismiss = {
                 showSignOutDialog = false
+            }
+        )
+    }
+
+    // Language Settings Dialog
+    if (showLanguageDialog) {
+        LanguageSettingsDialog(
+            currentLanguage = viewModel.getCurrentLanguage(),
+            onLanguageSelected = { language ->
+                viewModel.saveLanguage(language)
+                showLanguageDialog = false
+            },
+            onDismiss = {
+                showLanguageDialog = false
             }
         )
     }
@@ -152,6 +169,7 @@ fun ProfileMainContent(
     }
 }
 
+
 @Composable
 internal fun ProfileHeader() {
     Column(
@@ -159,11 +177,11 @@ internal fun ProfileHeader() {
         modifier = Modifier.fillMaxWidth()
     ) {
         CocktailScreenTitle(
-            text = "Profile"
+            text = stringResource(Res.string.profile)
         )
 
         CocktailSubtitle(
-            text = "Manage your cocktail journey",
+            text = stringResource(Res.string.profile_subtitle),
             modifier = Modifier.padding(top = 4.dp)
         )
     }
@@ -186,13 +204,13 @@ internal fun AvatarSection(uiState: ProfileUiState) {
             if (!uiState.userPhotoUrl.isNullOrEmpty()) {
                 AsyncImage(
                     model = uiState.userPhotoUrl,
-                    contentDescription = "User Avatar",
+                    contentDescription = stringResource(Res.string.user_avatar),
                     modifier = Modifier.fillMaxSize()
                 )
             } else {
                 Icon(
                     imageVector = Icons.Default.Person,
-                    contentDescription = "Default Avatar",
+                    contentDescription = stringResource(Res.string.default_avatar),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(40.dp)
                 )
