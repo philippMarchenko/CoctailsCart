@@ -1,5 +1,7 @@
 package com.devphill.cocktails.di
 
+import com.devphill.cocktails.localization.IosLocaleConfiguration
+import com.devphill.cocktails.localization.LocaleConfiguration
 import org.koin.dsl.module
 
 /**
@@ -17,4 +19,8 @@ val platformModule =
     single<CocktailRepository> {
         AndroidCocktailRepository(get(), get()) // Same repository works for both platforms
     }*/
+
+        single<LocaleConfiguration> {
+            IosLocaleConfiguration()
+        }
     }

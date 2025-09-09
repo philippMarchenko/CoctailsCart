@@ -11,6 +11,7 @@ import com.devphill.cocktails.domain.interactor.NotificationInteractor
 import com.devphill.cocktails.domain.interactor.NotificationInteractorImpl
 import com.devphill.cocktails.domain.repository.NotificationsRepository
 import com.devphill.cocktails.localization.LocalizationManager
+import com.devphill.cocktails.localization.LocaleConfiguration
 import com.devphill.cocktails.presentation.auth.AuthViewModel
 import com.devphill.cocktails.presentation.cocktailDetails.CocktailDetailsViewModel
 import com.devphill.cocktails.presentation.discover.DiscoverViewModel
@@ -25,6 +26,7 @@ import org.koin.dsl.module
 /**
  * Common Koin module that provides shared dependencies across all platforms.
  * This module contains business logic dependencies like interactors and ViewModels.
+ * Platform-specific dependencies like LocaleConfiguration are provided by platform modules.
  */
 val commonModule =
     module {
@@ -42,7 +44,7 @@ val commonModule =
 
         // Localization Manager
         single<LocalizationManager> {
-            LocalizationManager(get())
+            LocalizationManager(get(), get())
         }
 
         // Theme Manager

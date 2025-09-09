@@ -16,6 +16,8 @@ import com.devphill.cocktails.data.repository.AndroidCocktailRepository
 import com.devphill.cocktails.domain.datasource.DatabaseCocktailDataSource
 import com.devphill.cocktails.domain.datasource.LocalCocktailsDataSource
 import com.devphill.cocktails.domain.repository.CocktailRepository
+import com.devphill.cocktails.localization.AndroidLocaleConfiguration
+import com.devphill.cocktails.localization.LocaleConfiguration
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -54,5 +56,8 @@ val platformModule =
         }
         single<NotificationPermissionManager> {
             NotificationPermissionManager()
+        }
+        single<LocaleConfiguration> {
+            AndroidLocaleConfiguration(androidContext())
         }
     }
