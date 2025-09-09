@@ -20,6 +20,9 @@ import com.devphill.cocktails.presentation.common.LoadingIndicator
 import com.devphill.cocktails.presentation.theme.CocktailScreenTitle
 import com.devphill.cocktails.presentation.theme.CocktailSectionHeader
 import com.devphill.cocktails.presentation.theme.CocktailSubtitle
+import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun FavoritesScreen(
@@ -100,10 +103,10 @@ private fun FavoritesContent(
 private fun FavoritesHeader() {
     Column {
         CocktailScreenTitle(
-            text = "Favorites",
+            text = stringResource(Res.string.favorites),
         )
         CocktailSubtitle(
-            text = "Your saved cocktails",
+            text = stringResource(Res.string.your_saved_cocktails),
             modifier = Modifier.padding(top = 4.dp),
         )
     }
@@ -203,7 +206,7 @@ private fun FavoriteItem(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Favorite,
-                        contentDescription = "Remove from favorites",
+                        contentDescription = stringResource(Res.string.remove_from_favorites),
                         tint = MaterialTheme.colorScheme.primary,
                     )
                 }
@@ -231,11 +234,11 @@ private fun EmptyFavoritesState(
         Spacer(modifier = Modifier.height(24.dp))
 
         CocktailSectionHeader(
-            text = "No Favorites Yet",
+            text = stringResource(Res.string.no_favorites_yet),
         )
 
         Text(
-            text = "Start exploring cocktails and add them to your favorites to see them here",
+            text = stringResource(Res.string.start_exploring_message),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
@@ -247,7 +250,7 @@ private fun EmptyFavoritesState(
         Button(
             onClick = onNavigateToDiscover,
         ) {
-            Text("Discover Cocktails")
+            Text(stringResource(Res.string.discover_cocktails))
         }
     }
 }
@@ -263,7 +266,7 @@ private fun ErrorState(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "Error Loading Favorites",
+            text = stringResource(Res.string.error_loading_favorites),
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.error,
             textAlign = TextAlign.Center,
@@ -280,7 +283,7 @@ private fun ErrorState(
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(onClick = onRetry) {
-            Text("Retry")
+            Text(stringResource(Res.string.retry))
         }
     }
 }

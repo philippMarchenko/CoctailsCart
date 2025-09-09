@@ -9,6 +9,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 import com.devphill.cocktails.data.platform.NotificationPermissionManager
 import com.devphill.cocktails.domain.model.AlcoholStrength
 import com.devphill.cocktails.domain.model.Cocktail
@@ -111,7 +114,7 @@ private fun DiscoverSuccessContent(
         if (uiState.cocktails.isNotEmpty()) {
             item {
                 CocktailSectionHeader(
-                    text = "All Cocktails",
+                    text = stringResource(Res.string.all_cocktails),
                     modifier = Modifier.padding(bottom = 12.dp),
                 )
             }
@@ -154,10 +157,10 @@ private fun DiscoverSuccessContent(
 private fun WelcomeSection() {
     Column {
         CocktailScreenTitle(
-            text = "Discover",
+            text = stringResource(Res.string.discover),
         )
         CocktailSubtitle(
-            text = "Find your perfect cocktail",
+            text = stringResource(Res.string.find_your_perfect_cocktail),
             modifier = Modifier.padding(top = 4.dp),
         )
     }
@@ -170,7 +173,7 @@ private fun CocktailOfDaySection(
 ) {
     Column {
         CocktailSectionHeader(
-            text = "Cocktail of Day",
+            text = stringResource(Res.string.cocktail_of_day),
             modifier = Modifier.padding(bottom = 12.dp),
         )
 

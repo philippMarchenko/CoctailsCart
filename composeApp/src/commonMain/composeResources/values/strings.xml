@@ -63,18 +63,29 @@
     <string name="light_theme">Light</string>
     <string name="dark_theme">Dark</string>
     <string name="system_theme">System</string>
+    <string name="light_theme_description">Always use light colors</string>
+    <string name="dark_theme_description">Always use dark colors</string>
+    <string name="system_theme_description">Follow system settings</string>
     <string name="language_settings">Language Settings</string>
     <string name="select_language">Select Language</string>
 
     <!-- Search -->
+    <string name="search_title">Search</string>
     <string name="search_cocktails">Search Cocktails</string>
     <string name="search_hint">Search...</string>
+    <string name="search_placeholder">Search cocktails, ingredients...</string>
+    <string name="clear_search">Clear search</string>
     <string name="find_cocktails_by_name_or_ingredients">Find cocktails by name or ingredients</string>
     <string name="start_typing_to_search">Start typing to search</string>
     <string name="search_by_name_or_ingredients">Search by name or ingredients</string>
+    <string name="search_by_cocktail_name_or_ingredients">Search by cocktail name or ingredients</string>
     <string name="recent_searches">Recent Searches</string>
     <string name="no_results">No Results</string>
+    <string name="no_results_found">No results found</string>
+    <string name="no_cocktails_found_for">No cocktails found for "%1$s"</string>
     <string name="search_results_for">Search results for</string>
+    <string name="search_results_with_count">Search Results (%1$d)</string>
+    <string name="search_error">Search Error</string>
 
     <!-- Cocktail Details -->
     <string name="ingredients">Ingredients</string>
@@ -92,9 +103,30 @@
     <string name="watch_tutorial">Watch Tutorial</string>
     <string name="learn_how_to_make">Learn how to make</string>
     <string name="minutes">minutes</string>
+    <string name="back">Back</string>
+    <string name="detailed_ingredients">Detailed Ingredients</string>
+    <string name="preparation_method">Preparation Method</string>
+    <string name="watch_video_tutorial">Watch Video Tutorial</string>
 
     <!-- Discover -->
     <string name="discover">Discover</string>
+    <string name="find_your_perfect_cocktail">Find your perfect cocktail</string>
+    <string name="cocktail_of_day">Cocktail of Day</string>
+    <string name="all_cocktails">All Cocktails</string>
+
+    <!-- Favorites -->
+    <string name="favorites">Favorites</string>
+    <string name="no_favorites_yet">No Favorites Yet</string>
+    <string name="start_exploring_message">Start exploring cocktails and add them to your favorites to see them here</string>
+    <string name="discover_cocktails">Discover Cocktails</string>
+    <string name="error_loading_favorites">Error Loading Favorites</string>
+    <string name="your_saved_cocktails">Your saved cocktails</string>
+    <string name="min_short">min</string>
+
+    <!-- Share -->
+    <string name="share_via">Share via</string>
+    <string name="share_app_message">Check out %1$s - the ultimate cocktail companion app!\n\n%2$s</string>
+    <string name="invite_to_app">Invite to %1$s</string>
 
     <!-- Parameterized strings -->
     <string name="hello_user">Hello, %1$s!</string>

@@ -29,11 +29,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.*
 import com.devphill.cocktails.presentation.common.CocktailCard
 import com.devphill.cocktails.presentation.common.LoadingIndicator
 import com.devphill.cocktails.presentation.theme.CocktailScreenTitle
 import com.devphill.cocktails.presentation.theme.CocktailSectionHeader
 import com.devphill.cocktails.presentation.theme.CocktailSubtitle
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -124,10 +127,10 @@ private fun SearchContent(
 private fun SearchHeader() {
     Column {
         CocktailScreenTitle(
-            text = "Search",
+            text = stringResource(Res.string.search),
         )
         CocktailSubtitle(
-            text = "Find cocktails by name or ingredients",
+            text = stringResource(Res.string.find_cocktails_by_name_or_ingredients),
             modifier = Modifier.padding(top = 4.dp),
         )
     }
@@ -146,14 +149,14 @@ private fun SearchBar(
         onValueChange = onQueryChange,
         placeholder = {
             Text(
-                text = "Search cocktails, ingredients...",
+                text = stringResource(Res.string.search_placeholder),
                 style = MaterialTheme.typography.bodyLarge,
             )
         },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = "Search",
+                contentDescription = stringResource(Res.string.search),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         },
@@ -162,7 +165,7 @@ private fun SearchBar(
                 IconButton(onClick = onClearSearch) {
                     Icon(
                         imageVector = Icons.Default.Clear,
-                        contentDescription = "Clear search",
+                        contentDescription = stringResource(Res.string.clear_search),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
@@ -189,7 +192,7 @@ private fun SearchResults(
 ) {
     Column(modifier = modifier) {
         CocktailSectionHeader(
-            text = "Search Results (${results.size})",
+            text = stringResource(Res.string.search_results_with_count, results.size),
         )
 
         LazyColumn(
@@ -225,13 +228,13 @@ private fun SearchPlaceholder(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Start typing to search",
+            text = stringResource(Res.string.start_typing_to_search),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
         Text(
-            text = "Search by cocktail name or ingredients",
+            text = stringResource(Res.string.search_by_cocktail_name_or_ingredients),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             modifier = Modifier.padding(top = 8.dp),
@@ -251,7 +254,7 @@ private fun RecentSearches(
 ) {
     Column(modifier = modifier) {
         Text(
-            text = "Recent Searches",
+            text = stringResource(Res.string.recent_searches),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Medium,
             modifier = Modifier.padding(bottom = 8.dp),
@@ -278,12 +281,12 @@ private fun EmptySearchResults(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "No results found",
+            text = stringResource(Res.string.no_results_found),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Text(
-            text = "No cocktails found for \"$query\"",
+            text = stringResource(Res.string.no_cocktails_found_for, query),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             modifier = Modifier.padding(top = 8.dp),
@@ -301,7 +304,7 @@ private fun ErrorState(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "Search Error",
+            text = stringResource(Res.string.search_error),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.error,
         )

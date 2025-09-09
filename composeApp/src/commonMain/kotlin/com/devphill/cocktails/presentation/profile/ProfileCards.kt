@@ -11,6 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -26,19 +29,19 @@ internal fun UserInfoCard(uiState: ProfileUiState) {
             modifier = Modifier.padding(16.dp),
         ) {
             Text(
-                text = "Profile Information",
+                text = stringResource(Res.string.profile_information),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(8.dp))
             ProfileInfoRow(
                 icon = Icons.Default.Person,
-                label = "Name",
+                label = stringResource(Res.string.name),
                 value = uiState.userName,
             )
             ProfileInfoRow(
                 icon = Icons.Default.Email,
-                label = "Email",
+                label = stringResource(Res.string.email),
                 value = uiState.userEmail,
             )
         }
@@ -72,7 +75,7 @@ internal fun QuickActionsCard(
                     modifier = Modifier.size(24.dp),
                 )
                 Text(
-                    text = "Quick Actions",
+                    text = stringResource(Res.string.quick_actions),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
@@ -82,13 +85,13 @@ internal fun QuickActionsCard(
 
             SettingItem(
                 icon = Icons.Default.Favorite,
-                label = "Favourite Drinks",
+                label = stringResource(Res.string.favourite_drinks),
                 onClick = onNavigateToFavorites,
             )
 
             SettingItem(
                 icon = Icons.Default.Share,
-                label = "Invite Friends",
+                label = stringResource(Res.string.invite_friends),
                 onClick = { viewModel.inviteFriends() },
             )
         }
@@ -123,7 +126,7 @@ internal fun AppSettingsCard(
                     modifier = Modifier.size(24.dp),
                 )
                 Text(
-                    text = "App Settings",
+                    text = stringResource(Res.string.app_settings),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
@@ -133,19 +136,19 @@ internal fun AppSettingsCard(
 
             SettingItem(
                 icon = Icons.Default.Language,
-                label = "Change Language",
+                label = stringResource(Res.string.language),
                 onClick = onLanguageClick,
             )
 
             SettingItem(
                 icon = Icons.Default.Palette,
-                label = "Change Theme",
+                label = stringResource(Res.string.theme),
                 onClick = { onThemeClick() },
             )
 
             SettingItem(
                 icon = Icons.Default.Notifications,
-                label = "Notifications",
+                label = stringResource(Res.string.notifications),
                 onClick = { onNotificationsClick() },
             )
         }
@@ -179,7 +182,7 @@ internal fun AccountActionsCard(
                     modifier = Modifier.size(24.dp),
                 )
                 Text(
-                    text = "Account Actions",
+                    text = stringResource(Res.string.account_actions),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
@@ -207,7 +210,7 @@ internal fun AccountActionsCard(
                     )
 
                     Text(
-                        text = "Sign Out",
+                        text = stringResource(Res.string.sign_out),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.weight(1f),
@@ -242,7 +245,7 @@ internal fun AccountActionsCard(
                     )
 
                     Text(
-                        text = "Delete Account",
+                        text = stringResource(Res.string.delete_account),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.error,
                         modifier = Modifier.weight(1f),

@@ -63,18 +63,28 @@
     <string name="light_theme">Світла</string>
     <string name="dark_theme">Темна</string>
     <string name="system_theme">Системна</string>
+    <string name="light_theme_description">Завжди використовувати світлі кольори</string>
+    <string name="dark_theme_description">Завжди використовувати темні кольори</string>
     <string name="language_settings">Налаштування мови</string>
     <string name="select_language">Оберіть мову</string>
 
     <!-- Search -->
+    <string name="search_title">Пошук</string>
     <string name="search_cocktails">Пошук коктейлів</string>
     <string name="search_hint">Пошук...</string>
+    <string name="search_placeholder">Пошук коктейлів, інгредієнтів...</string>
+    <string name="clear_search">Очистити пошук</string>
     <string name="find_cocktails_by_name_or_ingredients">Знайдіть коктейлі за назвою або інгредієнтами</string>
     <string name="start_typing_to_search">Почніть вводити для пошуку</string>
     <string name="search_by_name_or_ingredients">Пошук за назвою або інгредієнтами</string>
+    <string name="search_by_cocktail_name_or_ingredients">Пошук за назвою коктейлю або інгредієнтами</string>
     <string name="recent_searches">Останні пошуки</string>
     <string name="no_results">Немає результатів</string>
+    <string name="no_results_found">Результатів не знайдено</string>
+    <string name="no_cocktails_found_for">Коктейлів не знайдено для \"%1$s\"</string>
     <string name="search_results_for">Результати пошуку для</string>
+    <string name="search_results_with_count">Результати пошуку (%1$d)</string>
+    <string name="search_error">Помилка пошуку</string>
 
     <!-- Cocktail Details -->
     <string name="ingredients">Інгредієнти</string>
@@ -86,15 +96,36 @@
     <string name="time">Час</string>
     <string name="complexity">Складність</string>
     <string name="strength">Міцність</string>
-    <string name="glass">Склянка</string>
+    <string name="glass">Бокал</string>
     <string name="garnish">Гарнір</string>
     <string name="tutorial_video">Навчальне відео</string>
     <string name="watch_tutorial">Дивитися навчання</string>
     <string name="learn_how_to_make">Дізнайтеся, як приготувати</string>
     <string name="minutes">хвилин</string>
+    <string name="back">Назад</string>
+    <string name="detailed_ingredients">Детальні інгредієнти</string>
+    <string name="preparation_method">Метод приготування</string>
+    <string name="watch_video_tutorial">Дивитися відео-навчання</string>
 
     <!-- Discover -->
     <string name="discover">Відкрити</string>
+    <string name="find_your_perfect_cocktail">Знайдіть свій ідеальний коктейль</string>
+    <string name="cocktail_of_day">Коктейль дня</string>
+    <string name="all_cocktails">Всі коктейлі</string>
+
+    <!-- Favorites -->
+    <string name="favorites">Улюблені</string>
+    <string name="no_favorites_yet">Ще немає улюблених</string>
+    <string name="start_exploring_message">Почніть досліджувати коктейлі та додавайте їх до улюблених, щоб бачити їх тут</string>
+    <string name="discover_cocktails">Відкрити коктейлі</string>
+    <string name="error_loading_favorites">Помилка завантаження улюблених</string>
+    <string name="your_saved_cocktails">Ваші збережені коктейлі</string>
+    <string name="min_short">хв</string>
+
+    <!-- Share -->
+    <string name="share_via">Поділитися через</string>
+    <string name="share_app_message">Спробуйте %1$s - найкращий додаток-компаньйон для коктейлів!\n\n%2$s</string>
+    <string name="invite_to_app">Запросити до %1$s</string>
 
     <!-- Parameterized strings -->
     <string name="hello_user">Привіт, %1$s!</string>

@@ -56,7 +56,10 @@ import com.devphill.cocktails.presentation.auth.AuthState
 import com.devphill.cocktails.presentation.auth.AuthViewModel
 import com.devphill.cocktails.presentation.common.AuthTextField
 import com.devphill.cocktails.presentation.theme.DialogShapes
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.*
 
 @Composable
 fun SignUpScreen(
@@ -197,7 +200,7 @@ fun SignUpScreen(
                     showSuccessDialog = false
                     onSignUpSuccess()
                 }) {
-                    Text(text = "OK")
+                    Text(text = stringResource(Res.string.ok))
                 }
             },
         )
@@ -219,7 +222,7 @@ private fun WelcomeHeader() {
 
         // Welcome Text
         Text(
-            text = "Create Account",
+            text = stringResource(Res.string.create_account),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
@@ -269,7 +272,7 @@ private fun SignUpForm(
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Text(
-                text = "Sign Up",
+                text = stringResource(Res.string.sign_up),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -279,10 +282,9 @@ private fun SignUpForm(
             AuthTextField(
                 value = email,
                 onValueChange = onEmailChange,
-                label = "Email",
+                label = stringResource(Res.string.email_address),
                 leadingIcon = Icons.Default.Email,
                 keyboardType = KeyboardType.Email,
-                modifier = Modifier.fillMaxWidth(),
                 enabled = !isLoading,
                 singleLine = true,
                 isError = errorMessage != null && (errorMessage.contains("email", ignoreCase = true) || errorMessage.contains("valid email", ignoreCase = true)),
@@ -291,7 +293,7 @@ private fun SignUpForm(
             AuthTextField(
                 value = username,
                 onValueChange = onUsernameChange,
-                label = "Username",
+                label = stringResource(Res.string.name),
                 leadingIcon = Icons.Default.Person,
                 keyboardType = KeyboardType.Text,
                 modifier = Modifier.fillMaxWidth(),
@@ -303,7 +305,7 @@ private fun SignUpForm(
             AuthTextField(
                 value = password,
                 onValueChange = onPasswordChange,
-                label = "Password",
+                label = stringResource(Res.string.password),
                 leadingIcon = Icons.Default.Lock,
                 trailingIcon = if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                 onTrailingIconClick = onPasswordVisibilityToggle,
@@ -318,7 +320,7 @@ private fun SignUpForm(
             AuthTextField(
                 value = confirmPassword,
                 onValueChange = onConfirmPasswordChange,
-                label = "Confirm Password",
+                label = stringResource(Res.string.confirm_password),
                 leadingIcon = Icons.Default.Lock,
                 trailingIcon = if (confirmPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                 onTrailingIconClick = onConfirmPasswordVisibilityToggle,
@@ -358,7 +360,7 @@ private fun SignUpForm(
                     )
                 } else {
                     Text(
-                        text = "Create Account",
+                        text = stringResource(Res.string.create_account),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.SemiBold,
                     )
@@ -372,7 +374,7 @@ private fun SignUpForm(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = "Already have an account?",
+                    text = stringResource(Res.string.already_have_account),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -381,7 +383,7 @@ private fun SignUpForm(
                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
                 ) {
                     Text(
-                        text = "Sign In",
+                        text = stringResource(Res.string.sign_in),
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.SemiBold,
                     )

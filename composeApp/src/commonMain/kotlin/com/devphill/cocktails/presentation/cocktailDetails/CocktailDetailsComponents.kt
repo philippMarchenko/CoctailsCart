@@ -51,6 +51,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 import com.devphill.cocktails.domain.model.Cocktail
 import kotlinx.coroutines.delay
 
@@ -213,17 +216,12 @@ private fun FixedToolbar(
             // Back button
             IconButton(
                 onClick = onBackClick,
-                modifier =
-                    Modifier
-                        .background(
-                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.7f),
-                            CircleShape,
-                        ),
+                modifier = Modifier.padding(8.dp),
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    tint = MaterialTheme.colorScheme.onSurface,
+                    contentDescription = stringResource(Res.string.back),
+                    tint = Color.White,
                 )
             }
 
@@ -263,7 +261,7 @@ private fun FixedToolbar(
                 ) {
                     Icon(
                         imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                        contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
+                        contentDescription = if (isFavorite) stringResource(Res.string.remove_from_favorites) else stringResource(Res.string.add_to_favorites),
                         tint = if (isFavorite) Color.Red else MaterialTheme.colorScheme.onSurface,
                     )
                 }
@@ -279,7 +277,7 @@ private fun FixedToolbar(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Share,
-                        contentDescription = "Share",
+                        contentDescription = stringResource(Res.string.share),
                         tint = MaterialTheme.colorScheme.onSurface,
                     )
                 }

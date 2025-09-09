@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">CocktailCraft</string>
+
+    <!-- Share -->
+    <string name="share_via">Share via</string>
+    <string name="share_app_message">Check out %1$s - the ultimate cocktail companion app!\n\n%2$s</string>
+    <string name="invite_to_app">Invite to %1$s</string>
 </resources>

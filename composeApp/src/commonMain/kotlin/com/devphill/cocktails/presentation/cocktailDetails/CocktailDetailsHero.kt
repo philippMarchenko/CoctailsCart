@@ -46,6 +46,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AnimatedFullScreenHeroSection(
@@ -175,7 +178,7 @@ private fun AnimatedBackButton(
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Back",
+                contentDescription = stringResource(Res.string.back),
                 tint = Color.White,
                 modifier = Modifier.size(24.dp),
             )
@@ -234,7 +237,7 @@ private fun AnimatedActionButtons(
         ) {
             Icon(
                 imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
+                contentDescription = if (isFavorite) stringResource(Res.string.remove_from_favorites) else stringResource(Res.string.add_to_favorites),
                 tint = if (isFavorite) Color.Red else Color.White,
                 modifier = Modifier.size(24.dp),
             )
@@ -253,7 +256,7 @@ private fun AnimatedActionButtons(
         ) {
             Icon(
                 imageVector = Icons.Default.Share,
-                contentDescription = "Share",
+                contentDescription = stringResource(Res.string.share),
                 tint = Color.White,
                 modifier = Modifier.size(24.dp),
             )

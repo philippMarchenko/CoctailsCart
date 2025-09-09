@@ -29,10 +29,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import cocktailscart.composeapp.generated.resources.Res
-import cocktailscart.composeapp.generated.resources.discover
-import cocktailscart.composeapp.generated.resources.favourite_drinks
-import cocktailscart.composeapp.generated.resources.profile
-import cocktailscart.composeapp.generated.resources.search
+import cocktailscart.composeapp.generated.resources.*
 import com.devphill.cocktails.data.manager.FirstLaunchManager
 import com.devphill.cocktails.data.platform.UrlOpener
 import com.devphill.cocktails.data.preferences.UserPreferencesManager

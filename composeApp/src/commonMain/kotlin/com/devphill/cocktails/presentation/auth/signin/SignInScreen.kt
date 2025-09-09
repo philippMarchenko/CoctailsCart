@@ -58,6 +58,9 @@ import androidx.compose.ui.unit.dp
 import com.devphill.cocktails.presentation.auth.AuthState
 import com.devphill.cocktails.presentation.auth.AuthViewModel
 import com.devphill.cocktails.presentation.common.AuthTextField
+import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -125,7 +128,7 @@ private fun WelcomeHeader() {
 
         // Welcome Text
         Text(
-            text = "Welcome Back!",
+            text = stringResource(Res.string.welcome_back),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
@@ -170,7 +173,7 @@ private fun SignInForm(
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Text(
-                text = "Sign In",
+                text = stringResource(Res.string.sign_in),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -179,7 +182,7 @@ private fun SignInForm(
             AuthTextField(
                 value = email,
                 onValueChange = onEmailChange,
-                label = "Email",
+                label = stringResource(Res.string.email_address),
                 leadingIcon = Icons.Default.Email,
                 keyboardType = KeyboardType.Email,
                 modifier = Modifier.fillMaxWidth(),
@@ -190,7 +193,7 @@ private fun SignInForm(
             AuthTextField(
                 value = password,
                 onValueChange = onPasswordChange,
-                label = "Password",
+                label = stringResource(Res.string.password),
                 leadingIcon = Icons.Default.Lock,
                 trailingIcon = if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                 onTrailingIconClick = onPasswordVisibilityToggle,
@@ -206,104 +209,72 @@ private fun SignInForm(
                 singleLine = true,
             )
 
-            // Error Message
+            // Error message display
             errorMessage?.let { message ->
                 Text(
                     text = message,
-                    color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(top = 4.dp),
                 )
             }
 
             // Sign In Button
             Button(
                 onClick = onSignIn,
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(44.dp),
                 enabled = !isLoading && email.isNotBlank() && password.isNotBlank(),
-                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 if (isLoading) {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(18.dp),
+                        modifier = Modifier.size(16.dp),
                         color = MaterialTheme.colorScheme.onPrimary,
-                        strokeWidth = 2.dp,
                     )
                 } else {
-                    Text(
-                        text = "Sign In",
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.SemiBold,
-                    )
+                    Text(stringResource(Res.string.sign_in))
                 }
             }
 
-            // OR Divider
+            // Divider with OR
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 HorizontalDivider(modifier = Modifier.weight(1f))
                 Text(
-                    text = "OR",
+                    text = stringResource(Res.string.or),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 12.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp),
                 )
                 HorizontalDivider(modifier = Modifier.weight(1f))
             }
 
-            // Google Sign-In Button
+            // Google Sign In Button
             OutlinedButton(
-                onClick = {
-                    if (!isLoading) {
-                        onGoogleSignIn()
-                    }
-                },
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(44.dp),
+                onClick = onGoogleSignIn,
                 enabled = !isLoading,
-                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier.fillMaxWidth(),
             ) {
-                Icon(
-                    imageVector = Icons.Default.AccountCircle,
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp),
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Continue with Google",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium,
-                )
+                Text(stringResource(Res.string.sign_in_with_google))
             }
 
-            // Sign Up Link
+            // Navigate to Sign Up
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = "Don't have an account?",
-                    style = MaterialTheme.typography.bodySmall,
+                    text = stringResource(Res.string.dont_have_account),
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
+                Spacer(modifier = Modifier.width(4.dp))
                 TextButton(
                     onClick = onNavigateToSignUp,
-                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+                    enabled = !isLoading,
                 ) {
-                    Text(
-                        text = "Sign Up",
-                        style = MaterialTheme.typography.bodySmall,
-                        fontWeight = FontWeight.SemiBold,
-                    )
+                    Text(stringResource(Res.string.sign_up))
                 }
             }
         }

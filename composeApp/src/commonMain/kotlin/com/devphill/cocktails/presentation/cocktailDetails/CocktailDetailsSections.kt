@@ -38,6 +38,9 @@ import com.devphill.cocktails.domain.model.ComplexityLevel
 import com.devphill.cocktails.presentation.theme.CocktailBodyText
 import com.devphill.cocktails.presentation.theme.CocktailCardTitle
 import com.devphill.cocktails.presentation.theme.CocktailSectionHeader
+import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 object CocktailDetailsTestTags {
     const val QUICK_STATS = "quick_stats_section"
@@ -361,11 +364,11 @@ fun AnimatedVideoSection(
                     modifier = Modifier.weight(1f),
                 ) {
                     CocktailCardTitle(
-                        text = "Watch Tutorial",
+                        text = stringResource(Res.string.watch_tutorial),
                     )
 
                     CocktailBodyText(
-                        text = "Learn how to make this cocktail",
+                        text = stringResource(Res.string.learn_how_to_make),
                     )
                 }
 

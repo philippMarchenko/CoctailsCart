@@ -9,6 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ThemeSettingsDialog(
@@ -29,29 +32,29 @@ fun ThemeSettingsDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = "Theme Settings",
+                    text = stringResource(Res.string.theme_settings),
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 24.dp),
                 )
 
                 ThemeOption(
-                    title = "Light Theme",
-                    description = "Always use light colors",
+                    title = stringResource(Res.string.light_theme),
+                    description = stringResource(Res.string.light_theme_description),
                     isSelected = currentTheme == ThemeMode.LIGHT,
                     onClick = { onThemeSelected(ThemeMode.LIGHT) },
                 )
 
                 ThemeOption(
-                    title = "Dark Theme",
-                    description = "Always use dark colors",
+                    title = stringResource(Res.string.dark_theme),
+                    description = stringResource(Res.string.dark_theme_description),
                     isSelected = currentTheme == ThemeMode.DARK,
                     onClick = { onThemeSelected(ThemeMode.DARK) },
                 )
 
                 ThemeOption(
-                    title = "System Theme",
-                    description = "Follow system settings",
+                    title = stringResource(Res.string.system_theme),
+                    description = stringResource(Res.string.system_theme_description),
                     isSelected = currentTheme == ThemeMode.SYSTEM,
                     onClick = { onThemeSelected(ThemeMode.SYSTEM) },
                 )
@@ -62,7 +65,7 @@ fun ThemeSettingsDialog(
                     onClick = onDismiss,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    Text("Close")
+                    Text(stringResource(Res.string.close))
                 }
             }
         }
