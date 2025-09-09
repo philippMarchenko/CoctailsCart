@@ -10,6 +10,7 @@ import com.devphill.cocktails.domain.interactor.CocktailInteractorImpl
 import com.devphill.cocktails.domain.interactor.NotificationInteractor
 import com.devphill.cocktails.domain.interactor.NotificationInteractorImpl
 import com.devphill.cocktails.domain.repository.NotificationsRepository
+import com.devphill.cocktails.localization.LocalizationManager
 import com.devphill.cocktails.presentation.auth.AuthViewModel
 import com.devphill.cocktails.presentation.cocktailDetails.CocktailDetailsViewModel
 import com.devphill.cocktails.presentation.discover.DiscoverViewModel
@@ -17,6 +18,7 @@ import com.devphill.cocktails.presentation.favorites.FavoritesViewModel
 import com.devphill.cocktails.presentation.notifications.NotificationsViewModel
 import com.devphill.cocktails.presentation.profile.ProfileViewModel
 import com.devphill.cocktails.presentation.search.SearchViewModel
+import com.devphill.cocktails.presentation.theme.ThemeManager
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -36,6 +38,16 @@ val commonModule =
         // User Preferences Manager
         single<UserPreferencesManager> {
             UserPreferencesManagerImpl()
+        }
+
+        // Localization Manager
+        single<LocalizationManager> {
+            LocalizationManager(get())
+        }
+
+        // Theme Manager
+        single<ThemeManager> {
+            ThemeManager(get())
         }
 
         single<FirstLaunchManager> {
@@ -60,7 +72,7 @@ val commonModule =
         viewModel { DiscoverViewModel(get()) }
         viewModel { SearchViewModel(get()) }
         viewModel { FavoritesViewModel(get()) }
-        viewModel { ProfileViewModel(get(), get(), get()) }
+        viewModel { ProfileViewModel(get(), get(), get(), get()) }
         viewModel { CocktailDetailsViewModel(get()) }
         viewModel { NotificationsViewModel(get()) }
     }

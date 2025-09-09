@@ -19,8 +19,9 @@ import com.devphill.cocktails.presentation.common.LoadingIndicator
 import com.devphill.cocktails.presentation.theme.CocktailBodyText
 import com.devphill.cocktails.presentation.theme.CocktailScreenTitle
 import com.devphill.cocktails.presentation.theme.CocktailSubtitle
-import com.devphill.cocktails.presentation.theme.GlobalThemeManager
+import com.devphill.cocktails.presentation.theme.ThemeManager
 import com.devphill.cocktails.presentation.theme.ThemeSettingsDialog
+import org.koin.compose.koinInject
 
 @Composable
 fun ProfileContent(
@@ -66,9 +67,11 @@ fun ProfileMainContent(
 ) {
     var showSignOutDialog by remember { mutableStateOf(false) }
     var showThemeDialog by remember { mutableStateOf(false) }
+    var showLanguageDialog by remember { mutableStateOf(false) }
     var showDeleteAccountDialog by remember { mutableStateOf(false) }
-    val themeManager = GlobalThemeManager.getThemeManager()
+    val themeManager: ThemeManager = koinInject()
     val currentTheme by themeManager.currentTheme.collectAsState()
+    val currentLanguage by viewModel.currentLanguage.collectAsState()
 
     Column(
         modifier =
@@ -88,6 +91,7 @@ fun ProfileMainContent(
 
         AppSettingsCard(
             onThemeClick = { showThemeDialog = true },
+            onLanguageClick = { showLanguageDialog = true },
             onNotificationsClick = onNavigateToNotifications,
         )
 
@@ -120,6 +124,20 @@ fun ProfileMainContent(
             },
             onDismiss = {
                 showThemeDialog = false
+            },
+        )
+    }
+
+    // Language Settings Dialog
+    if (showLanguageDialog) {
+        LanguageSettingsDialog(
+            currentLanguage = currentLanguage,
+            onLanguageSelected = { language ->
+                viewModel.setLanguage(language)
+                showLanguageDialog = false
+            },
+            onDismiss = {
+                showLanguageDialog = false
             },
         )
     }

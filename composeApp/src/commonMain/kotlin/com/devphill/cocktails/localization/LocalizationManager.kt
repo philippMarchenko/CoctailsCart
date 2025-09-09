@@ -31,14 +31,13 @@ class LocalizationManager(
         return _currentLanguage.value
     }
 
-    companion object {
-        private var INSTANCE: LocalizationManager? = null
-
-        fun getInstance(userPreferencesManager: UserPreferencesManager): LocalizationManager {
-            if (INSTANCE == null) {
-                INSTANCE = LocalizationManager(userPreferencesManager)
-            }
-            return INSTANCE!!
-        }
+    /**
+     * Refreshes the current language from saved preferences
+     * Useful for initialization or when preferences might have changed externally
+     */
+    fun refreshLanguage() {
+        val savedLanguageCode = userPreferencesManager.getLanguage()
+        val language = Language.fromCode(savedLanguageCode) ?: Language.ENGLISH
+        _currentLanguage.value = language
     }
 }

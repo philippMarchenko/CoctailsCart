@@ -12,6 +12,7 @@ class UserPreferencesManagerImpl() : UserPreferencesManager {
         private const val THEME_MODE_KEY = "theme_mode"
         private const val USER_KEY = "user"
         const val IS_LOGGED_IN_KEY = "is_logged_in"
+        const val LANGUAGE_KEY = "language"
     }
 
     private val json = Json { ignoreUnknownKeys = true }
@@ -78,5 +79,13 @@ class UserPreferencesManagerImpl() : UserPreferencesManager {
 
     override fun clearThemeMode() {
         settings.remove(THEME_MODE_KEY)
+    }
+
+    override fun getLanguage(): String? {
+        return settings.getStringOrNull(LANGUAGE_KEY)
+    }
+
+    override fun saveLanguage(languageCode: String) {
+        settings.putString(LANGUAGE_KEY, languageCode)
     }
 }

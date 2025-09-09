@@ -61,24 +61,6 @@ class ThemeManager(private val preferencesManager: UserPreferencesManager) {
     }
 }
 
-// Global theme manager instance
-object GlobalThemeManager {
-    private lateinit var themeManager: ThemeManager
-
-    fun initialize(preferencesManager: UserPreferencesManager) {
-        themeManager = ThemeManager(preferencesManager)
-    }
-
-    fun getThemeManager(): ThemeManager {
-        if (!::themeManager.isInitialized) {
-            throw IllegalStateException(
-                "ThemeManager must be initialized before use. Call GlobalThemeManager.initialize() first.",
-            )
-        }
-        return themeManager
-    }
-}
-
 /**
  * Platform-specific function to update status bar appearance
  */

@@ -28,4 +28,8 @@ interface UserPreferencesManager {
     fun getThemeMode(): ThemeMode?
 
     fun clearThemeMode()
+
+    fun getLanguage(): String?
+
+    fun saveLanguage(languageCode: String)
 }

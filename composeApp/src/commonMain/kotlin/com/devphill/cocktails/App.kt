@@ -13,6 +13,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -27,9 +28,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.discover
+import cocktailscart.composeapp.generated.resources.favourite_drinks
+import cocktailscart.composeapp.generated.resources.profile
+import cocktailscart.composeapp.generated.resources.search
 import com.devphill.cocktails.data.manager.FirstLaunchManager
 import com.devphill.cocktails.data.platform.UrlOpener
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
+import com.devphill.cocktails.localization.LocalLanguage
+import com.devphill.cocktails.localization.LocalizationManager
 import com.devphill.cocktails.presentation.auth.signin.PlatformSignInScreen
 import com.devphill.cocktails.presentation.auth.signup.PlatformSignUpScreen
 import com.devphill.cocktails.presentation.cocktailDetails.CocktailDetailsScreenContainer
@@ -48,8 +56,10 @@ import com.devphill.cocktails.presentation.search.SearchViewModel
 import com.devphill.cocktails.presentation.splash.SplashScreen
 import com.devphill.cocktails.presentation.theme.CocktailLabel
 import com.devphill.cocktails.presentation.theme.CocktailsTheme
-import com.devphill.cocktails.presentation.theme.GlobalThemeManager
+import com.devphill.cocktails.presentation.theme.ThemeManager
 import com.devphill.cocktails.presentation.theme.ThemeMode
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
@@ -72,14 +82,14 @@ object NavigationRoutes {
     fun notificationDetails(notificationId: String) = "notification_details/$notificationId"
 }
 
-sealed class BottomNavScreen(val route: String, val title: String, val icon: ImageVector) {
-    object Discover : BottomNavScreen(NavigationRoutes.DISCOVER, "Discover", Icons.Filled.Explore)
+sealed class BottomNavScreen(val route: String, val title: StringResource, val icon: ImageVector) {
+    object Discover : BottomNavScreen(NavigationRoutes.DISCOVER, Res.string.discover, Icons.Filled.Explore)
 
-    object Search : BottomNavScreen(NavigationRoutes.SEARCH, "Search", Icons.Filled.Search)
+    object Search : BottomNavScreen(NavigationRoutes.SEARCH, Res.string.search, Icons.Filled.Search)
 
-    object Favorites : BottomNavScreen(NavigationRoutes.FAVORITES, "Favorites", Icons.Filled.Star)
+    object Favorites : BottomNavScreen(NavigationRoutes.FAVORITES, Res.string.favourite_drinks, Icons.Filled.Star)
 
-    object Profile : BottomNavScreen(NavigationRoutes.PROFILE, "Profile", Icons.Filled.Person)
+    object Profile : BottomNavScreen(NavigationRoutes.PROFILE, Res.string.profile, Icons.Filled.Person)
 }
 
 @Composable
@@ -88,12 +98,11 @@ fun App() {
     val userPreferencesManager: UserPreferencesManager = koinInject()
     val firstLaunchManager: FirstLaunchManager = koinInject()
 
-    // Initialize the theme manager with preferences manager
-    val themeManager =
-        remember(userPreferencesManager) {
-            GlobalThemeManager.initialize(userPreferencesManager)
-            GlobalThemeManager.getThemeManager()
-        }
+    val themeManager: ThemeManager = koinInject()
+    val localizationManager: LocalizationManager = koinInject()
+
+    val currentLanguage by localizationManager.currentLanguage.collectAsState()
+
     val currentTheme by themeManager.currentTheme.collectAsState()
     val navController = rememberNavController()
 
@@ -109,12 +118,6 @@ fun App() {
         firstLaunchManager.handleFirstLaunch()
     }
 
-    // Update status bar when theme changes
-    LaunchedEffect(currentTheme) {
-        // This will trigger a recomposition and update the status bar
-        // The actual status bar update happens in the theme
-    }
-
     // Don't render until login check is complete
     if (!isLoginCheckComplete) {
         return
@@ -123,63 +126,67 @@ fun App() {
     // Always start with splash screen to show beautiful animation
     val startDestination = NavigationRoutes.SPLASH
 
-    CocktailsTheme(useDarkTheme = currentTheme == ThemeMode.DARK) {
-        NavHost(
-            navController = navController,
-            startDestination = startDestination,
-        ) {
-            // Auth flow screens
-            composable(NavigationRoutes.SPLASH) {
-                SplashScreen(
-                    userPreferencesManager = userPreferencesManager,
-                    onNavigateToSignIn = {
-                        navController.navigate(NavigationRoutes.SIGN_IN) {
-                            popUpTo(NavigationRoutes.SPLASH) { inclusive = true }
-                        }
-                    },
-                    onNavigateToMain = {
-                        navController.navigate(NavigationRoutes.DISCOVER) {
-                            popUpTo(NavigationRoutes.SPLASH) { inclusive = true }
-                        }
-                    },
-                )
-            }
+    CompositionLocalProvider(
+        LocalLanguage provides currentLanguage
+    ){
+        CocktailsTheme(useDarkTheme = currentTheme == ThemeMode.DARK) {
+            NavHost(
+                navController = navController,
+                startDestination = startDestination,
+            ) {
+                // Auth flow screens
+                composable(NavigationRoutes.SPLASH) {
+                    SplashScreen(
+                        userPreferencesManager = userPreferencesManager,
+                        onNavigateToSignIn = {
+                            navController.navigate(NavigationRoutes.SIGN_IN) {
+                                popUpTo(NavigationRoutes.SPLASH) { inclusive = true }
+                            }
+                        },
+                        onNavigateToMain = {
+                            navController.navigate(NavigationRoutes.DISCOVER) {
+                                popUpTo(NavigationRoutes.SPLASH) { inclusive = true }
+                            }
+                        },
+                    )
+                }
 
-            composable(NavigationRoutes.SIGN_IN) {
-                PlatformSignInScreen(
-                    onSignInSuccess = {
-                        navController.navigate(NavigationRoutes.DISCOVER) {
-                            popUpTo(NavigationRoutes.SIGN_IN) { inclusive = true }
-                        }
-                    },
-                    onNavigateToSignUp = {
-                        navController.navigate(NavigationRoutes.SIGN_UP)
-                    },
-                )
-            }
+                composable(NavigationRoutes.SIGN_IN) {
+                    PlatformSignInScreen(
+                        onSignInSuccess = {
+                            navController.navigate(NavigationRoutes.DISCOVER) {
+                                popUpTo(NavigationRoutes.SIGN_IN) { inclusive = true }
+                            }
+                        },
+                        onNavigateToSignUp = {
+                            navController.navigate(NavigationRoutes.SIGN_UP)
+                        },
+                    )
+                }
 
-            composable(NavigationRoutes.SIGN_UP) {
-                PlatformSignUpScreen(
-                    onSignUpSuccess = {
-                        navController.navigate(NavigationRoutes.DISCOVER) {
-                            popUpTo(NavigationRoutes.SIGN_UP) { inclusive = true }
-                        }
-                    },
-                    onNavigateToSignIn = {
-                        navController.navigateUp()
-                    },
-                )
-            }
+                composable(NavigationRoutes.SIGN_UP) {
+                    PlatformSignUpScreen(
+                        onSignUpSuccess = {
+                            navController.navigate(NavigationRoutes.DISCOVER) {
+                                popUpTo(NavigationRoutes.SIGN_UP) { inclusive = true }
+                            }
+                        },
+                        onNavigateToSignIn = {
+                            navController.navigateUp()
+                        },
+                    )
+                }
 
-            // Main app screens with bottom navigation
-            composable(NavigationRoutes.DISCOVER) {
-                MainApp(
-                    onNavigateToAuth = {
-                        navController.navigate(NavigationRoutes.SIGN_IN) {
-                            popUpTo(0) { inclusive = true }
-                        }
-                    },
-                )
+                // Main app screens with bottom navigation
+                composable(NavigationRoutes.DISCOVER) {
+                    MainApp(
+                        onNavigateToAuth = {
+                            navController.navigate(NavigationRoutes.SIGN_IN) {
+                                popUpTo(0) { inclusive = true }
+                            }
+                        },
+                    )
+                }
             }
         }
     }
@@ -240,8 +247,8 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                                     restoreState = true
                                 }
                             },
-                            icon = { Icon(screen.icon, contentDescription = screen.title) },
-                            label = { CocktailLabel(screen.title) },
+                            icon = { Icon(screen.icon, contentDescription = stringResource( screen.title)) },
+                            label = { CocktailLabel(stringResource( screen.title)) },
                             colors =
                                 NavigationBarItemDefaults.colors(
                                     selectedIconColor = MaterialTheme.colorScheme.primary,

@@ -98,6 +98,7 @@ internal fun QuickActionsCard(
 @Composable
 internal fun AppSettingsCard(
     onThemeClick: () -> Unit,
+    onLanguageClick: () -> Unit,
     onNotificationsClick: () -> Unit = {},
 ) {
     Card(
@@ -133,7 +134,7 @@ internal fun AppSettingsCard(
             SettingItem(
                 icon = Icons.Default.Language,
                 label = "Change Language",
-                onClick = { /* TODO: Implement language selection */ },
+                onClick = onLanguageClick,
             )
 
             SettingItem(
