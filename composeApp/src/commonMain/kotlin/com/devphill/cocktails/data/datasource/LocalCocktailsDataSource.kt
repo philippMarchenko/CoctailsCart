@@ -1,9 +1,9 @@
 package com.devphill.cocktails.data.datasource
 
-import com.devphill.cocktails.domain.model.CocktailsData
-import com.devphill.cocktails.domain.datasource.LocalCocktailsDataSource
 import com.devphill.cocktails.data.parser.CocktailsJsonParserImpl
 import com.devphill.cocktails.data.resource.PlatformResourceLoader
+import com.devphill.cocktails.domain.datasource.LocalCocktailsDataSource
+import com.devphill.cocktails.domain.model.CocktailsData
 
 /**
  * Implementation of RemoteCocktailsDataSource for loading and parsing cocktails data from local JSON files.
@@ -13,12 +13,12 @@ import com.devphill.cocktails.data.resource.PlatformResourceLoader
  * @param context Platform-specific context for resource loading initialization
  */
 class LocalCocktailsDataSourceImpl(context: Any? = null) : LocalCocktailsDataSource {
-
-    private val resourceLoader = PlatformResourceLoader().apply {
-        if (context != null) {
-            initialize(context)
+    private val resourceLoader =
+        PlatformResourceLoader().apply {
+            if (context != null) {
+                initialize(context)
+            }
         }
-    }
 
     private val jsonParser = CocktailsJsonParserImpl()
 

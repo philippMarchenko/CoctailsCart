@@ -3,7 +3,6 @@ package com.devphill.cocktails.data.platform
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.devphill.cocktails.data.platform.UrlOpener
 
 /**
  * Android implementation for opening URLs.
@@ -11,12 +10,12 @@ import com.devphill.cocktails.data.platform.UrlOpener
  * otherwise falls back to the default browser.
  */
 class AndroidUrlOpener(private val context: Context) : UrlOpener {
-
     override fun openUrl(url: String) {
         try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            }
+            val intent =
+                Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }
             context.startActivity(intent)
         } catch (e: Exception) {
             // Handle error - could log or show toast

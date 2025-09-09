@@ -41,7 +41,7 @@ data class Cocktail(
     val alcoholStrength: AlcoholStrength,
     val searchText: String,
     val isFavorite: Boolean = false,
-    val preparationTime: Int = estimatePreparationTime(method, ingredients.size)
+    val preparationTime: Int = estimatePreparationTime(method, ingredients.size),
 )
 
 /**
@@ -51,10 +51,14 @@ data class Cocktail(
 enum class ComplexityLevel {
     /** Simple cocktails requiring basic mixing techniques */
     SIMPLE,
+
     /** Medium complexity cocktails with moderate preparation steps */
     MEDIUM,
+
     /** Complex cocktails requiring advanced techniques and multiple steps */
-    COMPLEX;
+    COMPLEX,
+
+    ;
 
     companion object {
         /**
@@ -62,12 +66,13 @@ enum class ComplexityLevel {
          * @param value String representation of complexity level
          * @return Corresponding ComplexityLevel enum, defaults to MEDIUM if unknown
          */
-        fun fromString(value: String): ComplexityLevel = when (value.lowercase()) {
-            "simple" -> SIMPLE
-            "medium" -> MEDIUM
-            "complex" -> COMPLEX
-            else -> MEDIUM
-        }
+        fun fromString(value: String): ComplexityLevel =
+            when (value.lowercase()) {
+                "simple" -> SIMPLE
+                "medium" -> MEDIUM
+                "complex" -> COMPLEX
+                else -> MEDIUM
+            }
     }
 }
 
@@ -78,12 +83,17 @@ enum class ComplexityLevel {
 enum class AlcoholStrength {
     /** Cocktails with no alcohol content */
     NON_ALCOHOLIC,
+
     /** Cocktails with light alcohol content */
     LIGHT,
+
     /** Cocktails with medium alcohol content */
     MEDIUM,
+
     /** Cocktails with strong alcohol content */
-    STRONG;
+    STRONG,
+
+    ;
 
     companion object {
         /**
@@ -91,13 +101,14 @@ enum class AlcoholStrength {
          * @param value String representation of alcohol strength
          * @return Corresponding AlcoholStrength enum, defaults to MEDIUM if unknown
          */
-        fun fromString(value: String): AlcoholStrength = when (value.lowercase()) {
-            "non_alcoholic", "non-alcoholic" -> NON_ALCOHOLIC
-            "light" -> LIGHT
-            "medium" -> MEDIUM
-            "strong" -> STRONG
-            else -> MEDIUM
-        }
+        fun fromString(value: String): AlcoholStrength =
+            when (value.lowercase()) {
+                "non_alcoholic", "non-alcoholic" -> NON_ALCOHOLIC
+                "light" -> LIGHT
+                "medium" -> MEDIUM
+                "strong" -> STRONG
+                else -> MEDIUM
+            }
     }
 }
 
@@ -109,13 +120,17 @@ enum class AlcoholStrength {
  * @param ingredientCount Number of ingredients in the cocktail
  * @return Estimated preparation time in minutes
  */
-private fun estimatePreparationTime(method: String, ingredientCount: Int): Int {
-    val baseTime = when {
-        method.contains("shake", true) -> 3
-        method.contains("stir", true) -> 2
-        method.contains("muddle", true) -> 4
-        method.contains("blend", true) -> 5
-        else -> 2
-    }
+private fun estimatePreparationTime(
+    method: String,
+    ingredientCount: Int,
+): Int {
+    val baseTime =
+        when {
+            method.contains("shake", true) -> 3
+            method.contains("stir", true) -> 2
+            method.contains("muddle", true) -> 4
+            method.contains("blend", true) -> 5
+            else -> 2
+        }
     return baseTime + (ingredientCount * 0.5).toInt()
 }

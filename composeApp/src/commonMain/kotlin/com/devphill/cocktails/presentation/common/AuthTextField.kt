@@ -29,37 +29,39 @@ fun AuthTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     enabled: Boolean = true,
     singleLine: Boolean = true,
-    isError: Boolean = false
+    isError: Boolean = false,
 ) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(label) },
-        leadingIcon = leadingIcon?.let { icon ->
-            {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null
-                )
-            }
-        },
-        trailingIcon = trailingIcon?.let { icon ->
-            {
-                if (onTrailingIconClick != null) {
-                    IconButton(onClick = onTrailingIconClick) {
-                        Icon(
-                            imageVector = icon,
-                            contentDescription = null
-                        )
-                    }
-                } else {
+        leadingIcon =
+            leadingIcon?.let { icon ->
+                {
                     Icon(
                         imageVector = icon,
-                        contentDescription = null
+                        contentDescription = null,
                     )
                 }
-            }
-        },
+            },
+        trailingIcon =
+            trailingIcon?.let { icon ->
+                {
+                    if (onTrailingIconClick != null) {
+                        IconButton(onClick = onTrailingIconClick) {
+                            Icon(
+                                imageVector = icon,
+                                contentDescription = null,
+                            )
+                        }
+                    } else {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = null,
+                        )
+                    }
+                }
+            },
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         visualTransformation = visualTransformation,
         modifier = modifier,
@@ -67,13 +69,14 @@ fun AuthTextField(
         singleLine = singleLine,
         isError = isError,
         shape = RoundedCornerShape(8.dp),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.8f),
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            disabledBorderColor = Color.Transparent,
-            errorBorderColor = MaterialTheme.colorScheme.error
-        )
+        colors =
+            OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.8f),
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                disabledBorderColor = Color.Transparent,
+                errorBorderColor = MaterialTheme.colorScheme.error,
+            ),
     )
 }

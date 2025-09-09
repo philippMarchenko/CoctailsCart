@@ -1,4 +1,4 @@
-package com.devphill.cocktails.presentation.cocktail_details
+package com.devphill.cocktails.presentation.cocktailDetails
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -7,7 +7,6 @@ import com.devphill.cocktails.domain.model.ComplexityLevel
 import kotlin.test.*
 
 class CocktailDetailsUtilsTest {
-
     @Test
     fun getComplexityIconReturnsCorrectIconForSimple() {
         val icon = getComplexityIcon(ComplexityLevel.SIMPLE)

@@ -1,12 +1,19 @@
 package com.devphill.cocktails.presentation
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
+import androidx.test.espresso.action.ViewActions.swipeUp
 import com.devphill.cocktails.domain.model.AlcoholStrength
 import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.domain.model.ComplexityLevel
-import com.devphill.cocktails.presentation.cocktail_details.CocktailDetailsScreen
+import com.devphill.cocktails.presentation.cocktailDetails.CocktailDetailsScreen
 import org.junit.Rule
 import org.junit.Test
 
@@ -14,7 +21,6 @@ import org.junit.Test
  * Comprehensive UI tests for the main Cocktail Details Screen.
  */
 class CocktailDetailsScreenTest {
-
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -31,7 +37,7 @@ class CocktailDetailsScreenTest {
         complexity: ComplexityLevel = ComplexityLevel.MEDIUM,
         alcoholStrength: AlcoholStrength = AlcoholStrength.STRONG,
         preparationTime: Int = 3,
-        isFavorite: Boolean = false
+        isFavorite: Boolean = false,
     ) = Cocktail(
         id = id,
         title = title,
@@ -50,7 +56,7 @@ class CocktailDetailsScreenTest {
         alcoholStrength = alcoholStrength,
         preparationTime = preparationTime,
         isFavorite = isFavorite,
-        searchText = ""
+        searchText = "",
     )
 
     @Test
@@ -64,7 +70,7 @@ class CocktailDetailsScreenTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    onVideoClick = {}
+                    onVideoClick = {},
                 )
             }
         }
@@ -102,7 +108,7 @@ class CocktailDetailsScreenTest {
                     onBackClick = { backClicked = true },
                     onFavoriteClick = { favoriteClicked = true },
                     onShareClick = { shareClicked = true },
-                    onVideoClick = { videoClicked = true }
+                    onVideoClick = { videoClicked = true },
                 )
             }
         }
@@ -124,12 +130,13 @@ class CocktailDetailsScreenTest {
 
     @Test
     fun cocktailDetailsScreen_handlesNullOptionalFields() {
-        val cocktail = createSampleCocktail(
-            views = null,
-            garnish = null,
-            glass = null,
-            videoUrl = null
-        )
+        val cocktail =
+            createSampleCocktail(
+                views = null,
+                garnish = null,
+                glass = null,
+                videoUrl = null,
+            )
 
         composeTestRule.setContent {
             MaterialTheme {
@@ -138,7 +145,7 @@ class CocktailDetailsScreenTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    onVideoClick = {}
+                    onVideoClick = {},
                 )
             }
         }
@@ -166,7 +173,7 @@ class CocktailDetailsScreenTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    onVideoClick = {}
+                    onVideoClick = {},
                 )
             }
         }
@@ -187,7 +194,7 @@ class CocktailDetailsScreenTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    onVideoClick = {}
+                    onVideoClick = {},
                 )
             }
         }
@@ -201,12 +208,28 @@ class CocktailDetailsScreenTest {
 
     @Test
     fun cocktailDetailsScreen_handlesLongContent() {
-        val cocktail = createSampleCocktail(
-            title = "The Most Incredibly Long and Complex Cocktail Name That Should Wrap Properly in the UI Without Breaking Layout",
-            category = "Extremely Long Category Name That Tests UI Layout Boundaries and Text Wrapping Capabilities",
-            method = "This is an extremely long method description that includes many detailed steps for cocktail preparation. First, you must carefully select the finest ingredients from reputable sources. Then, ensure all glassware is properly chilled to the optimal temperature. Next, measure each ingredient with precision using appropriate jiggers and measuring tools. Add the base spirit first, followed by modifiers in order of sweetness. Incorporate bitters drop by drop to achieve the perfect balance. Stir or shake according to the cocktail's requirements, ensuring proper dilution and temperature. Finally, strain into the prepared glass and garnish with the specified accompaniments, ensuring visual appeal and aromatic enhancement.",
-            garnish = "A complex garnish consisting of an orange peel twist, a luxardo cherry, and a sprig of fresh mint"
-        )
+        val cocktail =
+            createSampleCocktail(
+                title =
+                    "The Most Incredibly Long and Complex Cocktail Name That Should Wrap Properly " +
+                        "in the UI Without Breaking Layout",
+                category =
+                    "Extremely Long Category Name That Tests UI Layout Boundaries and Text " +
+                        "Wrapping Capabilities",
+                method =
+                    "This is an extremely long method description that includes many detailed steps" +
+                        " for cocktail preparation. First, you must carefully select the finest ingredients" +
+                        " from reputable sources. Then, ensure all glassware is properly chilled to the " +
+                        "optimal temperature. Next, measure each ingredient with precision using appropriate" +
+                        " jiggers and measuring tools. Add the base spirit first, followed by modifiers in" +
+                        " order of sweetness. Incorporate bitters drop by drop to achieve the perfect balance. " +
+                        "Stir or shake according to the cocktail's requirements, ensuring proper dilution" +
+                        " and temperature. Finally, strain into the prepared glass and garnish with the" +
+                        " specified accompaniments, ensuring visual appeal and aromatic enhancement.",
+                garnish =
+                    "A complex garnish consisting of an orange peel twist, a luxardo cherry, " +
+                        "and a sprig of fresh mint",
+            )
 
         composeTestRule.setContent {
             MaterialTheme {
@@ -215,7 +238,7 @@ class CocktailDetailsScreenTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    onVideoClick = {}
+                    onVideoClick = {},
                 )
             }
         }
@@ -239,7 +262,7 @@ class CocktailDetailsScreenTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    onVideoClick = {}
+                    onVideoClick = {},
                 )
             }
         }
@@ -259,7 +282,7 @@ class CocktailDetailsScreenTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    onVideoClick = {}
+                    onVideoClick = {},
                 )
             }
         }
@@ -279,7 +302,7 @@ class CocktailDetailsScreenTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    onVideoClick = {}
+                    onVideoClick = {},
                 )
             }
         }
@@ -299,7 +322,7 @@ class CocktailDetailsScreenTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    onVideoClick = {}
+                    onVideoClick = {},
                 )
             }
         }
@@ -327,7 +350,7 @@ class CocktailDetailsScreenTest {
                     onBackClick = { clickCount++ },
                     onFavoriteClick = {},
                     onShareClick = {},
-                    onVideoClick = {}
+                    onVideoClick = {},
                 )
             }
         }
@@ -353,7 +376,7 @@ class CocktailDetailsScreenTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    onVideoClick = {}
+                    onVideoClick = {},
                 )
             }
         }

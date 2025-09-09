@@ -1,14 +1,28 @@
-package com.devphill.cocktails.presentation.cocktail_details
+package com.devphill.cocktails.presentation.cocktailDetails
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.devphill.cocktails.presentation.theme.CenteredTitle
+import com.devphill.cocktails.presentation.theme.CocktailBodyText
+import com.devphill.cocktails.presentation.theme.ErrorText
 import org.koin.compose.viewmodel.koinViewModel
-import com.devphill.cocktails.presentation.theme.*
 
 @Composable
 fun CocktailDetailsScreenContainer(
@@ -17,7 +31,7 @@ fun CocktailDetailsScreenContainer(
     onVideoClick: (String) -> Unit,
     onShareClick: (String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: CocktailDetailsViewModel = koinViewModel()
+    viewModel: CocktailDetailsViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -35,7 +49,7 @@ fun CocktailDetailsScreenContainer(
                 error = uiState.error!!,
                 onRetry = { viewModel.loadCocktail(cocktailId) },
                 onBackClick = onBackClick,
-                modifier = modifier
+                modifier = modifier,
             )
         }
 
@@ -50,7 +64,7 @@ fun CocktailDetailsScreenContainer(
                         onVideoClick(url)
                     }
                 },
-                modifier = modifier
+                modifier = modifier,
             )
         }
     }
@@ -66,25 +80,23 @@ fun CocktailDetailsScreenContainer(
 }
 
 @Composable
-private fun LoadingScreen(
-    modifier: Modifier = Modifier
-) {
+private fun LoadingScreen(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             CircularProgressIndicator(
-                modifier = Modifier.size(48.dp)
+                modifier = Modifier.size(48.dp),
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             CocktailBodyText(
-                text = "Loading cocktail details..."
+                text = "Loading cocktail details...",
             )
         }
     }
@@ -95,40 +107,40 @@ private fun ErrorScreen(
     error: String,
     onRetry: () -> Unit,
     onBackClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(32.dp)
+            modifier = Modifier.padding(32.dp),
         ) {
             CenteredTitle(
-                text = "Oops!"
+                text = "Oops!",
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             ErrorText(
-                text = error
+                text = error,
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 OutlinedButton(
-                    onClick = onBackClick
+                    onClick = onBackClick,
                 ) {
                     CocktailBodyText("Go Back")
                 }
 
                 Button(
-                    onClick = onRetry
+                    onClick = onRetry,
                 ) {
                     CocktailBodyText("Try Again")
                 }

@@ -15,80 +15,81 @@ import androidx.compose.ui.text.style.TextAlign
 @Composable
 fun CocktailScreenTitle(
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
         style = MaterialTheme.typography.headlineLarge,
+        color = MaterialTheme.colorScheme.onBackground,
         fontWeight = FontWeight.Bold,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
 @Composable
 fun CocktailSectionHeader(
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
         style = MaterialTheme.typography.titleLarge,
         color = MaterialTheme.colorScheme.onBackground,
         fontWeight = FontWeight.SemiBold,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
 @Composable
 fun CocktailSubtitle(
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
         style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
 @Composable
 fun CocktailCardTitle(
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
         style = MaterialTheme.typography.titleMedium,
         color = MaterialTheme.colorScheme.onSurface,
         fontWeight = FontWeight.Medium,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
 @Composable
 fun CocktailBodyText(
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
 @Composable
 fun CocktailLabel(
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
         style = MaterialTheme.typography.labelSmall,
         color = MaterialTheme.colorScheme.onSecondaryContainer,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -99,20 +100,20 @@ fun CocktailLabel(
 @Composable
 fun ErrorText(
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.error,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
 @Composable
 fun CenteredTitle(
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
@@ -120,6 +121,6 @@ fun CenteredTitle(
         color = MaterialTheme.colorScheme.onBackground,
         fontWeight = FontWeight.Bold,
         textAlign = TextAlign.Center,
-        modifier = modifier
+        modifier = modifier,
     )
 }

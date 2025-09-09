@@ -1,4 +1,4 @@
-package com.devphill.cocktails.presentation.cocktail_details
+package com.devphill.cocktails.presentation.cocktailDetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,13 +12,12 @@ import kotlinx.coroutines.launch
 data class CocktailDetailsUiState(
     val cocktail: Cocktail? = null,
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
 )
 
 class CocktailDetailsViewModel(
-    private val cocktailInteractor: CocktailInteractor
+    private val cocktailInteractor: CocktailInteractor,
 ) : ViewModel() {
-
     private val _uiState = MutableStateFlow(CocktailDetailsUiState())
     val uiState: StateFlow<CocktailDetailsUiState> = _uiState.asStateFlow()
 
@@ -33,16 +32,18 @@ class CocktailDetailsViewModel(
 
             try {
                 val cocktail = cocktailInteractor.getCocktailById(cocktailId)
-                _uiState.value = _uiState.value.copy(
-                    cocktail = cocktail,
-                    isLoading = false,
-                    error = if (cocktail == null) "Cocktail not found" else null
-                )
+                _uiState.value =
+                    _uiState.value.copy(
+                        cocktail = cocktail,
+                        isLoading = false,
+                        error = if (cocktail == null) "Cocktail not found" else null,
+                    )
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    error = e.message ?: "Unknown error occurred"
-                )
+                _uiState.value =
+                    _uiState.value.copy(
+                        isLoading = false,
+                        error = e.message ?: "Unknown error occurred",
+                    )
             }
         }
     }
@@ -58,9 +59,10 @@ class CocktailDetailsViewModel(
                 _uiState.value = _uiState.value.copy(cocktail = updatedCocktail)
             } catch (e: Exception) {
                 // Handle error - could show a snackbar or toast
-                _uiState.value = _uiState.value.copy(
-                    error = "Failed to update favorite status"
-                )
+                _uiState.value =
+                    _uiState.value.copy(
+                        error = "Failed to update favorite status",
+                    )
             }
         }
     }

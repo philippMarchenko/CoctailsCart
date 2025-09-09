@@ -21,7 +21,7 @@ data class Notification(
     val timestamp: String, // Using String instead of LocalDateTime for simplicity
     val isRead: Boolean = false,
     val cocktailId: String? = null, // Optional reference to a cocktail
-    val actionUrl: String? = null // Optional action URL
+    val actionUrl: String? = null, // Optional action URL
 )
 
 /**
@@ -31,12 +31,16 @@ data class Notification(
 enum class NotificationType {
     /** Notification about newly added cocktails to the database */
     NEW_COCKTAIL,
+
     /** Notification about changes to user's favorite cocktails */
     FAVORITE_UPDATE,
+
     /** System-related messages and announcements */
     SYSTEM_MESSAGE,
+
     /** Marketing and promotional notifications */
     PROMOTION,
+
     /** Reminder notifications for user actions */
-    REMINDER
+    REMINDER,
 }

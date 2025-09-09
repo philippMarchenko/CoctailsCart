@@ -1,11 +1,20 @@
 package com.devphill.cocktails.presentation
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import com.devphill.cocktails.domain.model.AlcoholStrength
 import com.devphill.cocktails.domain.model.ComplexityLevel
-import com.devphill.cocktails.presentation.cocktail_details.*
+import com.devphill.cocktails.presentation.cocktailDetails.AnimatedIngredientsSection
+import com.devphill.cocktails.presentation.cocktailDetails.AnimatedInstructionsSection
+import com.devphill.cocktails.presentation.cocktailDetails.AnimatedQuickStatsSection
+import com.devphill.cocktails.presentation.cocktailDetails.AnimatedVideoSection
+import com.devphill.cocktails.presentation.cocktailDetails.CocktailDetailsTestTags
 import org.junit.Rule
 import org.junit.Test
 
@@ -13,7 +22,6 @@ import org.junit.Test
  * Comprehensive UI tests for the Cocktail Details sections.
  */
 class CocktailDetailsSectionsTest {
-
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -28,7 +36,7 @@ class CocktailDetailsSectionsTest {
                     preparationTime = 5,
                     glass = "Coupe",
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -56,7 +64,7 @@ class CocktailDetailsSectionsTest {
                     preparationTime = 5,
                     glass = "Coupe",
                     isVisible = false,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -76,7 +84,7 @@ class CocktailDetailsSectionsTest {
                     preparationTime = 2,
                     glass = null,
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -97,7 +105,7 @@ class CocktailDetailsSectionsTest {
                     preparationTime = 3,
                     glass = "Rocks",
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -116,7 +124,7 @@ class CocktailDetailsSectionsTest {
                     preparationTime = 3,
                     glass = "Rocks",
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -135,7 +143,7 @@ class CocktailDetailsSectionsTest {
                     preparationTime = 10,
                     glass = "Rocks",
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -154,7 +162,7 @@ class CocktailDetailsSectionsTest {
                 AnimatedIngredientsSection(
                     ingredients = ingredients,
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -178,7 +186,7 @@ class CocktailDetailsSectionsTest {
                 AnimatedIngredientsSection(
                     ingredients = ingredients,
                     isVisible = false,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -195,7 +203,7 @@ class CocktailDetailsSectionsTest {
                 AnimatedIngredientsSection(
                     ingredients = emptyList(),
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -215,7 +223,7 @@ class CocktailDetailsSectionsTest {
                 AnimatedIngredientsSection(
                     ingredients = ingredients,
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -228,18 +236,19 @@ class CocktailDetailsSectionsTest {
 
     @Test
     fun ingredientsSection_handlesLongIngredientsList() {
-        val ingredients = listOf(
-            "Gin", "Dry Vermouth", "Sweet Vermouth", "Campari",
-            "Orange Peel", "Lemon Twist", "Angostura Bitters",
-            "Simple Syrup", "Fresh Lime Juice", "Egg White"
-        )
+        val ingredients =
+            listOf(
+                "Gin", "Dry Vermouth", "Sweet Vermouth", "Campari",
+                "Orange Peel", "Lemon Twist", "Angostura Bitters",
+                "Simple Syrup", "Fresh Lime Juice", "Egg White",
+            )
 
         composeTestRule.setContent {
             MaterialTheme {
                 AnimatedIngredientsSection(
                     ingredients = ingredients,
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -265,7 +274,7 @@ class CocktailDetailsSectionsTest {
                     method = method,
                     garnish = garnish,
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -289,7 +298,7 @@ class CocktailDetailsSectionsTest {
                     method = method,
                     garnish = null,
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -312,7 +321,7 @@ class CocktailDetailsSectionsTest {
                     method = method,
                     garnish = "",
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -333,7 +342,7 @@ class CocktailDetailsSectionsTest {
                     method = "Shake with ice",
                     garnish = "Lemon",
                     isVisible = false,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -345,7 +354,11 @@ class CocktailDetailsSectionsTest {
 
     @Test
     fun instructionsSection_handlesLongMethod() {
-        val longMethod = "Add all ingredients to a cocktail shaker filled with ice. Shake vigorously for 10-15 seconds until well chilled. Double strain through a fine mesh strainer into a chilled coupe glass. The double straining ensures a smooth texture by removing any ice chips or fruit pulp."
+        val longMethod =
+            "Add all ingredients to a cocktail shaker filled with ice. Shake" +
+                " vigorously for 10-15 seconds until well chilled. Double strain through a fine" +
+                " mesh strainer into a chilled coupe glass. The double straining ensures a smooth" +
+                " texture by removing any ice chips or fruit pulp."
 
         composeTestRule.setContent {
             MaterialTheme {
@@ -353,7 +366,7 @@ class CocktailDetailsSectionsTest {
                     method = longMethod,
                     garnish = "Orange twist",
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -373,7 +386,7 @@ class CocktailDetailsSectionsTest {
                     videoUrl = "https://youtube.com/watch?v=abc123",
                     onVideoClick = {},
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -391,7 +404,7 @@ class CocktailDetailsSectionsTest {
                     videoUrl = "https://youtube.com/watch?v=abc123",
                     onVideoClick = {},
                     isVisible = false,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -411,7 +424,7 @@ class CocktailDetailsSectionsTest {
                     videoUrl = "https://youtube.com/watch?v=abc123",
                     onVideoClick = { clickCount++ },
                     isVisible = true,
-                    delay = 0
+                    delay = 0,
                 )
             }
         }
@@ -434,7 +447,7 @@ class CocktailDetailsSectionsTest {
                     preparationTime = 3,
                     glass = "Rocks",
                     isVisible = true,
-                    delay = 500
+                    delay = 500,
                 )
             }
         }
@@ -451,7 +464,7 @@ class CocktailDetailsSectionsTest {
                 AnimatedIngredientsSection(
                     ingredients = listOf("Gin", "Tonic"),
                     isVisible = true,
-                    delay = 800
+                    delay = 800,
                 )
             }
         }

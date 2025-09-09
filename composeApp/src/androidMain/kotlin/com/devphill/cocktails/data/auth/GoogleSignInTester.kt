@@ -9,7 +9,6 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption
  * Helper class to test Google Sign-In configuration
  */
 object GoogleSignInTester {
-
     fun testConfiguration(context: Context) {
         Log.d("GoogleSignIn", "Testing Google Sign-In configuration...")
 
@@ -33,10 +32,11 @@ object GoogleSignInTester {
 
         // Test 3: Check if Google ID option can be built
         try {
-            val googleIdOption = GetGoogleIdOption.Builder()
-                .setFilterByAuthorizedAccounts(false)
-                .setServerClientId(clientId)
-                .build()
+            val googleIdOption =
+                GetGoogleIdOption.Builder()
+                    .setFilterByAuthorizedAccounts(false)
+                    .setServerClientId(clientId)
+                    .build()
             Log.d("GoogleSignIn", "✅ Google ID option built successfully")
         } catch (e: Exception) {
             Log.e("GoogleSignIn", "❌ Google ID option failed: ${e.message}")

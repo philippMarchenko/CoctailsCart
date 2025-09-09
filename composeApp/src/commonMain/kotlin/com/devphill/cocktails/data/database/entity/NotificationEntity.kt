@@ -13,5 +13,5 @@ data class NotificationEntity(
     val timestamp: Long, // Store as Long for easier sorting
     val isRead: Boolean = false,
     val cocktailId: String? = null,
-    val actionUrl: String? = null
+    val actionUrl: String? = null,
 )

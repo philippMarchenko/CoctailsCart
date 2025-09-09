@@ -1,7 +1,6 @@
 package com.devphill.cocktails.domain.parser
 
 import com.devphill.cocktails.domain.model.CocktailsData
-import com.devphill.cocktails.domain.model.Cocktail
 
 /**
  * Parser interface for converting JSON data into cocktail domain objects.

@@ -14,52 +14,53 @@ import androidx.compose.ui.window.Dialog
 fun ThemeSettingsDialog(
     currentTheme: ThemeMode,
     onThemeSelected: (ThemeMode) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            shape = DialogShapes.default
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+            shape = DialogShapes.default,
         ) {
             Column(
                 modifier = Modifier.padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text = "Theme Settings",
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 24.dp)
+                    modifier = Modifier.padding(bottom = 24.dp),
                 )
 
                 ThemeOption(
                     title = "Light Theme",
                     description = "Always use light colors",
                     isSelected = currentTheme == ThemeMode.LIGHT,
-                    onClick = { onThemeSelected(ThemeMode.LIGHT) }
+                    onClick = { onThemeSelected(ThemeMode.LIGHT) },
                 )
 
                 ThemeOption(
                     title = "Dark Theme",
                     description = "Always use dark colors",
                     isSelected = currentTheme == ThemeMode.DARK,
-                    onClick = { onThemeSelected(ThemeMode.DARK) }
+                    onClick = { onThemeSelected(ThemeMode.DARK) },
                 )
 
                 ThemeOption(
                     title = "System Theme",
                     description = "Follow system settings",
                     isSelected = currentTheme == ThemeMode.SYSTEM,
-                    onClick = { onThemeSelected(ThemeMode.SYSTEM) }
+                    onClick = { onThemeSelected(ThemeMode.SYSTEM) },
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
                     onClick = onDismiss,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     Text("Close")
                 }
@@ -73,35 +74,36 @@ private fun ThemeOption(
     title: String,
     description: String,
     isSelected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .selectable(
-                selected = isSelected,
-                onClick = onClick
-            )
-            .padding(vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .selectable(
+                    selected = isSelected,
+                    onClick = onClick,
+                )
+                .padding(vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         RadioButton(
             selected = isSelected,
-            onClick = onClick
+            onClick = onClick,
         )
-        
+
         Spacer(modifier = Modifier.width(12.dp))
-        
+
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
             )
             Text(
                 text = description,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }

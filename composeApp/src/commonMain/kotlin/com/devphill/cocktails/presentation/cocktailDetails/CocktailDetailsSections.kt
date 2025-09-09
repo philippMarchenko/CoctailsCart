@@ -1,23 +1,43 @@
-package com.devphill.cocktails.presentation.cocktail_details
+package com.devphill.cocktails.presentation.cocktailDetails
 
-import androidx.compose.animation.*
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MenuBook
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.LocalBar
+import androidx.compose.material.icons.filled.PlayCircle
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.VerticalDivider
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.devphill.cocktails.domain.model.AlcoholStrength
 import com.devphill.cocktails.domain.model.ComplexityLevel
-import com.devphill.cocktails.presentation.theme.*
+import com.devphill.cocktails.presentation.theme.CocktailBodyText
+import com.devphill.cocktails.presentation.theme.CocktailCardTitle
+import com.devphill.cocktails.presentation.theme.CocktailSectionHeader
 
 object CocktailDetailsTestTags {
     const val QUICK_STATS = "quick_stats_section"
@@ -34,51 +54,54 @@ fun AnimatedQuickStatsSection(
     preparationTime: Int,
     glass: String?,
     isVisible: Boolean,
-    delay: Int
+    delay: Int,
 ) {
     val slideOffset by animateIntAsState(
         targetValue = if (isVisible) 0 else 100,
         animationSpec = tween(durationMillis = 500, delayMillis = delay, easing = FastOutSlowInEasing),
-        label = "slideOffset"
+        label = "slideOffset",
     )
 
     val alpha by animateFloatAsState(
         targetValue = if (isVisible) 1f else 0f,
         animationSpec = tween(durationMillis = 400, delayMillis = delay + 100),
-        label = "alpha"
+        label = "alpha",
     )
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .graphicsLayer {
-                translationY = slideOffset.toFloat()
-                this.alpha = alpha
-            }
-            .testTag(CocktailDetailsTestTags.QUICK_STATS),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .graphicsLayer {
+                    translationY = slideOffset.toFloat()
+                    this.alpha = alpha
+                }
+                .testTag(CocktailDetailsTestTags.QUICK_STATS),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer
-        )
+        colors =
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            ),
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             AnimatedStatItem(
                 icon = Icons.Default.Schedule,
                 label = "Time",
-                value = "${preparationTime} min",
+                value = "$preparationTime min",
                 isVisible = isVisible,
-                delay = delay + 200
+                delay = delay + 200,
             )
 
             VerticalDivider(
                 modifier = Modifier.height(48.dp),
-                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
             )
 
             AnimatedStatItem(
@@ -86,27 +109,28 @@ fun AnimatedQuickStatsSection(
                 label = "Complexity",
                 value = complexity.name.lowercase().replaceFirstChar { it.uppercaseChar() },
                 isVisible = isVisible,
-                delay = delay + 300
+                delay = delay + 300,
             )
 
             VerticalDivider(
                 modifier = Modifier.height(48.dp),
-                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
             )
 
             AnimatedStatItem(
                 icon = getStrengthIcon(alcoholStrength),
                 label = "Strength",
-                value = alcoholStrength.name.lowercase().replace("_", " ").split(" ")
-                    .joinToString(" ") { it.replaceFirstChar { char -> char.uppercaseChar() } },
+                value =
+                    alcoholStrength.name.lowercase().replace("_", " ").split(" ")
+                        .joinToString(" ") { it.replaceFirstChar { char -> char.uppercaseChar() } },
                 isVisible = isVisible,
-                delay = delay + 400
+                delay = delay + 400,
             )
 
             glass?.let {
                 VerticalDivider(
                     modifier = Modifier.height(48.dp),
-                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
                 )
 
                 AnimatedStatItem(
@@ -114,7 +138,7 @@ fun AnimatedQuickStatsSection(
                     label = "Glass",
                     value = it,
                     isVisible = isVisible,
-                    delay = delay + 500
+                    delay = delay + 500,
                 )
             }
         }
@@ -125,44 +149,45 @@ fun AnimatedQuickStatsSection(
 fun AnimatedIngredientsSection(
     ingredients: List<String>,
     isVisible: Boolean,
-    delay: Int
+    delay: Int,
 ) {
     val slideOffset by animateIntAsState(
         targetValue = if (isVisible) 0 else -80,
         animationSpec = tween(durationMillis = 500, delayMillis = delay, easing = FastOutSlowInEasing),
-        label = "slideOffset"
+        label = "slideOffset",
     )
 
     val alpha by animateFloatAsState(
         targetValue = if (isVisible) 1f else 0f,
         animationSpec = tween(durationMillis = 400, delayMillis = delay + 100),
-        label = "alpha"
+        label = "alpha",
     )
 
     Column(
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .graphicsLayer {
-                translationX = slideOffset.toFloat()
-                this.alpha = alpha
-            }
-            .testTag(CocktailDetailsTestTags.INGREDIENTS_SECTION)
+        modifier =
+            Modifier
+                .padding(horizontal = 16.dp)
+                .graphicsLayer {
+                    translationX = slideOffset.toFloat()
+                    this.alpha = alpha
+                }
+                .testTag(CocktailDetailsTestTags.INGREDIENTS_SECTION),
     ) {
         CocktailSectionHeader(
-            text = "Ingredients"
+            text = "Ingredients",
         )
 
         Spacer(modifier = Modifier.height(12.dp))
 
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(horizontal = 0.dp)
+            contentPadding = PaddingValues(horizontal = 0.dp),
         ) {
             items(ingredients.size) { index ->
                 AnimatedIngredientChip(
                     ingredient = ingredients[index],
                     isVisible = isVisible,
-                    delay = delay + 200 + (index * 50)
+                    delay = delay + 200 + (index * 50),
                 )
             }
         }
@@ -172,19 +197,20 @@ fun AnimatedIngredientsSection(
         // Detailed ingredients list with staggered animation
         Card(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant
-            )
+            colors =
+                CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                ),
         ) {
             Column(
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp),
             ) {
                 ingredients.forEachIndexed { index, ingredient ->
                     AnimatedIngredientRow(
                         ingredient = ingredient,
                         isVisible = isVisible,
                         delay = delay + 400 + (index * 100),
-                        isLast = index == ingredients.lastIndex
+                        isLast = index == ingredients.lastIndex,
                     )
                 }
             }
@@ -197,59 +223,61 @@ fun AnimatedInstructionsSection(
     method: String,
     garnish: String?,
     isVisible: Boolean,
-    delay: Int
+    delay: Int,
 ) {
     val slideOffset by animateIntAsState(
         targetValue = if (isVisible) 0 else 80,
         animationSpec = tween(durationMillis = 500, delayMillis = delay, easing = FastOutSlowInEasing),
-        label = "slideOffset"
+        label = "slideOffset",
     )
 
     val alpha by animateFloatAsState(
         targetValue = if (isVisible) 1f else 0f,
         animationSpec = tween(durationMillis = 400, delayMillis = delay + 100),
-        label = "alpha"
+        label = "alpha",
     )
 
     Column(
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .graphicsLayer {
-                translationX = slideOffset.toFloat()
-                this.alpha = alpha
-            }
-            .testTag(CocktailDetailsTestTags.INSTRUCTIONS_SECTION)
+        modifier =
+            Modifier
+                .padding(horizontal = 16.dp)
+                .graphicsLayer {
+                    translationX = slideOffset.toFloat()
+                    this.alpha = alpha
+                }
+                .testTag(CocktailDetailsTestTags.INSTRUCTIONS_SECTION),
     ) {
         CocktailSectionHeader(
-            text = "Instructions"
+            text = "Instructions",
         )
 
         Spacer(modifier = Modifier.height(12.dp))
 
         Card(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
-            )
+            colors =
+                CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                ),
         ) {
             Column(
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp),
             ) {
                 Row(
-                    verticalAlignment = androidx.compose.ui.Alignment.Top
+                    verticalAlignment = androidx.compose.ui.Alignment.Top,
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.MenuBook,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(20.dp),
                     )
 
                     Spacer(modifier = Modifier.width(12.dp))
 
                     CocktailBodyText(
                         text = method,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                 }
 
@@ -257,7 +285,7 @@ fun AnimatedInstructionsSection(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     HorizontalDivider(
-                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.3f)
+                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.3f),
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -265,7 +293,7 @@ fun AnimatedInstructionsSection(
                     AnimatedGarnishSection(
                         garnish = it,
                         isVisible = isVisible,
-                        delay = delay + 300
+                        delay = delay + 300,
                     )
                 }
             }
@@ -278,31 +306,32 @@ fun AnimatedVideoSection(
     videoUrl: String,
     onVideoClick: () -> Unit,
     isVisible: Boolean,
-    delay: Int
+    delay: Int,
 ) {
     val slideOffset by animateIntAsState(
         targetValue = if (isVisible) 0 else 100,
         animationSpec = tween(durationMillis = 500, delayMillis = delay, easing = FastOutSlowInEasing),
-        label = "slideOffset"
+        label = "slideOffset",
     )
 
     val alpha by animateFloatAsState(
         targetValue = if (isVisible) 1f else 0f,
         animationSpec = tween(durationMillis = 400, delayMillis = delay + 100),
-        label = "alpha"
+        label = "alpha",
     )
 
     Column(
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .graphicsLayer {
-                translationY = slideOffset.toFloat()
-                this.alpha = alpha
-            }
-            .testTag(CocktailDetailsTestTags.VIDEO_SECTION)
+        modifier =
+            Modifier
+                .padding(horizontal = 16.dp)
+                .graphicsLayer {
+                    translationY = slideOffset.toFloat()
+                    this.alpha = alpha
+                }
+                .testTag(CocktailDetailsTestTags.VIDEO_SECTION),
     ) {
         CocktailSectionHeader(
-            text = "Tutorial Video"
+            text = "Tutorial Video",
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -310,39 +339,40 @@ fun AnimatedVideoSection(
         Card(
             onClick = onVideoClick,
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer
-            )
+            colors =
+                CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                ),
         ) {
             Row(
                 modifier = Modifier.padding(16.dp),
-                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
             ) {
                 Icon(
                     imageVector = Icons.Default.PlayCircle,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(32.dp),
                 )
 
                 Spacer(modifier = Modifier.width(16.dp))
 
                 Column(
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 ) {
                     CocktailCardTitle(
-                        text = "Watch Tutorial"
+                        text = "Watch Tutorial",
                     )
 
                     CocktailBodyText(
-                        text = "Learn how to make this cocktail"
+                        text = "Learn how to make this cocktail",
                     )
                 }
 
                 Icon(
                     imageVector = Icons.Default.ChevronRight,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSecondaryContainer
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
                 )
             }
         }

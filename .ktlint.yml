@@ -1,0 +1,29 @@
+disabled_rules:
+  # Disable import ordering rules as they can conflict with IDE auto-imports
+  - "standard:import-ordering"
+  # Allow wildcard imports for common cases like Compose
+  - "standard:no-wildcard-imports"
+  # Allow trailing commas for better diffs
+  - "standard:trailing-comma-on-call-site"
+  - "standard:trailing-comma-on-declaration-site"
+
+# Custom rules for Compose
+experimental:
+  # Enable compose-specific rules
+  ktlint_compose_check_preview_public_modifier: true
+  ktlint_compose_check_preview_annotation: true
+
+# Configure specific rules
+standard:
+  # Allow longer lines for Compose chains
+  max-line-length: 120
+  # Configure function naming to be more flexible for Composables
+  function-naming:
+    ignore_when_annotated_with: "Composable"
+  # Configure parameter list wrapping
+  parameter-list-wrapping:
+    indent_size: 4
+  # Configure argument list wrapping
+  argument-list-wrapping:
+    indent_size: 4
+    max_line_length: 120

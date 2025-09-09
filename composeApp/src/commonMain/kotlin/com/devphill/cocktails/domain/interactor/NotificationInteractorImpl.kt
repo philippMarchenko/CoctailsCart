@@ -13,9 +13,8 @@ import kotlinx.coroutines.flow.map
  * @param repository The notification repository for data access
  */
 class NotificationInteractorImpl(
-    private val repository: NotificationsRepository
+    private val repository: NotificationsRepository,
 ) : NotificationInteractor {
-
     /**
      * Retrieves all notifications from the repository as a reactive stream.
      * Automatically sorts notifications by timestamp in descending order (newest first).
@@ -102,9 +101,7 @@ class NotificationInteractorImpl(
      * Creates a new notification with business logic validation.
      * @param notification The notification to insert
      */
-    override suspend fun insertNotification(
-        notification: Notification
-    ) {
+    override suspend fun insertNotification(notification: Notification) {
         repository.insertNotification(notification)
     }
 

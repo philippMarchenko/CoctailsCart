@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.Flow
  */
 @Dao
 interface CocktailDao {
-
     /**
      * Retrieves all cocktails from the database as a reactive stream.
      * @return Flow emitting list of all cocktail entities
@@ -83,7 +82,10 @@ interface CocktailDao {
      * @param isFavorite The new favorite status (true for favorite, false otherwise)
      */
     @Query("UPDATE cocktails SET isFavorite = :isFavorite WHERE id = :cocktailId")
-    suspend fun updateFavoriteStatus(cocktailId: String, isFavorite: Boolean)
+    suspend fun updateFavoriteStatus(
+        cocktailId: String,
+        isFavorite: Boolean,
+    )
 
     /**
      * Removes all cocktails from the database.

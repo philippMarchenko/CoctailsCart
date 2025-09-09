@@ -3,11 +3,9 @@ package com.devphill.cocktails.presentation.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devphill.cocktails.data.auth.AuthManager
-import com.devphill.cocktails.data.preferences.UserPreferencesManager
 import com.devphill.cocktails.data.platform.ShareManager
+import com.devphill.cocktails.data.preferences.UserPreferencesManager
 import com.devphill.cocktails.data.preferences.UserPreferencesManagerImpl
-import com.devphill.cocktails.localization.Language
-import com.devphill.cocktails.localization.LocalizationManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +16,6 @@ class ProfileViewModel(
     private val userPreferencesManager: UserPreferencesManager,
     private val authManager: AuthManager,
     private val shareManager: ShareManager,
-    private val localizationManager: LocalizationManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
@@ -36,18 +33,20 @@ class ProfileViewModel(
             try {
                 val user = userPreferencesManager.getUser()
 
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    userName = user?.displayName ?: "Guest",
-                    userEmail = user?.email ?: "Not logged in",
-                    userPhotoUrl = user?.photoUrl,
-                    isLoggedIn = userPreferencesManager.getBoolean(UserPreferencesManagerImpl.IS_LOGGED_IN_KEY,false)
-                )
+                _uiState.value =
+                    _uiState.value.copy(
+                        isLoading = false,
+                        userName = user?.displayName ?: "Guest",
+                        userEmail = user?.email ?: "Not logged in",
+                        userPhotoUrl = user?.photoUrl,
+                        isLoggedIn = userPreferencesManager.getBoolean(UserPreferencesManagerImpl.IS_LOGGED_IN_KEY, false),
+                    )
             } catch (exception: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    errorMessage = exception.message ?: "Failed to load profile data"
-                )
+                _uiState.value =
+                    _uiState.value.copy(
+                        isLoading = false,
+                        errorMessage = exception.message ?: "Failed to load profile data",
+                    )
             }
         }
     }
@@ -82,40 +81,47 @@ class ProfileViewModel(
                 } else {
                     val errorMessage = result.exceptionOrNull()?.message
 
-                    val needsReauth = errorMessage?.let { msg ->
-                        msg.contains("requires recent authentication", ignoreCase = true) ||
-                        msg.contains("sensitive", ignoreCase = true) ||
-                        msg.contains("reauthenticate", ignoreCase = true) ||
-                        msg.contains("recent", ignoreCase = true) ||
-                        msg.contains("authentication", ignoreCase = true) ||
-                        msg.contains("sign in again", ignoreCase = true)
-                    } ?: false
+                    val needsReauth =
+                        errorMessage?.let { msg ->
+                            msg.contains("requires recent authentication", ignoreCase = true) ||
+                                msg.contains("sensitive", ignoreCase = true) ||
+                                msg.contains("reauthenticate", ignoreCase = true) ||
+                                msg.contains("recent", ignoreCase = true) ||
+                                msg.contains("authentication", ignoreCase = true) ||
+                                msg.contains("sign in again", ignoreCase = true)
+                        } ?: false
 
                     if (needsReauth) {
-                        _uiState.value = _uiState.value.copy(
-                            isLoading = false,
-                            errorMessage = null,
-                            showReauthDialog = true
-                        )
+                        _uiState.value =
+                            _uiState.value.copy(
+                                isLoading = false,
+                                errorMessage = null,
+                                showReauthDialog = true,
+                            )
                     } else {
                         isDeletingAccount = false
-                        _uiState.value = _uiState.value.copy(
-                            isLoading = false,
-                            errorMessage = errorMessage ?: "Failed to delete account. Please try again."
-                        )
+                        _uiState.value =
+                            _uiState.value.copy(
+                                isLoading = false,
+                                errorMessage = errorMessage ?: "Failed to delete account. Please try again.",
+                            )
                     }
                 }
             } catch (exception: Exception) {
                 isDeletingAccount = false
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    errorMessage = exception.message ?: "Failed to delete account"
-                )
+                _uiState.value =
+                    _uiState.value.copy(
+                        isLoading = false,
+                        errorMessage = exception.message ?: "Failed to delete account",
+                    )
             }
         }
     }
 
-    fun reauthenticateAndDelete(password: String, onDeleteComplete: () -> Unit) {
+    fun reauthenticateAndDelete(
+        password: String,
+        onDeleteComplete: () -> Unit,
+    ) {
         _uiState.value = _uiState.value.copy(isLoading = true, showReauthDialog = false)
 
         viewModelScope.launch {
@@ -123,10 +129,11 @@ class ProfileViewModel(
                 val currentUser = authManager.getCurrentUser()
                 if (currentUser?.email == null) {
                     isDeletingAccount = false
-                    _uiState.value = _uiState.value.copy(
-                        isLoading = false,
-                        errorMessage = "Unable to verify user identity. Please try signing in again."
-                    )
+                    _uiState.value =
+                        _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = "Unable to verify user identity. Please try signing in again.",
+                        )
                     return@launch
                 }
 
@@ -139,8 +146,9 @@ class ProfileViewModel(
 
                     // Account deletion is considered successful even if we get certain errors
                     // because Firebase might sign out the user immediately after deletion
-                    val isDeleteSuccessful = deleteResult.isSuccess ||
-                        deleteResult.exceptionOrNull()?.message?.contains("No user is currently signed in") == true
+                    val isDeleteSuccessful =
+                        deleteResult.isSuccess ||
+                            deleteResult.exceptionOrNull()?.message?.contains("No user is currently signed in") == true
 
                     if (isDeleteSuccessful) {
                         // Clear user data regardless of the exact result
@@ -155,26 +163,29 @@ class ProfileViewModel(
                         onDeleteComplete()
                     } else {
                         isDeletingAccount = false
-                        _uiState.value = _uiState.value.copy(
-                            isLoading = false,
-                            errorMessage = "Failed to delete account after re-authentication: ${deleteResult.exceptionOrNull()?.message}"
-                        )
+                        _uiState.value =
+                            _uiState.value.copy(
+                                isLoading = false,
+                                errorMessage = "Failed to delete account after re-authentication: ${deleteResult.exceptionOrNull()?.message}",
+                            )
                     }
                 } else {
-                    _uiState.value = _uiState.value.copy(
-                        isLoading = false,
-                        errorMessage = "Re-authentication failed. Please check your password and try again.",
-                        showReauthDialog = true // Show dialog again for retry
-                    )
+                    _uiState.value =
+                        _uiState.value.copy(
+                            isLoading = false,
+                            errorMessage = "Re-authentication failed. Please check your password and try again.",
+                            showReauthDialog = true, // Show dialog again for retry
+                        )
                     // Don't reset isDeletingAccount here - allow retry
                 }
             } catch (exception: Exception) {
                 isDeletingAccount = false
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    errorMessage = "Failed to delete account: ${exception.message}",
-                    showReauthDialog = true // Show dialog again for retry
-                )
+                _uiState.value =
+                    _uiState.value.copy(
+                        isLoading = false,
+                        errorMessage = "Failed to delete account: ${exception.message}",
+                        showReauthDialog = true, // Show dialog again for retry
+                    )
             }
         }
     }
@@ -188,13 +199,5 @@ class ProfileViewModel(
         val appUrl = "https://play.google.com/store/apps/details?id=com.devphill.cocktails"
 
         shareManager.shareApp(appName, appUrl)
-    }
-
-    fun saveLanguage(language: Language) {
-        localizationManager.setLanguage(language)
-    }
-
-    fun getCurrentLanguage(): Language {
-        return localizationManager.getCurrentLanguage()
     }
 }

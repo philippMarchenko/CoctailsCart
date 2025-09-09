@@ -40,7 +40,7 @@ import com.devphill.cocktails.presentation.theme.CocktailSubtitle
 fun SearchScreen(
     viewModel: SearchViewModel,
     modifier: Modifier = Modifier,
-    onCocktailClick: (String) -> Unit = {}
+    onCocktailClick: (String) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -49,7 +49,7 @@ fun SearchScreen(
         onQueryChange = viewModel::onSearchQueryChanged,
         onClearSearch = viewModel::clearSearch,
         onCocktailClick = onCocktailClick,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -60,12 +60,13 @@ private fun SearchContent(
     onQueryChange: (String) -> Unit,
     onClearSearch: () -> Unit,
     onCocktailClick: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp)
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(16.dp),
     ) {
         SearchHeader()
 
@@ -75,7 +76,7 @@ private fun SearchContent(
             query = uiState.query,
             onQueryChange = onQueryChange,
             onClearSearch = onClearSearch,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -83,21 +84,21 @@ private fun SearchContent(
         when {
             uiState.isLoading -> {
                 LoadingIndicator(
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
             }
 
             uiState.errorMessage != null -> {
                 ErrorState(
                     message = uiState.errorMessage,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
             }
 
             uiState.isSearchActive && uiState.searchResults.isEmpty() && uiState.query.isNotBlank() -> {
                 EmptySearchResults(
                     query = uiState.query,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
             }
 
@@ -105,14 +106,14 @@ private fun SearchContent(
                 SearchResults(
                     results = uiState.searchResults,
                     onCocktailClick = onCocktailClick,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
 
             else -> {
                 SearchPlaceholder(
                     recentSearches = uiState.recentSearches,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
         }
@@ -127,7 +128,7 @@ private fun SearchHeader() {
         )
         CocktailSubtitle(
             text = "Find cocktails by name or ingredients",
-            modifier = Modifier.padding(top = 4.dp)
+            modifier = Modifier.padding(top = 4.dp),
         )
     }
 }
@@ -138,7 +139,7 @@ private fun SearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
     onClearSearch: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     OutlinedTextField(
         value = query,
@@ -146,14 +147,14 @@ private fun SearchBar(
         placeholder = {
             Text(
                 text = "Search cocktails, ingredients...",
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
             )
         },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = "Search",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         },
         trailingIcon = {
@@ -162,20 +163,21 @@ private fun SearchBar(
                     Icon(
                         imageVector = Icons.Default.Clear,
                         contentDescription = "Clear search",
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
         },
         singleLine = true,
         shape = RoundedCornerShape(28.dp),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
-            focusedContainerColor = MaterialTheme.colorScheme.surface,
-            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-        ),
-        modifier = modifier
+        colors =
+            OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+            ),
+        modifier = modifier,
     )
 }
 
@@ -183,7 +185,7 @@ private fun SearchBar(
 private fun SearchResults(
     results: List<com.devphill.cocktails.domain.model.Cocktail>,
     onCocktailClick: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         CocktailSectionHeader(
@@ -191,13 +193,13 @@ private fun SearchResults(
         )
 
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(results) { cocktail ->
                 CocktailCard(
                     cocktail = cocktail,
                     onClick = { onCocktailClick(cocktail.id) },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
         }
@@ -207,17 +209,17 @@ private fun SearchResults(
 @Composable
 private fun SearchPlaceholder(
     recentSearches: List<String>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
             imageVector = Icons.Default.Search,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -225,14 +227,14 @@ private fun SearchPlaceholder(
         Text(
             text = "Start typing to search",
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
         Text(
             text = "Search by cocktail name or ingredients",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-            modifier = Modifier.padding(top = 8.dp)
+            modifier = Modifier.padding(top = 8.dp),
         )
 
         if (recentSearches.isNotEmpty()) {
@@ -245,20 +247,20 @@ private fun SearchPlaceholder(
 @Composable
 private fun RecentSearches(
     searches: List<String>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         Text(
             text = "Recent Searches",
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = 8.dp),
         )
 
         searches.take(5).forEach { search ->
             TextButton(
                 onClick = { /* Handle recent search click */ },
-                modifier = Modifier.padding(vertical = 2.dp)
+                modifier = Modifier.padding(vertical = 2.dp),
             ) {
                 Text(search)
             }
@@ -269,22 +271,22 @@ private fun RecentSearches(
 @Composable
 private fun EmptySearchResults(
     query: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = "No results found",
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Text(
             text = "No cocktails found for \"$query\"",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-            modifier = Modifier.padding(top = 8.dp)
+            modifier = Modifier.padding(top = 8.dp),
         )
     }
 }
@@ -292,22 +294,22 @@ private fun EmptySearchResults(
 @Composable
 private fun ErrorState(
     message: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = "Search Error",
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.error
+            color = MaterialTheme.colorScheme.error,
         )
         Text(
             text = message,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(top = 8.dp)
+            modifier = Modifier.padding(top = 8.dp),
         )
     }
 }

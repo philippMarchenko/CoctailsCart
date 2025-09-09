@@ -89,7 +89,5 @@ interface NotificationInteractor {
      * @param cocktailId Optional cocktail ID if related to a specific cocktail
      * @param actionUrl Optional action URL for the notification
      */
-    suspend fun insertNotification(
-        notification: Notification
-    )
+    suspend fun insertNotification(notification: Notification)
 }

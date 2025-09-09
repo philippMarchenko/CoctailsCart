@@ -9,5 +9,5 @@ package com.devphill.cocktails.domain.model
  */
 data class IngredientsStructure(
     val allIngredients: List<IngredientEnum>,
-    val byCategory: IngredientsByCategory
+    val byCategory: IngredientsByCategory,
 )

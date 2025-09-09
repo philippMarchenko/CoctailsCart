@@ -1,30 +1,31 @@
 package com.devphill.cocktails.domain.model
 
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class CocktailTest {
-
     @Test
     fun cocktailPreparationTimeCalculation() {
-        val cocktailWithShaking = Cocktail(
-            id = "1",
-            title = "Margarita",
-            imageUrl = null,
-            cocktailUrl = null,
-            category = "Test",
-            categoryEnum = "test",
-            views = null,
-            ingredients = listOf("Tequila", "Lime Juice", "Triple Sec"), // 3 ingredients
-            ingredientsEnums = listOf("tequila", "lime_juice", "triple_sec"),
-            method = "Shake all ingredients with ice and strain", // Contains "shake"
-            garnish = null,
-            glass = null,
-            videoUrl = null,
-            complexity = ComplexityLevel.MEDIUM,
-            alcoholStrength = AlcoholStrength.MEDIUM,
-            searchText = "",
-            isFavorite = false
-        )
+        val cocktailWithShaking =
+            Cocktail(
+                id = "1",
+                title = "Margarita",
+                imageUrl = null,
+                cocktailUrl = null,
+                category = "Test",
+                categoryEnum = "test",
+                views = null,
+                ingredients = listOf("Tequila", "Lime Juice", "Triple Sec"),
+                ingredientsEnums = listOf("tequila", "lime_juice", "triple_sec"),
+                method = "Shake all ingredients with ice and strain",
+                garnish = null,
+                glass = null,
+                videoUrl = null,
+                complexity = ComplexityLevel.MEDIUM,
+                alcoholStrength = AlcoholStrength.MEDIUM,
+                searchText = "",
+                isFavorite = false,
+            )
 
         // Base time for shaking (3) + ingredient count * 0.5 (3 * 0.5 = 1.5, rounded to 1) = 4
         assertEquals(4, cocktailWithShaking.preparationTime)
@@ -32,25 +33,26 @@ class CocktailTest {
 
     @Test
     fun cocktailPreparationTimeWithStirring() {
-        val cocktailWithStirring = Cocktail(
-            id = "2",
-            title = "Martini",
-            imageUrl = null,
-            cocktailUrl = null,
-            category = "Test",
-            categoryEnum = "test",
-            views = null,
-            ingredients = listOf("Gin", "Vermouth"), // 2 ingredients
-            ingredientsEnums = listOf("gin", "vermouth"),
-            method = "Stir ingredients with ice and strain", // Contains "stir"
-            garnish = null,
-            glass = null,
-            videoUrl = null,
-            complexity = ComplexityLevel.SIMPLE,
-            alcoholStrength = AlcoholStrength.STRONG,
-            searchText = "",
-            isFavorite = false
-        )
+        val cocktailWithStirring =
+            Cocktail(
+                id = "2",
+                title = "Martini",
+                imageUrl = null,
+                cocktailUrl = null,
+                category = "Test",
+                categoryEnum = "test",
+                views = null,
+                ingredients = listOf("Gin", "Vermouth"),
+                ingredientsEnums = listOf("gin", "vermouth"),
+                method = "Stir ingredients with ice and strain",
+                garnish = null,
+                glass = null,
+                videoUrl = null,
+                complexity = ComplexityLevel.SIMPLE,
+                alcoholStrength = AlcoholStrength.STRONG,
+                searchText = "",
+                isFavorite = false,
+            )
 
         // Base time for stirring (2) + ingredient count * 0.5 (2 * 0.5 = 1) = 3
         assertEquals(3, cocktailWithStirring.preparationTime)
@@ -58,25 +60,26 @@ class CocktailTest {
 
     @Test
     fun cocktailPreparationTimeWithMuddling() {
-        val cocktailWithMuddling = Cocktail(
-            id = "3",
-            title = "Mojito",
-            imageUrl = null,
-            cocktailUrl = null,
-            category = "Test",
-            categoryEnum = "test",
-            views = null,
-            ingredients = listOf("Rum", "Mint", "Lime", "Sugar", "Soda"), // 5 ingredients
-            ingredientsEnums = listOf("rum", "mint", "lime", "sugar", "soda"),
-            method = "Muddle mint with sugar and lime", // Contains "muddle"
-            garnish = null,
-            glass = null,
-            videoUrl = null,
-            complexity = ComplexityLevel.MEDIUM,
-            alcoholStrength = AlcoholStrength.LIGHT,
-            searchText = "",
-            isFavorite = false
-        )
+        val cocktailWithMuddling =
+            Cocktail(
+                id = "3",
+                title = "Mojito",
+                imageUrl = null,
+                cocktailUrl = null,
+                category = "Test",
+                categoryEnum = "test",
+                views = null,
+                ingredients = listOf("Rum", "Mint", "Lime", "Sugar", "Soda"), // 5 ingredients
+                ingredientsEnums = listOf("rum", "mint", "lime", "sugar", "soda"),
+                method = "Muddle mint with sugar and lime", // Contains "muddle"
+                garnish = null,
+                glass = null,
+                videoUrl = null,
+                complexity = ComplexityLevel.MEDIUM,
+                alcoholStrength = AlcoholStrength.LIGHT,
+                searchText = "",
+                isFavorite = false,
+            )
 
         // Base time for muddling (4) + ingredient count * 0.5 (5 * 0.5 = 2.5, rounded to 2) = 6
         assertEquals(6, cocktailWithMuddling.preparationTime)
@@ -84,25 +87,26 @@ class CocktailTest {
 
     @Test
     fun cocktailPreparationTimeWithBlending() {
-        val cocktailWithBlending = Cocktail(
-            id = "4",
-            title = "Piña Colada",
-            imageUrl = null,
-            cocktailUrl = null,
-            category = "Test",
-            categoryEnum = "test",
-            views = null,
-            ingredients = listOf("Rum", "Coconut Cream", "Pineapple Juice"), // 3 ingredients
-            ingredientsEnums = listOf("rum", "coconut_cream", "pineapple_juice"),
-            method = "Blend all ingredients with ice", // Contains "blend"
-            garnish = null,
-            glass = null,
-            videoUrl = null,
-            complexity = ComplexityLevel.SIMPLE,
-            alcoholStrength = AlcoholStrength.MEDIUM,
-            searchText = "",
-            isFavorite = false
-        )
+        val cocktailWithBlending =
+            Cocktail(
+                id = "4",
+                title = "Piña Colada",
+                imageUrl = null,
+                cocktailUrl = null,
+                category = "Test",
+                categoryEnum = "test",
+                views = null,
+                ingredients = listOf("Rum", "Coconut Cream", "Pineapple Juice"),
+                ingredientsEnums = listOf("rum", "coconut_cream", "pineapple_juice"),
+                method = "Blend all ingredients with ice",
+                garnish = null,
+                glass = null,
+                videoUrl = null,
+                complexity = ComplexityLevel.SIMPLE,
+                alcoholStrength = AlcoholStrength.MEDIUM,
+                searchText = "",
+                isFavorite = false,
+            )
 
         // Base time for blending (5) + ingredient count * 0.5 (3 * 0.5 = 1.5, rounded to 1) = 6
         assertEquals(6, cocktailWithBlending.preparationTime)
@@ -110,25 +114,26 @@ class CocktailTest {
 
     @Test
     fun cocktailPreparationTimeDefault() {
-        val cocktailDefault = Cocktail(
-            id = "5",
-            title = "Simple Mix",
-            imageUrl = null,
-            cocktailUrl = null,
-            category = "Test",
-            categoryEnum = "test",
-            views = null,
-            ingredients = listOf("Vodka", "Juice"), // 2 ingredients
-            ingredientsEnums = listOf("vodka", "juice"),
-            method = "Pour ingredients over ice", // No special keywords
-            garnish = null,
-            glass = null,
-            videoUrl = null,
-            complexity = ComplexityLevel.SIMPLE,
-            alcoholStrength = AlcoholStrength.LIGHT,
-            searchText = "",
-            isFavorite = false
-        )
+        val cocktailDefault =
+            Cocktail(
+                id = "5",
+                title = "Simple Mix",
+                imageUrl = null,
+                cocktailUrl = null,
+                category = "Test",
+                categoryEnum = "test",
+                views = null,
+                ingredients = listOf("Vodka", "Juice"),
+                ingredientsEnums = listOf("vodka", "juice"),
+                method = "Pour ingredients over ice",
+                garnish = null,
+                glass = null,
+                videoUrl = null,
+                complexity = ComplexityLevel.SIMPLE,
+                alcoholStrength = AlcoholStrength.LIGHT,
+                searchText = "",
+                isFavorite = false,
+            )
 
         // Default base time (2) + ingredient count * 0.5 (2 * 0.5 = 1) = 3
         assertEquals(3, cocktailDefault.preparationTime)
@@ -136,25 +141,26 @@ class CocktailTest {
 
     @Test
     fun cocktailCopyWithFavoriteToggle() {
-        val originalCocktail = Cocktail(
-            id = "test",
-            title = "Test Cocktail",
-            imageUrl = null,
-            cocktailUrl = null,
-            category = "Test",
-            categoryEnum = "test",
-            views = null,
-            ingredients = listOf("Ingredient"),
-            ingredientsEnums = listOf("ingredient"),
-            method = "Test method",
-            garnish = null,
-            glass = null,
-            videoUrl = null,
-            complexity = ComplexityLevel.SIMPLE,
-            alcoholStrength = AlcoholStrength.LIGHT,
-            searchText = "",
-            isFavorite = false
-        )
+        val originalCocktail =
+            Cocktail(
+                id = "test",
+                title = "Test Cocktail",
+                imageUrl = null,
+                cocktailUrl = null,
+                category = "Test",
+                categoryEnum = "test",
+                views = null,
+                ingredients = listOf("Ingredient"),
+                ingredientsEnums = listOf("ingredient"),
+                method = "Test method",
+                garnish = null,
+                glass = null,
+                videoUrl = null,
+                complexity = ComplexityLevel.SIMPLE,
+                alcoholStrength = AlcoholStrength.LIGHT,
+                searchText = "",
+                isFavorite = false,
+            )
 
         val favoriteCocktail = originalCocktail.copy(isFavorite = true)
 
@@ -168,7 +174,6 @@ class CocktailTest {
 }
 
 class ComplexityLevelTest {
-
     @Test
     fun complexityLevelFromStringSimple() {
         assertEquals(ComplexityLevel.SIMPLE, ComplexityLevel.fromString("simple"))
@@ -199,7 +204,6 @@ class ComplexityLevelTest {
 }
 
 class AlcoholStrengthTest {
-
     @Test
     fun alcoholStrengthFromStringNonAlcoholic() {
         assertEquals(AlcoholStrength.NON_ALCOHOLIC, AlcoholStrength.fromString("non_alcoholic"))

@@ -6,14 +6,12 @@ import com.russhwolf.settings.Settings
 import kotlinx.serialization.json.Json
 
 class UserPreferencesManagerImpl() : UserPreferencesManager {
-
     val settings: Settings = Settings()
 
     companion object {
         private const val THEME_MODE_KEY = "theme_mode"
         private const val USER_KEY = "user"
         const val IS_LOGGED_IN_KEY = "is_logged_in"
-        private val LANGUAGE_CODE_KEY = "language_code"
     }
 
     private val json = Json { ignoreUnknownKeys = true }
@@ -64,19 +62,17 @@ class UserPreferencesManagerImpl() : UserPreferencesManager {
         }
     }
 
-    override fun saveLanguage(languageCode: String) {
-        settings.putString(LANGUAGE_CODE_KEY, languageCode)
-    }
-
-    override fun getLanguage(): String? {
-        return settings.getStringOrNull(LANGUAGE_CODE_KEY)
-    }
-
-    override suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean {
+    override suspend fun getBoolean(
+        key: String,
+        defaultValue: Boolean,
+    ): Boolean {
         return settings.getBoolean(key, defaultValue)
     }
 
-    override suspend fun putBoolean(key: String, value: Boolean) {
+    override suspend fun putBoolean(
+        key: String,
+        value: Boolean,
+    ) {
         settings.putBoolean(key, value)
     }
 

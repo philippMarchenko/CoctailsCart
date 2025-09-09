@@ -8,9 +8,8 @@ import kotlinx.coroutines.delay
 class FirstLaunchManagerImpl(
     private val userPreferencesManager: UserPreferencesManager,
     private val pushNotificationManager: PushNotificationManager,
-    private val notificationInteractor: NotificationInteractor
+    private val notificationInteractor: NotificationInteractor,
 ) : FirstLaunchManager {
-
     companion object {
         private const val FIRST_LAUNCH_KEY = "is_first_launch"
         private const val WELCOME_DELAY_MS = 3000L // 3 seconds delay

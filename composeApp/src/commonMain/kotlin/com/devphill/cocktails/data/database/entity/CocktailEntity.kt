@@ -2,8 +2,8 @@ package com.devphill.cocktails.data.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.domain.model.AlcoholStrength
+import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.domain.model.ComplexityLevel
 
 @Entity(tableName = "cocktails")
@@ -26,7 +26,7 @@ data class CocktailEntity(
     val alcoholStrength: String,
     val searchText: String,
     val isFavorite: Boolean = false,
-    val preparationTime: Int
+    val preparationTime: Int,
 ) {
     fun toCocktail(): Cocktail {
         return Cocktail(
@@ -47,7 +47,7 @@ data class CocktailEntity(
             alcoholStrength = AlcoholStrength.fromString(alcoholStrength),
             searchText = searchText,
             isFavorite = isFavorite,
-            preparationTime = preparationTime
+            preparationTime = preparationTime,
         )
     }
 
@@ -71,7 +71,7 @@ data class CocktailEntity(
                 alcoholStrength = cocktail.alcoholStrength.name,
                 searchText = cocktail.searchText,
                 isFavorite = cocktail.isFavorite,
-                preparationTime = cocktail.preparationTime
+                preparationTime = cocktail.preparationTime,
             )
         }
 

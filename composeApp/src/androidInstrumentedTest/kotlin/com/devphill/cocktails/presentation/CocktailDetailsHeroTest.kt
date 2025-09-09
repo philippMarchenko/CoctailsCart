@@ -1,10 +1,12 @@
 package com.devphill.cocktails.presentation
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.devphill.cocktails.presentation.cocktail_details.AnimatedFullScreenHeroSection
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import com.devphill.cocktails.presentation.cocktailDetails.AnimatedFullScreenHeroSection
 import org.junit.Rule
 import org.junit.Test
 
@@ -12,7 +14,6 @@ import org.junit.Test
  * Comprehensive UI tests for the Cocktail Details Hero section.
  */
 class CocktailDetailsHeroTest {
-
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -29,7 +30,7 @@ class CocktailDetailsHeroTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    isVisible = true
+                    isVisible = true,
                 )
             }
         }
@@ -68,7 +69,7 @@ class CocktailDetailsHeroTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    isVisible = true
+                    isVisible = true,
                 )
             }
         }
@@ -93,7 +94,7 @@ class CocktailDetailsHeroTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    isVisible = true
+                    isVisible = true,
                 )
             }
         }
@@ -118,7 +119,7 @@ class CocktailDetailsHeroTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    isVisible = true
+                    isVisible = true,
                 )
             }
         }
@@ -142,7 +143,7 @@ class CocktailDetailsHeroTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    isVisible = true
+                    isVisible = true,
                 )
             }
         }
@@ -168,7 +169,7 @@ class CocktailDetailsHeroTest {
                     onBackClick = { backClickCount++ },
                     onFavoriteClick = {},
                     onShareClick = {},
-                    isVisible = true
+                    isVisible = true,
                 )
             }
         }
@@ -195,7 +196,7 @@ class CocktailDetailsHeroTest {
                     onBackClick = {},
                     onFavoriteClick = { favoriteClickCount++ },
                     onShareClick = {},
-                    isVisible = true
+                    isVisible = true,
                 )
             }
         }
@@ -222,7 +223,7 @@ class CocktailDetailsHeroTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = { shareClickCount++ },
-                    isVisible = true
+                    isVisible = true,
                 )
             }
         }
@@ -247,7 +248,7 @@ class CocktailDetailsHeroTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    isVisible = false
+                    isVisible = false,
                 )
             }
         }
@@ -262,7 +263,9 @@ class CocktailDetailsHeroTest {
 
     @Test
     fun heroSection_handlesLongTitle() {
-        val longTitle = "This is a very long cocktail name that should wrap properly and not cause any layout issues in the UI"
+        val longTitle =
+            "This is a very long cocktail name that should wrap properly and not" +
+                " cause any layout issues in the UI"
 
         composeTestRule.setContent {
             MaterialTheme {
@@ -275,7 +278,7 @@ class CocktailDetailsHeroTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    isVisible = true
+                    isVisible = true,
                 )
             }
         }
@@ -300,7 +303,7 @@ class CocktailDetailsHeroTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    isVisible = true
+                    isVisible = true,
                 )
             }
         }
@@ -323,7 +326,7 @@ class CocktailDetailsHeroTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    isVisible = true
+                    isVisible = true,
                 )
             }
         }
@@ -348,7 +351,7 @@ class CocktailDetailsHeroTest {
                     onBackClick = {},
                     onFavoriteClick = {},
                     onShareClick = {},
-                    isVisible = true
+                    isVisible = true,
                 )
             }
         }

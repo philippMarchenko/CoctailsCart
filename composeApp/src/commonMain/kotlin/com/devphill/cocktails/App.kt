@@ -13,7 +13,6 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,18 +27,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import cocktailscart.composeapp.generated.resources.Res
-import cocktailscart.composeapp.generated.resources.*
 import com.devphill.cocktails.data.manager.FirstLaunchManager
 import com.devphill.cocktails.data.platform.UrlOpener
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
-import com.devphill.cocktails.localization.LocalLanguage
-import com.devphill.cocktails.localization.LocalizationManager
-import org.jetbrains.compose.resources.stringResource
 import com.devphill.cocktails.presentation.auth.signin.PlatformSignInScreen
 import com.devphill.cocktails.presentation.auth.signup.PlatformSignUpScreen
-import com.devphill.cocktails.presentation.cocktail_details.CocktailDetailsScreenContainer
-import com.devphill.cocktails.presentation.cocktail_details.CocktailDetailsViewModel
+import com.devphill.cocktails.presentation.cocktailDetails.CocktailDetailsScreenContainer
+import com.devphill.cocktails.presentation.cocktailDetails.CocktailDetailsViewModel
 import com.devphill.cocktails.presentation.discover.DiscoverScreen
 import com.devphill.cocktails.presentation.discover.DiscoverViewModel
 import com.devphill.cocktails.presentation.favorites.FavoritesScreen
@@ -54,12 +48,11 @@ import com.devphill.cocktails.presentation.search.SearchViewModel
 import com.devphill.cocktails.presentation.splash.SplashScreen
 import com.devphill.cocktails.presentation.theme.CocktailLabel
 import com.devphill.cocktails.presentation.theme.CocktailsTheme
-import com.devphill.cocktails.presentation.theme.ThemeManager
+import com.devphill.cocktails.presentation.theme.GlobalThemeManager
 import com.devphill.cocktails.presentation.theme.ThemeMode
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
-import org.jetbrains.compose.resources.StringResource
 
 // Navigation routes as constants
 object NavigationRoutes {
@@ -75,22 +68,33 @@ object NavigationRoutes {
     const val COCKTAIL_DETAILS = "cocktail_details/{cocktailId}"
 
     fun cocktailDetails(cocktailId: String) = "cocktail_details/$cocktailId"
+
     fun notificationDetails(notificationId: String) = "notification_details/$notificationId"
 }
 
-// Data class for bottom navigation screens that uses localized strings
-data class BottomNavScreen(val route: String, val title: StringResource, val icon: ImageVector)
+sealed class BottomNavScreen(val route: String, val title: String, val icon: ImageVector) {
+    object Discover : BottomNavScreen(NavigationRoutes.DISCOVER, "Discover", Icons.Filled.Explore)
+
+    object Search : BottomNavScreen(NavigationRoutes.SEARCH, "Search", Icons.Filled.Search)
+
+    object Favorites : BottomNavScreen(NavigationRoutes.FAVORITES, "Favorites", Icons.Filled.Star)
+
+    object Profile : BottomNavScreen(NavigationRoutes.PROFILE, "Profile", Icons.Filled.Person)
+}
 
 @Composable
 @Preview
 fun App() {
     val userPreferencesManager: UserPreferencesManager = koinInject()
     val firstLaunchManager: FirstLaunchManager = koinInject()
-    val themeManager: ThemeManager = koinInject()
-    val localizationManager: LocalizationManager = koinInject()
-    val currentTheme by themeManager.currentTheme.collectAsState()
-    val currentLanguage by localizationManager.currentLanguage.collectAsState()
 
+    // Initialize the theme manager with preferences manager
+    val themeManager =
+        remember(userPreferencesManager) {
+            GlobalThemeManager.initialize(userPreferencesManager)
+            GlobalThemeManager.getThemeManager()
+        }
+    val currentTheme by themeManager.currentTheme.collectAsState()
     val navController = rememberNavController()
 
     // Check login state in a LaunchedEffect
@@ -120,65 +124,62 @@ fun App() {
     val startDestination = NavigationRoutes.SPLASH
 
     CocktailsTheme(useDarkTheme = currentTheme == ThemeMode.DARK) {
-        CompositionLocalProvider(LocalLanguage provides currentLanguage) {
-            NavHost(
-                navController = navController,
-                startDestination = startDestination
-            ) {
-                // Auth flow screens
-                composable(NavigationRoutes.SPLASH) {
-                    SplashScreen(
-                        userPreferencesManager = userPreferencesManager,
-                        onNavigateToSignIn = {
-                            navController.navigate(NavigationRoutes.SIGN_IN) {
-                                popUpTo(NavigationRoutes.SPLASH) { inclusive = true }
-                            }
-                        },
-                        onNavigateToMain = {
-                            navController.navigate(NavigationRoutes.DISCOVER) {
-                                popUpTo(NavigationRoutes.SPLASH) { inclusive = true }
-                            }
+        NavHost(
+            navController = navController,
+            startDestination = startDestination,
+        ) {
+            // Auth flow screens
+            composable(NavigationRoutes.SPLASH) {
+                SplashScreen(
+                    userPreferencesManager = userPreferencesManager,
+                    onNavigateToSignIn = {
+                        navController.navigate(NavigationRoutes.SIGN_IN) {
+                            popUpTo(NavigationRoutes.SPLASH) { inclusive = true }
                         }
-                    )
-                }
+                    },
+                    onNavigateToMain = {
+                        navController.navigate(NavigationRoutes.DISCOVER) {
+                            popUpTo(NavigationRoutes.SPLASH) { inclusive = true }
+                        }
+                    },
+                )
+            }
 
-                composable(NavigationRoutes.SIGN_IN) {
-                    PlatformSignInScreen(
-                        onSignInSuccess = {
-                            navController.navigate(NavigationRoutes.DISCOVER) {
-                                popUpTo(NavigationRoutes.SIGN_IN) { inclusive = true }
-                            }
-                        },
-                        onNavigateToSignUp = {
-                            navController.navigate(NavigationRoutes.SIGN_UP)
+            composable(NavigationRoutes.SIGN_IN) {
+                PlatformSignInScreen(
+                    onSignInSuccess = {
+                        navController.navigate(NavigationRoutes.DISCOVER) {
+                            popUpTo(NavigationRoutes.SIGN_IN) { inclusive = true }
                         }
-                    )
-                }
+                    },
+                    onNavigateToSignUp = {
+                        navController.navigate(NavigationRoutes.SIGN_UP)
+                    },
+                )
+            }
 
-                composable(NavigationRoutes.SIGN_UP) {
-                    PlatformSignUpScreen(
-                        onSignUpSuccess = {
-                            navController.navigate(NavigationRoutes.DISCOVER) {
-                                popUpTo(NavigationRoutes.SIGN_UP) { inclusive = true }
-                            }
-                        },
-                        onNavigateToSignIn = {
-                            navController.navigateUp()
+            composable(NavigationRoutes.SIGN_UP) {
+                PlatformSignUpScreen(
+                    onSignUpSuccess = {
+                        navController.navigate(NavigationRoutes.DISCOVER) {
+                            popUpTo(NavigationRoutes.SIGN_UP) { inclusive = true }
                         }
-                    )
-                }
+                    },
+                    onNavigateToSignIn = {
+                        navController.navigateUp()
+                    },
+                )
+            }
 
-                // Main app screens with bottom navigation
-                    // Main app screens with bottom navigation
-                    composable(NavigationRoutes.DISCOVER) {
-                        MainApp(
-                            onNavigateToAuth = {
-                                navController.navigate(NavigationRoutes.SIGN_IN) {
-                                    popUpTo(0) { inclusive = true }
+            // Main app screens with bottom navigation
+            composable(NavigationRoutes.DISCOVER) {
+                MainApp(
+                    onNavigateToAuth = {
+                        navController.navigate(NavigationRoutes.SIGN_IN) {
+                            popUpTo(0) { inclusive = true }
                         }
-                            }
-                        )
-                    }
+                    },
+                )
             }
         }
     }
@@ -205,34 +206,19 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
     }
 
     // Define bottom navigation screens
-    val bottomNavScreens = listOf(
-        BottomNavScreen(
-            route = NavigationRoutes.DISCOVER,
-            title = Res.string.discover,
-            icon = Icons.Default.Explore
-        ),
-        BottomNavScreen(
-            route = NavigationRoutes.SEARCH,
-            title = Res.string.search,
-            icon = Icons.Default.Search
-        ),
-        BottomNavScreen(
-            route = NavigationRoutes.FAVORITES,
-            title = Res.string.favourite_drinks,
-            icon = Icons.Default.Star
-        ),
-        BottomNavScreen(
-            route = NavigationRoutes.PROFILE,
-            title = Res.string.profile,
-            icon = Icons.Default.Person
+    val bottomNavScreens =
+        listOf(
+            BottomNavScreen.Discover,
+            BottomNavScreen.Search,
+            BottomNavScreen.Favorites,
+            BottomNavScreen.Profile,
         )
-    )
 
     // Check if current route is a bottom nav screen
     val isBottomNavScreen = bottomNavScreens.any { it.route == currentRoute }
 
     Scaffold(
-        containerColor = androidx.compose.ui.graphics.Color.Transparent, // Make scaffold transparent
+        containerColor = androidx.compose.ui.graphics.Color.Transparent,
         bottomBar = {
             // Only show bottom bar for main screens, not for cocktail details
             if (isBottomNavScreen) {
@@ -243,8 +229,8 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                         NavigationBarItem(
                             selected = currentRoute == screen.route,
                             onClick = {
-                                // Pop up to the start destination to keep only one instance of each tab
                                 navController.navigate(screen.route) {
+                                    // Pop up to the start destination to keep only one instance of each tab
                                     popUpTo(NavigationRoutes.DISCOVER) {
                                         saveState = true
                                     }
@@ -254,33 +240,35 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                                     restoreState = true
                                 }
                             },
-                            icon = { Icon(screen.icon, contentDescription = stringResource(screen.title)) },
-                            label = { CocktailLabel(stringResource(screen.title)) },
-                            colors = NavigationBarItemDefaults.colors(
-                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                selectedTextColor = MaterialTheme.colorScheme.primary,
-                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                indicatorColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.12f)
-                            )
+                            icon = { Icon(screen.icon, contentDescription = screen.title) },
+                            label = { CocktailLabel(screen.title) },
+                            colors =
+                                NavigationBarItemDefaults.colors(
+                                    selectedIconColor = MaterialTheme.colorScheme.primary,
+                                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    selectedTextColor = MaterialTheme.colorScheme.primary,
+                                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    indicatorColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.12f),
+                                ),
                         )
                     }
                 }
             }
-        }
+        },
     ) { paddingValues ->
         NavHost(
             navController = navController,
             startDestination = NavigationRoutes.DISCOVER,
-            modifier = Modifier // Remove padding to allow edge-to-edge for detail screens
+            modifier = Modifier,
         ) {
             composable(NavigationRoutes.DISCOVER) {
                 val viewModel: DiscoverViewModel = koinViewModel()
                 DiscoverScreen(
-                    modifier = Modifier.padding(paddingValues), // Add padding for main screen
+                    modifier = Modifier.padding(paddingValues),
                     viewModel = viewModel,
                     onCocktailClick = { cocktailId ->
                         navController.navigate(NavigationRoutes.cocktailDetails(cocktailId))
-                    }
+                    },
                 )
             }
 
@@ -291,7 +279,7 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                     viewModel = viewModel,
                     onCocktailClick = { cocktailId ->
                         navController.navigate(NavigationRoutes.cocktailDetails(cocktailId))
-                    }
+                    },
                 )
             }
 
@@ -310,7 +298,7 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                     },
                     onNavigateToCocktailDetails = { cocktailId ->
                         navController.navigate(NavigationRoutes.cocktailDetails(cocktailId))
-                    }
+                    },
                 )
             }
 
@@ -331,7 +319,7 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                     },
                     onNavigateToNotifications = {
                         navController.navigate(NavigationRoutes.NOTIFICATIONS)
-                    }
+                    },
                 )
             }
 
@@ -344,13 +332,13 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                     onNotificationClick = { notification ->
                         // Navigate to notification details screen
                         navController.navigate(NavigationRoutes.notificationDetails(notification.id))
-                    }
+                    },
                 )
             }
 
             composable(
                 route = NavigationRoutes.NOTIFICATION_DETAILS,
-                arguments = listOf(navArgument("notificationId") { type = NavType.StringType })
+                arguments = listOf(navArgument("notificationId") { type = NavType.StringType }),
             ) { navBackStackEntry ->
                 val notificationId = navBackStackEntry.savedStateHandle.get<String>("notificationId") ?: ""
                 val viewModel: NotificationsViewModel = koinViewModel()
@@ -365,13 +353,13 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                     onActionClick = { actionUrl ->
                         // Handle action URL - could open in browser or handle custom actions
                         urlOpener.openUrl(actionUrl)
-                    }
+                    },
                 )
             }
 
             composable(
                 route = NavigationRoutes.COCKTAIL_DETAILS,
-                arguments = listOf(navArgument("cocktailId") { type = NavType.StringType })
+                arguments = listOf(navArgument("cocktailId") { type = NavType.StringType }),
             ) { navBackStackEntry ->
                 val cocktailId = navBackStackEntry.savedStateHandle.get<String>("cocktailId") ?: ""
                 val viewModel: CocktailDetailsViewModel = koinViewModel()
@@ -380,8 +368,8 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                     onBackClick = { navController.navigateUp() },
                     onVideoClick = handleVideoClick,
                     onShareClick = handleShareClick,
-                    modifier = Modifier, // No padding for edge-to-edge display
-                    viewModel = viewModel
+                    modifier = Modifier,
+                    viewModel = viewModel,
                 )
             }
         }

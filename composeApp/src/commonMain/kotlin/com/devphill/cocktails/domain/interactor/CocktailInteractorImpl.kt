@@ -11,9 +11,8 @@ import kotlinx.coroutines.flow.Flow
  * @param repository The cocktail repository for data access
  */
 class CocktailInteractorImpl(
-    private val repository: CocktailRepository
+    private val repository: CocktailRepository,
 ) : CocktailInteractor {
-
     /**
      * Retrieves all cocktails from the repository as a reactive stream.
      * @return Flow emitting list of all available cocktails
@@ -63,7 +62,10 @@ class CocktailInteractorImpl(
      * @param cocktail The cocktail to toggle favorite status for
      * @param isFavorite Current favorite state - true if currently favorited, false otherwise
      */
-    override suspend fun toggleFavorite(cocktail: Cocktail, isFavorite: Boolean) {
+    override suspend fun toggleFavorite(
+        cocktail: Cocktail,
+        isFavorite: Boolean,
+    ) {
         if (isFavorite) {
             repository.removeFromFavorites(cocktail.id)
         } else {

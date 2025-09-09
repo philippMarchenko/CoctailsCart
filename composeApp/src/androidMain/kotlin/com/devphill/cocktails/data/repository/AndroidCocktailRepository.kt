@@ -47,9 +47,8 @@ import kotlinx.coroutines.launch
  */
 class AndroidCocktailRepository(
     private val databaseCocktailDataSource: DatabaseCocktailDataSource,
-    private val localCocktailsDataSource: LocalCocktailsDataSource
+    private val localCocktailsDataSource: LocalCocktailsDataSource,
 ) : CocktailRepository {
-
     private val repositoryScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     /**
@@ -78,7 +77,7 @@ class AndroidCocktailRepository(
                 },
                 onFailure = { error ->
                     println("❌ Failed to load cocktails from JSON: ${error.message}")
-                }
+                },
             )
         } else {
             println("📊 Using cached cocktails from database")

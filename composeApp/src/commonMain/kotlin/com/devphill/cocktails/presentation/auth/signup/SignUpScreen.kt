@@ -14,15 +14,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
@@ -35,10 +34,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -67,7 +63,7 @@ fun SignUpScreen(
     onSignUpSuccess: () -> Unit,
     onNavigateToSignIn: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: AuthViewModel = koinViewModel()
+    viewModel: AuthViewModel = koinViewModel(),
 ) {
     var email by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
@@ -94,42 +90,46 @@ fun SignUpScreen(
 
     var startAnimation by remember { mutableStateOf(false) }
 
-    val alphaAnimation = animateFloatAsState(
-        targetValue = if (startAnimation) 1f else 0f,
-        animationSpec = tween(durationMillis = 800),
-        label = "alpha"
-    )
+    val alphaAnimation =
+        animateFloatAsState(
+            targetValue = if (startAnimation) 1f else 0f,
+            animationSpec = tween(durationMillis = 800),
+            label = "alpha",
+        )
 
-    val offsetAnimation = animateDpAsState(
-        targetValue = if (startAnimation) 0.dp else 50.dp,
-        animationSpec = tween(durationMillis = 800, easing = FastOutSlowInEasing),
-        label = "offset"
-    )
+    val offsetAnimation =
+        animateDpAsState(
+            targetValue = if (startAnimation) 0.dp else 50.dp,
+            animationSpec = tween(durationMillis = 800, easing = FastOutSlowInEasing),
+            label = "offset",
+        )
 
     LaunchedEffect(key1 = true) {
         startAnimation = true
     }
 
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background)
-            .alpha(alphaAnimation.value)
-            .offset(y = offsetAnimation.value)
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .imePadding()
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background)
+                .alpha(alphaAnimation.value)
+                .offset(y = offsetAnimation.value)
+                .statusBarsPadding()
+                .navigationBarsPadding()
+                .imePadding(),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .verticalScroll(
-                    rememberScrollState(),
-                    enabled = true
-                )
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+                    .verticalScroll(
+                        rememberScrollState(),
+                        enabled = true,
+                    ),
         ) {
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -179,7 +179,7 @@ fun SignUpScreen(
                         }
                     }
                 },
-                onNavigateToSignIn = onNavigateToSignIn
+                onNavigateToSignIn = onNavigateToSignIn,
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -199,7 +199,7 @@ fun SignUpScreen(
                 }) {
                     Text(text = "OK")
                 }
-            }
+            },
         )
     }
 }
@@ -208,13 +208,13 @@ fun SignUpScreen(
 private fun WelcomeHeader() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         // App Icon
         Text(
             text = "🍸",
             style = MaterialTheme.typography.headlineLarge,
-            modifier = Modifier.padding(bottom = 4.dp)
+            modifier = Modifier.padding(bottom = 4.dp),
         )
 
         // Welcome Text
@@ -223,7 +223,7 @@ private fun WelcomeHeader() {
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
 
         Text(
@@ -231,7 +231,7 @@ private fun WelcomeHeader() {
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier.padding(horizontal = 16.dp),
         )
     }
 }
@@ -253,25 +253,26 @@ private fun SignUpForm(
     onPasswordVisibilityToggle: () -> Unit,
     onConfirmPasswordVisibilityToggle: () -> Unit,
     onSignUp: () -> Unit,
-    onNavigateToSignIn: () -> Unit
+    onNavigateToSignIn: () -> Unit,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
-        )
+        colors =
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+            ),
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Text(
                 text = "Sign Up",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
             )
 
             // Email Field
@@ -284,7 +285,7 @@ private fun SignUpForm(
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !isLoading,
                 singleLine = true,
-                isError = errorMessage != null && (errorMessage.contains("email", ignoreCase = true) || errorMessage.contains("valid email", ignoreCase = true))
+                isError = errorMessage != null && (errorMessage.contains("email", ignoreCase = true) || errorMessage.contains("valid email", ignoreCase = true)),
             )
 
             AuthTextField(
@@ -296,7 +297,7 @@ private fun SignUpForm(
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !isLoading,
                 singleLine = true,
-                isError = errorMessage != null && errorMessage.contains("username", ignoreCase = true)
+                isError = errorMessage != null && errorMessage.contains("username", ignoreCase = true),
             )
 
             AuthTextField(
@@ -311,7 +312,7 @@ private fun SignUpForm(
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !isLoading,
                 singleLine = true,
-                isError = errorMessage != null && (errorMessage.contains("password", ignoreCase = true) || errorMessage.contains("match", ignoreCase = true))
+                isError = errorMessage != null && (errorMessage.contains("password", ignoreCase = true) || errorMessage.contains("match", ignoreCase = true)),
             )
 
             AuthTextField(
@@ -326,7 +327,7 @@ private fun SignUpForm(
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !isLoading,
                 singleLine = true,
-                isError = errorMessage != null && (errorMessage.contains("confirm", ignoreCase = true) || errorMessage.contains("match", ignoreCase = true))
+                isError = errorMessage != null && (errorMessage.contains("confirm", ignoreCase = true) || errorMessage.contains("match", ignoreCase = true)),
             )
 
             // Error Message
@@ -335,30 +336,31 @@ private fun SignUpForm(
                     text = message,
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
 
             // Sign Up Button
             Button(
                 onClick = onSignUp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(44.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(44.dp),
                 enabled = !isLoading && email.isNotBlank() && username.isNotBlank() && password.isNotBlank() && confirmPassword.isNotBlank(),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(8.dp),
             ) {
                 if (isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(18.dp),
                         color = MaterialTheme.colorScheme.onPrimary,
-                        strokeWidth = 2.dp
+                        strokeWidth = 2.dp,
                     )
                 } else {
                     Text(
                         text = "Create Account",
                         style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
                     )
                 }
             }
@@ -367,21 +369,21 @@ private fun SignUpForm(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = "Already have an account?",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 TextButton(
                     onClick = onNavigateToSignIn,
-                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
                 ) {
                     Text(
                         text = "Sign In",
                         style = MaterialTheme.typography.bodySmall,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
                     )
                 }
             }

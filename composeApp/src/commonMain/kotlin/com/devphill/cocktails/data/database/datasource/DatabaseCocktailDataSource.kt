@@ -2,15 +2,14 @@ package com.devphill.cocktails.data.database.datasource
 
 import com.devphill.cocktails.data.database.CocktailDatabase
 import com.devphill.cocktails.data.database.entity.CocktailEntity
-import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.domain.datasource.DatabaseCocktailDataSource
+import com.devphill.cocktails.domain.model.Cocktail
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class DatabaseCocktailDataSourceImpl(
-    database: CocktailDatabase
+    database: CocktailDatabase,
 ) : DatabaseCocktailDataSource {
-
     private val cocktailDao = database.cocktailDao()
 
     override fun getAllCocktails(): Flow<List<Cocktail>> {
@@ -46,7 +45,10 @@ class DatabaseCocktailDataSourceImpl(
         cocktailDao.insertCocktails(entities)
     }
 
-    override suspend fun updateFavoriteStatus(cocktailId: String, isFavorite: Boolean) {
+    override suspend fun updateFavoriteStatus(
+        cocktailId: String,
+        isFavorite: Boolean,
+    ) {
         cocktailDao.updateFavoriteStatus(cocktailId, isFavorite)
     }
 

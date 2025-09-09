@@ -7,7 +7,6 @@ import com.devphill.cocktails.domain.model.CocktailsData
  * This abstraction allows the domain layer to be independent of specific data loading implementations.
  */
 interface LocalCocktailsDataSource {
-
     /**
      * Loads and parses the complete cocktails database from a data source.
      *

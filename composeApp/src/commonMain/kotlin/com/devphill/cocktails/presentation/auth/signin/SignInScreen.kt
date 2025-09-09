@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -37,10 +36,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -68,7 +65,7 @@ fun SignInScreen(
     onSignInSuccess: () -> Unit,
     onNavigateToSignUp: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: AuthViewModel = koinViewModel()
+    viewModel: AuthViewModel = koinViewModel(),
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -83,7 +80,7 @@ fun SignInScreen(
         when (viewModel.authState) {
             is AuthState.Authenticated -> {
                 onSignInSuccess()
-                viewModel.resetToUnauthenticated() 
+                viewModel.resetToUnauthenticated()
             }
             is AuthState.GoogleSignInRequired -> {
                 // On platforms other than Android, show an error
@@ -109,7 +106,7 @@ fun SignInScreen(
             viewModel.signInWithGoogle()
         },
         onNavigateToSignUp = onNavigateToSignUp,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -117,13 +114,13 @@ fun SignInScreen(
 private fun WelcomeHeader() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         // App Icon
         Text(
             text = "🍸",
             style = MaterialTheme.typography.headlineLarge,
-            modifier = Modifier.padding(bottom = 4.dp)
+            modifier = Modifier.padding(bottom = 4.dp),
         )
 
         // Welcome Text
@@ -132,7 +129,7 @@ private fun WelcomeHeader() {
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
 
         Text(
@@ -140,7 +137,7 @@ private fun WelcomeHeader() {
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier.padding(horizontal = 16.dp),
         )
     }
 }
@@ -157,25 +154,26 @@ private fun SignInForm(
     onPasswordVisibilityToggle: () -> Unit,
     onSignIn: () -> Unit,
     onGoogleSignIn: () -> Unit,
-    onNavigateToSignUp: () -> Unit
+    onNavigateToSignUp: () -> Unit,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
-        )
+        colors =
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+            ),
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Text(
                 text = "Sign In",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
             )
 
             AuthTextField(
@@ -186,7 +184,7 @@ private fun SignInForm(
                 keyboardType = KeyboardType.Email,
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !isLoading,
-                singleLine = true
+                singleLine = true,
             )
 
             AuthTextField(
@@ -197,10 +195,15 @@ private fun SignInForm(
                 trailingIcon = if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                 onTrailingIconClick = onPasswordVisibilityToggle,
                 keyboardType = KeyboardType.Password,
-                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                visualTransformation =
+                    if (passwordVisible) {
+                        VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation()
+                    },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !isLoading,
-                singleLine = true
+                singleLine = true,
             )
 
             // Error Message
@@ -209,30 +212,31 @@ private fun SignInForm(
                     text = message,
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
 
             // Sign In Button
             Button(
                 onClick = onSignIn,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(44.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(44.dp),
                 enabled = !isLoading && email.isNotBlank() && password.isNotBlank(),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(8.dp),
             ) {
                 if (isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(18.dp),
                         color = MaterialTheme.colorScheme.onPrimary,
-                        strokeWidth = 2.dp
+                        strokeWidth = 2.dp,
                     )
                 } else {
                     Text(
                         text = "Sign In",
                         style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
                     )
                 }
             }
@@ -241,14 +245,14 @@ private fun SignInForm(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 HorizontalDivider(modifier = Modifier.weight(1f))
                 Text(
                     text = "OR",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 12.dp)
+                    modifier = Modifier.padding(horizontal = 12.dp),
                 )
                 HorizontalDivider(modifier = Modifier.weight(1f))
             }
@@ -260,22 +264,23 @@ private fun SignInForm(
                         onGoogleSignIn()
                     }
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(44.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(44.dp),
                 enabled = !isLoading,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(8.dp),
             ) {
                 Icon(
                     imageVector = Icons.Default.AccountCircle,
                     contentDescription = null,
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(16.dp),
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "Continue with Google",
                     style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
                 )
             }
 
@@ -283,21 +288,21 @@ private fun SignInForm(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = "Don't have an account?",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 TextButton(
                     onClick = onNavigateToSignUp,
-                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
                 ) {
                     Text(
                         text = "Sign Up",
                         style = MaterialTheme.typography.bodySmall,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
                     )
                 }
             }
@@ -318,42 +323,46 @@ private fun SignInScreenContent(
     onSignIn: () -> Unit,
     onGoogleSignIn: () -> Unit,
     onNavigateToSignUp: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var startAnimation by remember { mutableStateOf(true) }
 
-    val alphaAnimation = animateFloatAsState(
-        targetValue = if (startAnimation) 1f else 0f,
-        animationSpec = tween(durationMillis = 800),
-        label = "alpha"
-    )
+    val alphaAnimation =
+        animateFloatAsState(
+            targetValue = if (startAnimation) 1f else 0f,
+            animationSpec = tween(durationMillis = 800),
+            label = "alpha",
+        )
 
-    val offsetAnimation = animateDpAsState(
-        targetValue = if (startAnimation) 0.dp else 50.dp,
-        animationSpec = tween(durationMillis = 800, easing = FastOutSlowInEasing),
-        label = "offset"
-    )
+    val offsetAnimation =
+        animateDpAsState(
+            targetValue = if (startAnimation) 0.dp else 50.dp,
+            animationSpec = tween(durationMillis = 800, easing = FastOutSlowInEasing),
+            label = "offset",
+        )
 
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background)
-            .alpha(alphaAnimation.value)
-            .offset(y = offsetAnimation.value)
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .imePadding()
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background)
+                .alpha(alphaAnimation.value)
+                .offset(y = offsetAnimation.value)
+                .statusBarsPadding()
+                .navigationBarsPadding()
+                .imePadding(),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .verticalScroll(
-                    rememberScrollState(),
-                    enabled = true
-                )
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+                    .verticalScroll(
+                        rememberScrollState(),
+                        enabled = true,
+                    ),
         ) {
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -374,7 +383,7 @@ private fun SignInScreenContent(
                 onPasswordVisibilityToggle = onPasswordVisibilityToggle,
                 onSignIn = onSignIn,
                 onGoogleSignIn = onGoogleSignIn,
-                onNavigateToSignUp = onNavigateToSignUp
+                onNavigateToSignUp = onNavigateToSignUp,
             )
 
             Spacer(modifier = Modifier.height(8.dp))

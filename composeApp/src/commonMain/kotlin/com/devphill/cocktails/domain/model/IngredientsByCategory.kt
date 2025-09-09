@@ -19,5 +19,5 @@ data class IngredientsByCategory(
     val juices: List<IngredientEnum>,
     val bitters: List<IngredientEnum>,
     val syrups: List<IngredientEnum>,
-    val other: List<IngredientEnum>
+    val other: List<IngredientEnum>,
 )
