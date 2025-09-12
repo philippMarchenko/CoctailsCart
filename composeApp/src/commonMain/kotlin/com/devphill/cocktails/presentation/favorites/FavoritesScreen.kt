@@ -153,7 +153,9 @@ private fun FavoriteItem(
             modifier
                 .clickable { onCocktailClick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-    ) {
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+        ))  {
         Column(
             modifier = Modifier.padding(16.dp),
         ) {
