@@ -2,22 +2,21 @@ package com.devphill.cocktails.presentation.theme
 
 import android.app.Activity
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
-
-actual fun updateStatusBarAppearance(isLight: Boolean) {
-    // This will be called from the composable context
-    // We need to get the current activity to update the status bar
-}
+import androidx.core.view.WindowCompat
 
 @Composable
-fun rememberStatusBarController(): StatusBarController? {
+actual fun updateStatusBarAppearance(isLight: Boolean) {
     val context = LocalContext.current
-    return remember(context) {
+
+    LaunchedEffect(isLight) {
         if (context is Activity) {
-            StatusBarController(context)
-        } else {
-            null
+            val window = context.window
+            val insetsController = WindowCompat.getInsetsController(window, window.decorView)
+
+            // Set status bar appearance
+            insetsController.isAppearanceLightStatusBars = isLight
         }
     }
 }

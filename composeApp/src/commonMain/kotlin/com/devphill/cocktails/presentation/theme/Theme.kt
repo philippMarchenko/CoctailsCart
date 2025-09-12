@@ -187,24 +187,8 @@ fun CocktailsTheme(
 
     // Use the new cocktail-themed color schemes
     val colorScheme = if (useDarkTheme) DarkCocktailColors else LightCocktailColors
-
     // Update status bar when theme changes
-    LaunchedEffect(currentTheme) {
-        when (currentTheme) {
-            ThemeMode.LIGHT -> {
-                // Light theme: use dark status bar icons
-                updateStatusBarAppearance(isLight = true)
-            }
-            ThemeMode.DARK -> {
-                // Dark theme: use light status bar icons
-                updateStatusBarAppearance(isLight = false)
-            }
-            ThemeMode.SYSTEM -> {
-                // System theme: let system decide
-                updateStatusBarAppearance(isLight = !useDarkTheme)
-            }
-        }
-    }
+    updateStatusBarAppearance(isLight = !useDarkTheme)
 
     val AppTypography = CocktailsTypography.create()
 
@@ -230,6 +214,12 @@ fun CocktailsTheme(
         }
     }
 }
+
+/**
+ * Platform-specific function to update status bar appearance
+ */
+@Composable
+expect fun updateStatusBarAppearance(isLight: Boolean)
 
 @Preview
 @Composable

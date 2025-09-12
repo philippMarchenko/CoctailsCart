@@ -29,7 +29,7 @@ class ThemeManager(private val preferencesManager: UserPreferencesManager) {
         preferencesManager.saveThemeMode(theme)
 
         // Update status bar appearance
-        updateStatusBarForTheme(theme)
+    //    updateStatusBarForTheme(theme)
     }
 
     fun getCurrentTheme(): ThemeMode = _currentTheme.value
@@ -41,27 +41,7 @@ class ThemeManager(private val preferencesManager: UserPreferencesManager) {
         }
     }
 
-    private fun updateStatusBarForTheme(theme: ThemeMode) {
-        // This will be implemented by platform-specific code
-        when (theme) {
-            ThemeMode.LIGHT -> {
-                // Light theme: use dark status bar icons
-                updateStatusBarAppearance(isLight = true)
-            }
-            ThemeMode.DARK -> {
-                // Dark theme: use light status bar icons
-                updateStatusBarAppearance(isLight = false)
-            }
-            ThemeMode.SYSTEM -> {
-                // System theme: let system decide
-                // For now, default to dark theme behavior
-                updateStatusBarAppearance(isLight = false)
-            }
-        }
-    }
+
 }
 
-/**
- * Platform-specific function to update status bar appearance
- */
-expect fun updateStatusBarAppearance(isLight: Boolean)
+
