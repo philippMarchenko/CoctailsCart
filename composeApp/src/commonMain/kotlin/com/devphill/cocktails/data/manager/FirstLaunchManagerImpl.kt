@@ -17,7 +17,7 @@ class FirstLaunchManagerImpl(
 
     override suspend fun handleFirstLaunch() {
         // Only show welcome notification on first launch
-        if (true) {
+        if (isFirstLaunch()) {
             // Wait a bit for the user to see the app
             delay(WELCOME_DELAY_MS)
 

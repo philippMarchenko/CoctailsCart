@@ -263,7 +263,8 @@ private fun SignInForm(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
-            ) {
+                verticalAlignment = Alignment.CenterVertically,
+                ) {
                 Text(
                     text = stringResource(Res.string.dont_have_account),
                     style = MaterialTheme.typography.bodyMedium,

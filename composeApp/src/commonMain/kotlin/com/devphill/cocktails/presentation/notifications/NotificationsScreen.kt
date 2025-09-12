@@ -192,18 +192,12 @@ private fun NotificationItem(
                     )
 
                     if (!notification.isRead) {
-                        Box(
-                            modifier =
-                                Modifier
-                                    .size(8.dp)
-                                    .padding(start = 4.dp),
-                        ) {
-                            Surface(
-                                shape = RoundedCornerShape(50),
-                                color = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.fillMaxSize(),
-                            ) {}
-                        }
+                        Surface(
+                            shape = RoundedCornerShape(50),
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier
+                                .size(8.dp)
+                        ) {}
                     }
                 }
 
