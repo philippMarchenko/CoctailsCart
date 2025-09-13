@@ -8,7 +8,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,11 +20,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
@@ -35,7 +34,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -55,11 +53,19 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.continue_as_guest
+import cocktailscart.composeapp.generated.resources.dont_have_account
+import cocktailscart.composeapp.generated.resources.email_address
+import cocktailscart.composeapp.generated.resources.or
+import cocktailscart.composeapp.generated.resources.password
+import cocktailscart.composeapp.generated.resources.sign_in
+import cocktailscart.composeapp.generated.resources.sign_in_with_google
+import cocktailscart.composeapp.generated.resources.sign_up
+import cocktailscart.composeapp.generated.resources.welcome_back
 import com.devphill.cocktails.presentation.auth.AuthState
 import com.devphill.cocktails.presentation.auth.AuthViewModel
 import com.devphill.cocktails.presentation.common.AuthTextField
-import cocktailscart.composeapp.generated.resources.Res
-import cocktailscart.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -107,6 +113,9 @@ fun SignInScreen(
         },
         onGoogleSignIn = {
             viewModel.signInWithGoogle()
+        },
+        onContinueAsGuest = {
+            viewModel.signInAsGuest()
         },
         onNavigateToSignUp = onNavigateToSignUp,
         modifier = modifier,
@@ -157,6 +166,7 @@ private fun SignInForm(
     onPasswordVisibilityToggle: () -> Unit,
     onSignIn: () -> Unit,
     onGoogleSignIn: () -> Unit,
+    onContinueAsGuest: () -> Unit,
     onNavigateToSignUp: () -> Unit,
 ) {
     Card(
@@ -250,13 +260,25 @@ private fun SignInForm(
                 HorizontalDivider(modifier = Modifier.weight(1f))
             }
 
-            // Google Sign In Button
-            OutlinedButton(
-                onClick = onGoogleSignIn,
-                enabled = !isLoading,
-                modifier = Modifier.fillMaxWidth(),
+            Row(
+                modifier = Modifier.wrapContentHeight(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Text(stringResource(Res.string.sign_in_with_google))
+                Button(
+                    onClick = onGoogleSignIn,
+                    enabled = !isLoading,
+                    modifier = Modifier.weight(1f).alpha(1f)
+                ) {
+                    Text(stringResource(Res.string.sign_in_with_google))
+                }
+
+                Button(
+                    onClick = onContinueAsGuest,
+                    modifier = Modifier.weight(1f).alpha(1f)
+                ) {
+                    Text(stringResource(Res.string.continue_as_guest))
+                }
             }
 
             // Navigate to Sign Up
@@ -294,6 +316,7 @@ private fun SignInScreenContent(
     onPasswordVisibilityToggle: () -> Unit,
     onSignIn: () -> Unit,
     onGoogleSignIn: () -> Unit,
+    onContinueAsGuest: () -> Unit,
     onNavigateToSignUp: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -355,6 +378,7 @@ private fun SignInScreenContent(
                 onPasswordVisibilityToggle = onPasswordVisibilityToggle,
                 onSignIn = onSignIn,
                 onGoogleSignIn = onGoogleSignIn,
+                onContinueAsGuest = onContinueAsGuest,
                 onNavigateToSignUp = onNavigateToSignUp,
             )
 

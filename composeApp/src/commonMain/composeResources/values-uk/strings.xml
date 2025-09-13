@@ -47,6 +47,8 @@
     <string name="already_have_account">Вже маєте обліковий запис?</string>
     <string name="dont_have_account">Немає облікового запису?</string>
     <string name="sign_in_with_google">Увійти через Google</string>
+    <string name="continue_as_guest">Увійти як гість</string>
+
     <string name="welcome_back">З поверненням</string>
     <string name="create_your_account">Створіть свій обліковий запис</string>
 

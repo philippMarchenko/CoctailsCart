@@ -144,4 +144,27 @@ class AuthViewModel(
     fun resetToUnauthenticated() {
         authState = AuthState.Unauthenticated
     }
+
+    // New: allow continuing as a guest user
+    fun signInAsGuest() {
+        viewModelScope.launch {
+            authState = AuthState.Loading
+            try {
+                // Create a lightweight guest user representation
+                val guestUser = User(
+                    uid = "guest",
+                    email = null,
+                    displayName = "Guest",
+                    photoUrl = null,
+                )
+
+                // Persist minimal user info and mark as logged in
+                saveUserData(guestUser)
+
+                authState = AuthState.Authenticated(guestUser)
+            } catch (e: Exception) {
+                authState = AuthState.Error(e.message ?: "Guest sign in failed")
+            }
+        }
+    }
 }

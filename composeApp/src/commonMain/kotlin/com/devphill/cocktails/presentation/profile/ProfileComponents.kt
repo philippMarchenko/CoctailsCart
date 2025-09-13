@@ -100,8 +100,10 @@ fun ProfileMainContent(
 
         AccountActionsCard(
             onSignOutClick = { showSignOutDialog = true },
+            onSignInClick = { onSignOut() },
             onDeleteAccountClick = { showDeleteAccountDialog = true },
         )
+
     }
 
     // Sign Out Confirmation Dialog

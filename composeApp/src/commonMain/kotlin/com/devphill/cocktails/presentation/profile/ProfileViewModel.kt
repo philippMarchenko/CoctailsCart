@@ -220,4 +220,11 @@ class ProfileViewModel(
     fun getCurrentLanguage(): Language {
         return localizationManager.getCurrentLanguage()
     }
+
+    /**
+     * Checks if the user is currently logged in
+     */
+    fun isUserLoggedIn(): Boolean {
+        return authManager.isUserSignedIn()
+    }
 }
