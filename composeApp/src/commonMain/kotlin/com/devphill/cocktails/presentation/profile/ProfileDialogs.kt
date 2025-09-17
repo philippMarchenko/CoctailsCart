@@ -11,10 +11,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import cocktailscart.composeapp.generated.resources.Res
 import cocktailscart.composeapp.generated.resources.*
-import org.jetbrains.compose.resources.stringResource
+import cocktailscart.composeapp.generated.resources.Res
 import com.devphill.cocktails.presentation.theme.DialogShapes
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun SignOutConfirmationDialog(

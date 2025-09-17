@@ -29,7 +29,7 @@ class ThemeManager(private val preferencesManager: UserPreferencesManager) {
         preferencesManager.saveThemeMode(theme)
 
         // Update status bar appearance
-    //    updateStatusBarForTheme(theme)
+        //    updateStatusBarForTheme(theme)
     }
 
     fun getCurrentTheme(): ThemeMode = _currentTheme.value
@@ -40,8 +40,4 @@ class ThemeManager(private val preferencesManager: UserPreferencesManager) {
             preferencesManager.saveThemeMode(it)
         }
     }
-
-
 }
-
-

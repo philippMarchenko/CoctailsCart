@@ -9,9 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import cocktailscart.composeapp.generated.resources.Res
 import cocktailscart.composeapp.generated.resources.*
-import org.jetbrains.compose.resources.stringResource
+import cocktailscart.composeapp.generated.resources.Res
 import com.devphill.cocktails.data.platform.NotificationPermissionManager
 import com.devphill.cocktails.domain.model.AlcoholStrength
 import com.devphill.cocktails.domain.model.Cocktail
@@ -23,6 +22,7 @@ import com.devphill.cocktails.presentation.theme.CocktailScreenTitle
 import com.devphill.cocktails.presentation.theme.CocktailSectionHeader
 import com.devphill.cocktails.presentation.theme.CocktailSubtitle
 import com.devphill.cocktails.presentation.theme.CocktailsTheme
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 

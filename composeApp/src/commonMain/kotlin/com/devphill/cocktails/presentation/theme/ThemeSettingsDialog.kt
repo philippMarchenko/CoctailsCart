@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import cocktailscart.composeapp.generated.resources.Res
 import cocktailscart.composeapp.generated.resources.*
+import cocktailscart.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

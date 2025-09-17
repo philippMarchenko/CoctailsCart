@@ -52,14 +52,14 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cocktailscart.composeapp.generated.resources.*
+import cocktailscart.composeapp.generated.resources.Res
 import com.devphill.cocktails.presentation.auth.AuthState
 import com.devphill.cocktails.presentation.auth.AuthViewModel
 import com.devphill.cocktails.presentation.common.AuthTextField
 import com.devphill.cocktails.presentation.theme.DialogShapes
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import cocktailscart.composeapp.generated.resources.Res
-import cocktailscart.composeapp.generated.resources.*
 
 @Composable
 fun SignUpScreen(

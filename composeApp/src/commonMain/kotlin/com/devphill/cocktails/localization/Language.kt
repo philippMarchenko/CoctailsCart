@@ -5,12 +5,12 @@ package com.devphill.cocktails.localization
  */
 enum class Language(val code: String, val displayName: String) {
     ENGLISH("en", "English"),
-    UKRAINIAN("uk", "Українська");
+    UKRAINIAN("uk", "Українська"),
+    ;
 
-    companion object{
+    companion object {
         fun fromCode(code: String?): Language? {
             return entries.find { it.code == code }
         }
     }
-
 }

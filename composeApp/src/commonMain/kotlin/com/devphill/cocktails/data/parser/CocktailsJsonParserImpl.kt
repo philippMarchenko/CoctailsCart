@@ -97,9 +97,11 @@ class CocktailsJsonParserImpl : CocktailsJsonParser {
                         ),
                     alcoholStrength =
                         AlcoholStrength.fromString(
-                            (cocktailObj["alcohol_strength"] ?: cocktailObj["alcoholStrength"])?.jsonPrimitive?.content ?: "medium",
+                            (cocktailObj["alcohol_strength"] ?:
+                            cocktailObj["alcoholStrength"])?.jsonPrimitive?.content ?: "medium",
                         ),
-                    searchText = (cocktailObj["search_text"] ?: cocktailObj["searchText"])?.jsonPrimitive?.content ?: "",
+                    searchText = (cocktailObj["search_text"] ?:
+                        cocktailObj["searchText"])?.jsonPrimitive?.content ?: "",
                 )
             }
         } catch (_: Exception) {

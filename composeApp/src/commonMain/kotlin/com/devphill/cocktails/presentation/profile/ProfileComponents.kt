@@ -13,10 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
-import cocktailscart.composeapp.generated.resources.Res
 import cocktailscart.composeapp.generated.resources.*
-import org.jetbrains.compose.resources.stringResource
+import cocktailscart.composeapp.generated.resources.Res
+import coil3.compose.AsyncImage
 import com.devphill.cocktails.presentation.common.ErrorMessage
 import com.devphill.cocktails.presentation.common.LoadingIndicator
 import com.devphill.cocktails.presentation.theme.CocktailBodyText
@@ -24,6 +23,7 @@ import com.devphill.cocktails.presentation.theme.CocktailScreenTitle
 import com.devphill.cocktails.presentation.theme.CocktailSubtitle
 import com.devphill.cocktails.presentation.theme.ThemeManager
 import com.devphill.cocktails.presentation.theme.ThemeSettingsDialog
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 
 @Composable
@@ -103,7 +103,6 @@ fun ProfileMainContent(
             onSignInClick = { onSignOut() },
             onDeleteAccountClick = { showDeleteAccountDialog = true },
         )
-
     }
 
     // Sign Out Confirmation Dialog

@@ -35,7 +35,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -268,14 +267,14 @@ private fun SignInForm(
                 Button(
                     onClick = onGoogleSignIn,
                     enabled = !isLoading,
-                    modifier = Modifier.weight(1f).alpha(1f)
+                    modifier = Modifier.weight(1f).alpha(1f),
                 ) {
                     Text(stringResource(Res.string.sign_in_with_google))
                 }
 
                 Button(
                     onClick = onContinueAsGuest,
-                    modifier = Modifier.weight(1f).alpha(1f)
+                    modifier = Modifier.weight(1f).alpha(1f),
                 ) {
                     Text(stringResource(Res.string.continue_as_guest))
                 }
@@ -286,7 +285,7 @@ private fun SignInForm(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
-                ) {
+            ) {
                 Text(
                     text = stringResource(Res.string.dont_have_account),
                     style = MaterialTheme.typography.bodyMedium,

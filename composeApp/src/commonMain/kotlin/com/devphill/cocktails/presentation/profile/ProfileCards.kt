@@ -1,19 +1,55 @@
 package com.devphill.cocktails.presentation.profile
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.automirrored.filled.Logout
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.DeleteForever
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cocktailscart.composeapp.generated.resources.Res
-import cocktailscart.composeapp.generated.resources.*
+import cocktailscart.composeapp.generated.resources.account_actions
+import cocktailscart.composeapp.generated.resources.app_settings
+import cocktailscart.composeapp.generated.resources.delete_account
+import cocktailscart.composeapp.generated.resources.email
+import cocktailscart.composeapp.generated.resources.favourite_drinks
+import cocktailscart.composeapp.generated.resources.invite_friends
+import cocktailscart.composeapp.generated.resources.language
+import cocktailscart.composeapp.generated.resources.name
+import cocktailscart.composeapp.generated.resources.notifications
+import cocktailscart.composeapp.generated.resources.profile_information
+import cocktailscart.composeapp.generated.resources.quick_actions
+import cocktailscart.composeapp.generated.resources.sign_in
+import cocktailscart.composeapp.generated.resources.sign_out
+import cocktailscart.composeapp.generated.resources.theme
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -193,7 +229,7 @@ internal fun AccountActionsCard(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            if(viewModel.isUserLoggedIn()){
+            if (viewModel.isUserLoggedIn()) {
 // Sign out action
                 Surface(
                     onClick = onSignOutClick,
@@ -263,8 +299,7 @@ internal fun AccountActionsCard(
                         )
                     }
                 }
-            }
-            else{
+            } else {
                 Surface(
                     onClick = onSignInClick,
                     shape = RoundedCornerShape(8.dp),
@@ -299,7 +334,6 @@ internal fun AccountActionsCard(
                     }
                 }
             }
-
         }
     }
 }

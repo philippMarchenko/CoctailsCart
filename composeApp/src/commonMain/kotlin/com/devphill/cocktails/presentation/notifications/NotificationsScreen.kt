@@ -195,8 +195,9 @@ private fun NotificationItem(
                         Surface(
                             shape = RoundedCornerShape(50),
                             color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier
-                                .size(8.dp)
+                            modifier =
+                                Modifier
+                                    .size(8.dp),
                         ) {}
                     }
                 }

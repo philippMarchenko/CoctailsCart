@@ -9,7 +9,7 @@ import com.devphill.cocktails.data.database.entity.NotificationEntity
 
 @Database(
     entities = [CocktailEntity::class, NotificationEntity::class],
-    version = 2, // Increment version for database migration
+    version = 2,
     exportSchema = false,
 )
 abstract class CocktailDatabase : RoomDatabase() {

@@ -15,13 +15,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import cocktailscart.composeapp.generated.resources.*
+import cocktailscart.composeapp.generated.resources.Res
 import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.presentation.common.LoadingIndicator
 import com.devphill.cocktails.presentation.theme.CocktailScreenTitle
 import com.devphill.cocktails.presentation.theme.CocktailSectionHeader
 import com.devphill.cocktails.presentation.theme.CocktailSubtitle
-import cocktailscart.composeapp.generated.resources.Res
-import cocktailscart.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -153,9 +153,11 @@ private fun FavoriteItem(
             modifier
                 .clickable { onCocktailClick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-        ))  {
+        colors =
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            ),
+    ) {
         Column(
             modifier = Modifier.padding(16.dp),
         ) {

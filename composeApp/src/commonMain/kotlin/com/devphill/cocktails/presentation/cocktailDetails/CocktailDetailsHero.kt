@@ -45,9 +45,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
-import cocktailscart.composeapp.generated.resources.Res
 import cocktailscart.composeapp.generated.resources.*
+import cocktailscart.composeapp.generated.resources.Res
+import coil3.compose.AsyncImage
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -237,7 +237,14 @@ private fun AnimatedActionButtons(
         ) {
             Icon(
                 imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                contentDescription = if (isFavorite) stringResource(Res.string.remove_from_favorites) else stringResource(Res.string.add_to_favorites),
+                contentDescription =
+                    if (isFavorite) {
+                        stringResource(
+                            Res.string.remove_from_favorites,
+                        )
+                    } else {
+                        stringResource(Res.string.add_to_favorites)
+                    },
                 tint = if (isFavorite) Color.Red else Color.White,
                 modifier = Modifier.size(24.dp),
             )

@@ -1,6 +1,5 @@
 package com.devphill.cocktails.localization
 
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 
 /**

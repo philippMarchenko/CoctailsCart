@@ -29,8 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import cocktailscart.composeapp.generated.resources.Res
 import cocktailscart.composeapp.generated.resources.*
+import cocktailscart.composeapp.generated.resources.Res
 import com.devphill.cocktails.presentation.common.CocktailCard
 import com.devphill.cocktails.presentation.common.LoadingIndicator
 import com.devphill.cocktails.presentation.theme.CocktailScreenTitle

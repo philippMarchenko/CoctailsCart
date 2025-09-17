@@ -16,8 +16,8 @@ data class CocktailEntity(
     val category: String,
     val categoryEnum: String,
     val views: String?,
-    val ingredients: String, // JSON string of List<String>
-    val ingredientsEnums: String, // JSON string of List<String>
+    val ingredients: String,
+    val ingredientsEnums: String,
     val method: String,
     val garnish: String?,
     val glass: String?,

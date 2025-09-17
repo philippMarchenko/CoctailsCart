@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import cocktailscart.composeapp.generated.resources.Res
 import cocktailscart.composeapp.generated.resources.*
+import cocktailscart.composeapp.generated.resources.Res
 import com.devphill.cocktails.localization.*
 import org.jetbrains.compose.resources.stringResource
 
@@ -22,31 +22,32 @@ import org.jetbrains.compose.resources.stringResource
 fun LanguageSettingsDialog(
     currentLanguage: Language,
     onLanguageSelected: (Language) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
             shape = RoundedCornerShape(16.dp),
         ) {
             Column(
-                modifier = Modifier.padding(24.dp)
+                modifier = Modifier.padding(24.dp),
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Language,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = MaterialTheme.colorScheme.primary,
                     )
                     Text(
                         text = stringResource(Res.string.language_settings),
-                        style = MaterialTheme.typography.headlineSmall
+                        style = MaterialTheme.typography.headlineSmall,
                     )
                 }
 
@@ -55,26 +56,27 @@ fun LanguageSettingsDialog(
                 Text(
                     text = stringResource(Res.string.select_language),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Language.entries.forEach { language ->
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .selectable(
-                                selected = currentLanguage == language,
-                                onClick = { onLanguageSelected(language) },
-                                role = Role.RadioButton
-                            )
-                            .padding(vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .selectable(
+                                    selected = currentLanguage == language,
+                                    onClick = { onLanguageSelected(language) },
+                                    role = Role.RadioButton,
+                                )
+                                .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         RadioButton(
                             selected = currentLanguage == language,
-                            onClick = { onLanguageSelected(language) }
+                            onClick = { onLanguageSelected(language) },
                         )
 
                         Spacer(modifier = Modifier.width(12.dp))
@@ -82,7 +84,7 @@ fun LanguageSettingsDialog(
                         Text(
                             text = language.displayName,
                             style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
                         )
 
                         if (currentLanguage == language) {
@@ -90,7 +92,7 @@ fun LanguageSettingsDialog(
                                 imageVector = Icons.Default.Check,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(20.dp)
+                                modifier = Modifier.size(20.dp),
                             )
                         }
                     }
@@ -100,7 +102,7 @@ fun LanguageSettingsDialog(
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
+                    horizontalArrangement = Arrangement.End,
                 ) {
                     TextButton(onClick = onDismiss) {
                         Text(stringResource(Res.string.cancel))
