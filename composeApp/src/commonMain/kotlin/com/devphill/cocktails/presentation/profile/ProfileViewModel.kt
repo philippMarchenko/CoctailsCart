@@ -45,7 +45,8 @@ class ProfileViewModel(
                         userName = user?.displayName ?: "Guest",
                         userEmail = user?.email ?: "Not logged in",
                         userPhotoUrl = user?.photoUrl,
-                        isLoggedIn = userPreferencesManager.getBoolean(UserPreferencesManagerImpl.IS_LOGGED_IN_KEY, false),
+                        isLoggedIn =
+                            userPreferencesManager.getBoolean(UserPreferencesManagerImpl.IS_LOGGED_IN_KEY, false),
                     )
             } catch (exception: Exception) {
                 _uiState.value =
@@ -172,7 +173,9 @@ class ProfileViewModel(
                         _uiState.value =
                             _uiState.value.copy(
                                 isLoading = false,
-                                errorMessage = "Failed to delete account after re-authentication: ${deleteResult.exceptionOrNull()?.message}",
+                                errorMessage =
+                                    "Failed to delete account after " +
+                                        "re-authentication: ${deleteResult.exceptionOrNull()?.message}",
                             )
                     }
                 } else {
@@ -180,7 +183,7 @@ class ProfileViewModel(
                         _uiState.value.copy(
                             isLoading = false,
                             errorMessage = "Re-authentication failed. Please check your password and try again.",
-                            showReauthDialog = true, // Show dialog again for retry
+                            showReauthDialog = true,
                         )
                     // Don't reset isDeletingAccount here - allow retry
                 }
@@ -190,7 +193,7 @@ class ProfileViewModel(
                     _uiState.value.copy(
                         isLoading = false,
                         errorMessage = "Failed to delete account: ${exception.message}",
-                        showReauthDialog = true, // Show dialog again for retry
+                        showReauthDialog = true,
                     )
             }
         }

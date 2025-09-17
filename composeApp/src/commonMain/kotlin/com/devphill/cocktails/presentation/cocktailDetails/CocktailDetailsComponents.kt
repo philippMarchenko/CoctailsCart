@@ -51,8 +51,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import cocktailscart.composeapp.generated.resources.*
 import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.add_to_favorites
+import cocktailscart.composeapp.generated.resources.back
+import cocktailscart.composeapp.generated.resources.remove_from_favorites
+import cocktailscart.composeapp.generated.resources.share
 import com.devphill.cocktails.domain.model.Cocktail
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.stringResource

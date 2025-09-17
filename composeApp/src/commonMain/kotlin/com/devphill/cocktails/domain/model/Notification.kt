@@ -18,10 +18,10 @@ data class Notification(
     val title: String,
     val message: String,
     val type: NotificationType,
-    val timestamp: String, // Using String instead of LocalDateTime for simplicity
+    val timestamp: String,
     val isRead: Boolean = false,
-    val cocktailId: String? = null, // Optional reference to a cocktail
-    val actionUrl: String? = null, // Optional action URL
+    val cocktailId: String? = null,
+    val actionUrl: String? = null,
 )
 
 /**

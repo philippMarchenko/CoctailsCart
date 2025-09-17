@@ -73,8 +73,9 @@ fun GoogleSignInHandler(
                             }
                             e.message?.contains("User canceled") == true -> "Sign-in canceled by user"
                             e.message?.contains("16") == true -> "User dismissed the sign-in dialog"
-                            e.message?.contains("10") == true -> "Developer configuration error - " +
-                                "check Firebase setup"
+                            e.message?.contains("10") == true ->
+                                "Developer configuration error - " +
+                                    "check Firebase setup"
                             else -> "Google Sign-In failed: ${e.message}"
                         }
                     onSignInResult(Result.failure(Exception(errorMessage)))

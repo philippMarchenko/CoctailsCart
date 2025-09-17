@@ -1,6 +1,15 @@
 package com.devphill.cocktails.data.parser
 
-import com.devphill.cocktails.domain.model.*
+import com.devphill.cocktails.domain.model.AlcoholStrength
+import com.devphill.cocktails.domain.model.AlcoholStrengthEnum
+import com.devphill.cocktails.domain.model.CategoryEnum
+import com.devphill.cocktails.domain.model.Cocktail
+import com.devphill.cocktails.domain.model.CocktailsData
+import com.devphill.cocktails.domain.model.ComplexityEnum
+import com.devphill.cocktails.domain.model.ComplexityLevel
+import com.devphill.cocktails.domain.model.IngredientEnum
+import com.devphill.cocktails.domain.model.IngredientsByCategory
+import com.devphill.cocktails.domain.model.IngredientsStructure
 import com.devphill.cocktails.domain.parser.CocktailsJsonParser
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
@@ -86,7 +95,11 @@ class CocktailsJsonParserImpl : CocktailsJsonParser {
                     garnish = cocktailObj["garnish"]?.jsonPrimitive?.content,
                     glass = cocktailObj["glass"]?.jsonPrimitive?.content,
                     videoUrl = (cocktailObj["video_url"] ?: cocktailObj["videoUrl"])?.jsonPrimitive?.content,
-                    categoryEnum = (cocktailObj["category_enum"] ?: cocktailObj["categoryEnum"])?.jsonPrimitive?.content ?: "",
+                    categoryEnum =
+                        (
+                            cocktailObj["category_enum"]
+                                ?: cocktailObj["categoryEnum"]
+                        )?.jsonPrimitive?.content ?: "",
                     ingredientsEnums =
                         (cocktailObj["ingredients_enums"] ?: cocktailObj["ingredientsEnums"])?.jsonArray?.map {
                             it.jsonPrimitive.content
@@ -97,11 +110,16 @@ class CocktailsJsonParserImpl : CocktailsJsonParser {
                         ),
                     alcoholStrength =
                         AlcoholStrength.fromString(
-                            (cocktailObj["alcohol_strength"] ?:
-                            cocktailObj["alcoholStrength"])?.jsonPrimitive?.content ?: "medium",
+                            (
+                                cocktailObj["alcohol_strength"]
+                                    ?: cocktailObj["alcoholStrength"]
+                            )?.jsonPrimitive?.content ?: "medium",
                         ),
-                    searchText = (cocktailObj["search_text"] ?:
-                        cocktailObj["searchText"])?.jsonPrimitive?.content ?: "",
+                    searchText =
+                        (
+                            cocktailObj["search_text"]
+                                ?: cocktailObj["searchText"]
+                        )?.jsonPrimitive?.content ?: "",
                 )
             }
         } catch (_: Exception) {

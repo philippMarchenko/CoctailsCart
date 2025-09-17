@@ -36,7 +36,9 @@ private fun CocktailDetailsScreenPreview() {
             Cocktail(
                 id = "1",
                 title = "Clover Club",
-                imageUrl = "https://iba-world.com/wp-content/uploads/2024/07/iba-cocktail-the-unforgettables-clover-club-66949108a3e54.webp",
+                imageUrl =
+                    "https://iba-world.com/wp-content/uploads/2024/07/iba" +
+                        "-cocktail-the-unforgettables-clover-club-66949108a3e54.webp",
                 cocktailUrl = "https://iba-world.com/iba-cocktail/clover-club/",
                 category = "The unforgettables",
                 categoryEnum = "the_unforgettables",

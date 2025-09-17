@@ -34,7 +34,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -45,8 +44,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import cocktailscart.composeapp.generated.resources.*
 import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.add_to_favorites
+import cocktailscart.composeapp.generated.resources.back
+import cocktailscart.composeapp.generated.resources.remove_from_favorites
+import cocktailscart.composeapp.generated.resources.share
 import coil3.compose.AsyncImage
 import org.jetbrains.compose.resources.stringResource
 
