@@ -33,6 +33,7 @@ import cocktailscart.composeapp.generated.resources.discover
 import cocktailscart.composeapp.generated.resources.favourite_drinks
 import cocktailscart.composeapp.generated.resources.profile
 import cocktailscart.composeapp.generated.resources.search
+import com.devphill.cocktails.analytics.Analytics
 import com.devphill.cocktails.data.manager.FirstLaunchManager
 import com.devphill.cocktails.data.platform.UrlOpener
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
@@ -136,6 +137,7 @@ fun App() {
             ) {
                 // Auth flow screens
                 composable(NavigationRoutes.SPLASH) {
+                    LaunchedEffect(Unit) { Analytics.logScreen("Splash") }
                     SplashScreen(
                         userPreferencesManager = userPreferencesManager,
                         onNavigateToSignIn = {
@@ -152,6 +154,7 @@ fun App() {
                 }
 
                 composable(NavigationRoutes.SIGN_IN) {
+                    LaunchedEffect(Unit) { Analytics.logScreen("SignIn") }
                     PlatformSignInScreen(
                         onSignInSuccess = {
                             navController.navigate(NavigationRoutes.DISCOVER) {
@@ -165,6 +168,7 @@ fun App() {
                 }
 
                 composable(NavigationRoutes.SIGN_UP) {
+                    LaunchedEffect(Unit) { Analytics.logScreen("SignUp") }
                     PlatformSignUpScreen(
                         onSignUpSuccess = {
                             navController.navigate(NavigationRoutes.DISCOVER) {
@@ -179,6 +183,7 @@ fun App() {
 
                 // Main app screens with bottom navigation
                 composable(NavigationRoutes.DISCOVER) {
+                    LaunchedEffect(Unit) { Analytics.logScreen("Discover") }
                     MainApp(
                         onNavigateToAuth = {
                             navController.navigate(NavigationRoutes.SIGN_IN) {
@@ -269,6 +274,7 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
             modifier = Modifier,
         ) {
             composable(NavigationRoutes.DISCOVER) {
+                LaunchedEffect(Unit) { Analytics.logScreen("Discover_Main") }
                 val viewModel: DiscoverViewModel = koinViewModel()
                 DiscoverScreen(
                     modifier = Modifier.padding(paddingValues),
@@ -280,6 +286,7 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
             }
 
             composable(NavigationRoutes.SEARCH) {
+                LaunchedEffect(Unit) { Analytics.logScreen("Search") }
                 val viewModel: SearchViewModel = koinViewModel()
                 SearchScreen(
                     modifier = Modifier.padding(paddingValues),
@@ -291,6 +298,7 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
             }
 
             composable(NavigationRoutes.FAVORITES) {
+                LaunchedEffect(Unit) { Analytics.logScreen("Favorites") }
                 val viewModel: FavoritesViewModel = koinViewModel()
                 FavoritesScreen(
                     modifier = Modifier.padding(paddingValues),
@@ -310,6 +318,7 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
             }
 
             composable(NavigationRoutes.PROFILE) {
+                LaunchedEffect(Unit) { Analytics.logScreen("Profile") }
                 val viewModel: ProfileViewModel = koinViewModel()
                 ProfileScreen(
                     modifier = Modifier.padding(paddingValues),
@@ -331,6 +340,7 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
             }
 
             composable(NavigationRoutes.NOTIFICATIONS) {
+                LaunchedEffect(Unit) { Analytics.logScreen("Notifications") }
                 val viewModel: NotificationsViewModel = koinViewModel()
                 NotificationsScreen(
                     modifier = Modifier,
@@ -348,6 +358,7 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                 arguments = listOf(navArgument("notificationId") { type = NavType.StringType }),
             ) { navBackStackEntry ->
                 val notificationId = navBackStackEntry.savedStateHandle.get<String>("notificationId") ?: ""
+                LaunchedEffect(notificationId) { Analytics.logScreen("NotificationDetails_$notificationId") }
                 val viewModel: NotificationsViewModel = koinViewModel()
                 NotificationDetailsScreen(
                     notificationId = notificationId,
@@ -369,6 +380,7 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                 arguments = listOf(navArgument("cocktailId") { type = NavType.StringType }),
             ) { navBackStackEntry ->
                 val cocktailId = navBackStackEntry.savedStateHandle.get<String>("cocktailId") ?: ""
+                LaunchedEffect(cocktailId) { Analytics.logScreen("CocktailDetails_$cocktailId") }
                 val viewModel: CocktailDetailsViewModel = koinViewModel()
                 CocktailDetailsScreenContainer(
                     cocktailId = cocktailId,
