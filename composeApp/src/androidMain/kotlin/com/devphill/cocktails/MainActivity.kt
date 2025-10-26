@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
+import com.devphill.cocktails.analytics.registerAndroidAnalytics
 import com.devphill.cocktails.data.platform.NotificationPermissionManager
 import com.devphill.cocktails.di.appModules
 import com.devphill.cocktails.di.platformModule
@@ -31,6 +32,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+
+        // Initialize platform analytics (registers Firebase logger)
+        registerAndroidAnalytics(this)
 
         // Configure window for proper keyboard handling
         WindowCompat.setDecorFitsSystemWindows(window, false)
