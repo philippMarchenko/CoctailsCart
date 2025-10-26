@@ -4,7 +4,9 @@ import com.devphill.cocktails.domain.model.AlcoholStrength
 import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.domain.model.ComplexityLevel
 import kotlin.test.Test
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class CocktailDetailsIntegrationTest {

@@ -124,7 +124,7 @@ class CocktailDetailsHeroTest {
             }
         }
 
-        composeTestRule.mainClock.advanceTimeBy(1000)
+        composeTestRule.mainClock.advanceTimeBy(1500) // Increased wait time for animations
 
         // Verify favorite button shows "Remove from favorites" when favorited
         composeTestRule.onNodeWithContentDescription("Remove from favorites").assertIsDisplayed()
@@ -148,7 +148,7 @@ class CocktailDetailsHeroTest {
             }
         }
 
-        composeTestRule.mainClock.advanceTimeBy(1000)
+        composeTestRule.mainClock.advanceTimeBy(1500) // Increased wait time for animations
 
         // Verify favorite button shows "Add to favorites" when not favorited
         composeTestRule.onNodeWithContentDescription("Add to favorites").assertIsDisplayed()

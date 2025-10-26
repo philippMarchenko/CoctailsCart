@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ProfileViewModel(
+open class ProfileViewModel(
     private val userPreferencesManager: UserPreferencesManager,
     private val authManager: AuthManager,
     private val shareManager: ShareManager,

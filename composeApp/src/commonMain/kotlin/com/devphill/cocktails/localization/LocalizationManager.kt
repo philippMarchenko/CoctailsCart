@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 /**
  * Manages the current language state throughout the app
  */
-class LocalizationManager(
+open class LocalizationManager(
     private val userPreferencesManager: UserPreferencesManager,
     private val localeConfiguration: LocaleConfiguration,
 ) {

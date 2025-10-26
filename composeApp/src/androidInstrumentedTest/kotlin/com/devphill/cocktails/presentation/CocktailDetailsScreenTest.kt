@@ -178,7 +178,7 @@ class CocktailDetailsScreenTest {
             }
         }
 
-        composeTestRule.mainClock.advanceTimeBy(1000)
+        composeTestRule.mainClock.advanceTimeBy(1500) // Increased wait time for animations
 
         composeTestRule.onNodeWithContentDescription("Remove from favorites").assertIsDisplayed()
     }
@@ -327,12 +327,15 @@ class CocktailDetailsScreenTest {
             }
         }
 
-        composeTestRule.mainClock.advanceTimeBy(2000)
+        composeTestRule.mainClock.advanceTimeBy(3000) // Wait for all animations to complete
 
         // Perform scroll gesture
         composeTestRule.onRoot().performTouchInput {
             swipeUp()
         }
+
+        // Wait a bit after scrolling
+        composeTestRule.mainClock.advanceTimeBy(500)
 
         // Verify content is still accessible after scrolling
         composeTestRule.onNodeWithText("Instructions").assertIsDisplayed()
