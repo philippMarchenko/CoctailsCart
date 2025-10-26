@@ -75,9 +75,9 @@ fun CocktailImageCard(
                                 .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f)),
                     ) {
                         CircularProgressIndicator(
-                            modifier = Modifier.size(24.dp), // Smaller progress indicator
+                            modifier = Modifier.size(24.dp),
                             color = MaterialTheme.colorScheme.primary,
-                            strokeWidth = 2.dp, // Thinner stroke for better performance
+                            strokeWidth = 2.dp,
                         )
                     }
                 }

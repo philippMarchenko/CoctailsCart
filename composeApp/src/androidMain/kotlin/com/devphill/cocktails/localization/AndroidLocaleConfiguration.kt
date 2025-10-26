@@ -9,7 +9,6 @@ import java.util.Locale
  * Android-specific implementation for configuring locale
  */
 class AndroidLocaleConfiguration(private val context: Context) : LocaleConfiguration {
-
     override fun configureLocale(language: Language) {
         val locale = Locale(language.code)
         Locale.setDefault(locale)

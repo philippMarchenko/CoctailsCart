@@ -69,9 +69,9 @@ class CocktailTest {
                 category = "Test",
                 categoryEnum = "test",
                 views = null,
-                ingredients = listOf("Rum", "Mint", "Lime", "Sugar", "Soda"), // 5 ingredients
+                ingredients = listOf("Rum", "Mint", "Lime", "Sugar", "Soda"),
                 ingredientsEnums = listOf("rum", "mint", "lime", "sugar", "soda"),
-                method = "Muddle mint with sugar and lime", // Contains "muddle"
+                method = "Muddle mint with sugar and lime",
                 garnish = null,
                 glass = null,
                 videoUrl = null,

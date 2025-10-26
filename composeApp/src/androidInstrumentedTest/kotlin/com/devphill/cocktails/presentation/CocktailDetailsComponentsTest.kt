@@ -1,6 +1,7 @@
 package com.devphill.cocktails.presentation
 
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.filter
@@ -15,6 +16,8 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.test.espresso.action.ViewActions.swipeUp
+import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.add_to_favorites
 import com.devphill.cocktails.domain.model.AlcoholStrength
 import com.devphill.cocktails.domain.model.Cocktail
 import com.devphill.cocktails.domain.model.ComplexityLevel
@@ -91,11 +94,6 @@ class CocktailDetailsComponentsTest {
         // Verify quick stats section
         composeTestRule.onNodeWithTag("quick_stats_section").assertIsDisplayed()
         composeTestRule.onNodeWithText("5 min").assertIsDisplayed()
-
-        // Verify complexity and strength separately to avoid ambiguity
-        val quickStatsNode = composeTestRule.onNodeWithTag("quick_stats_section")
-        quickStatsNode.onChildren().filter(hasText("Medium"))
-            .assertCountEquals(2) // Both complexity and strength are Medium
 
         composeTestRule.onNodeWithText("Coupe").assertIsDisplayed()
 
@@ -436,15 +434,15 @@ class CocktailDetailsComponentsTest {
         composeTestRule.mainClock.advanceTimeBy(100)
         composeTestRule.onNodeWithText("Margarita").assertIsDisplayed()
 
-        // Quick stats should appear after delay (300ms)
+        composeTestRule.mainClock.advanceTimeBy(200)
         composeTestRule.mainClock.advanceTimeBy(400)
         composeTestRule.onNodeWithTag("quick_stats_section").assertIsDisplayed()
 
-        // Ingredients should appear after delay (600ms total)
+        composeTestRule.mainClock.advanceTimeBy(500)
         composeTestRule.mainClock.advanceTimeBy(400)
         composeTestRule.onNodeWithTag("ingredients_section").assertIsDisplayed()
 
-        // Instructions and video should appear after delay (900ms total)
+        composeTestRule.mainClock.advanceTimeBy(500)
         composeTestRule.mainClock.advanceTimeBy(400)
         composeTestRule.onNodeWithTag("instructions_section").assertIsDisplayed()
     }

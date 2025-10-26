@@ -52,10 +52,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import cocktailscart.composeapp.generated.resources.Res
-import cocktailscart.composeapp.generated.resources.*
-import org.jetbrains.compose.resources.stringResource
+import cocktailscart.composeapp.generated.resources.add_to_favorites
+import cocktailscart.composeapp.generated.resources.back
+import cocktailscart.composeapp.generated.resources.remove_from_favorites
+import cocktailscart.composeapp.generated.resources.share
 import com.devphill.cocktails.domain.model.Cocktail
 import kotlinx.coroutines.delay
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -261,7 +264,14 @@ private fun FixedToolbar(
                 ) {
                     Icon(
                         imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                        contentDescription = if (isFavorite) stringResource(Res.string.remove_from_favorites) else stringResource(Res.string.add_to_favorites),
+                        contentDescription =
+                            if (isFavorite) {
+                                stringResource(
+                                    Res.string.remove_from_favorites,
+                                )
+                            } else {
+                                stringResource(Res.string.add_to_favorites)
+                            },
                         tint = if (isFavorite) Color.Red else MaterialTheme.colorScheme.onSurface,
                     )
                 }

@@ -52,14 +52,22 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.already_have_account
+import cocktailscart.composeapp.generated.resources.confirm_password
+import cocktailscart.composeapp.generated.resources.create_account
+import cocktailscart.composeapp.generated.resources.email_address
+import cocktailscart.composeapp.generated.resources.name
+import cocktailscart.composeapp.generated.resources.ok
+import cocktailscart.composeapp.generated.resources.password
+import cocktailscart.composeapp.generated.resources.sign_in
+import cocktailscart.composeapp.generated.resources.sign_up
 import com.devphill.cocktails.presentation.auth.AuthState
 import com.devphill.cocktails.presentation.auth.AuthViewModel
 import com.devphill.cocktails.presentation.common.AuthTextField
 import com.devphill.cocktails.presentation.theme.DialogShapes
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import cocktailscart.composeapp.generated.resources.Res
-import cocktailscart.composeapp.generated.resources.*
 
 @Composable
 fun SignUpScreen(
@@ -287,7 +295,11 @@ private fun SignUpForm(
                 keyboardType = KeyboardType.Email,
                 enabled = !isLoading,
                 singleLine = true,
-                isError = errorMessage != null && (errorMessage.contains("email", ignoreCase = true) || errorMessage.contains("valid email", ignoreCase = true)),
+                isError =
+                    errorMessage != null && (
+                        errorMessage.contains("email", ignoreCase = true) ||
+                            errorMessage.contains("valid email", ignoreCase = true)
+                    ),
             )
 
             AuthTextField(
@@ -310,11 +322,20 @@ private fun SignUpForm(
                 trailingIcon = if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                 onTrailingIconClick = onPasswordVisibilityToggle,
                 keyboardType = KeyboardType.Password,
-                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                visualTransformation =
+                    if (passwordVisible) {
+                        VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation()
+                    },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !isLoading,
                 singleLine = true,
-                isError = errorMessage != null && (errorMessage.contains("password", ignoreCase = true) || errorMessage.contains("match", ignoreCase = true)),
+                isError =
+                    errorMessage != null && (
+                        errorMessage.contains("password", ignoreCase = true) ||
+                            errorMessage.contains("match", ignoreCase = true)
+                    ),
             )
 
             AuthTextField(
@@ -325,11 +346,20 @@ private fun SignUpForm(
                 trailingIcon = if (confirmPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                 onTrailingIconClick = onConfirmPasswordVisibilityToggle,
                 keyboardType = KeyboardType.Password,
-                visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                visualTransformation =
+                    if (confirmPasswordVisible) {
+                        VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation()
+                    },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !isLoading,
                 singleLine = true,
-                isError = errorMessage != null && (errorMessage.contains("confirm", ignoreCase = true) || errorMessage.contains("match", ignoreCase = true)),
+                isError =
+                    errorMessage != null && (
+                        errorMessage.contains("confirm", ignoreCase = true) ||
+                            errorMessage.contains("match", ignoreCase = true)
+                    ),
             )
 
             // Error Message
@@ -349,7 +379,9 @@ private fun SignUpForm(
                     Modifier
                         .fillMaxWidth()
                         .height(44.dp),
-                enabled = !isLoading && email.isNotBlank() && username.isNotBlank() && password.isNotBlank() && confirmPassword.isNotBlank(),
+                enabled =
+                    !isLoading && email.isNotBlank() && username.isNotBlank() && password.isNotBlank() &&
+                        confirmPassword.isNotBlank(),
                 shape = RoundedCornerShape(8.dp),
             ) {
                 if (isLoading) {

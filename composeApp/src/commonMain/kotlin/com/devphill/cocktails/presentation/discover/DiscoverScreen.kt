@@ -1,17 +1,28 @@
 package com.devphill.cocktails.presentation.discover
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cocktailscart.composeapp.generated.resources.Res
-import cocktailscart.composeapp.generated.resources.*
-import org.jetbrains.compose.resources.stringResource
+import cocktailscart.composeapp.generated.resources.all_cocktails
+import cocktailscart.composeapp.generated.resources.cocktail_of_day
+import cocktailscart.composeapp.generated.resources.discover
+import cocktailscart.composeapp.generated.resources.find_your_perfect_cocktail
 import com.devphill.cocktails.data.platform.NotificationPermissionManager
 import com.devphill.cocktails.domain.model.AlcoholStrength
 import com.devphill.cocktails.domain.model.Cocktail
@@ -23,6 +34,7 @@ import com.devphill.cocktails.presentation.theme.CocktailScreenTitle
 import com.devphill.cocktails.presentation.theme.CocktailSectionHeader
 import com.devphill.cocktails.presentation.theme.CocktailSubtitle
 import com.devphill.cocktails.presentation.theme.CocktailsTheme
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 

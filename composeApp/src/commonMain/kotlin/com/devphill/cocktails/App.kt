@@ -29,7 +29,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import cocktailscart.composeapp.generated.resources.Res
-import cocktailscart.composeapp.generated.resources.*
+import cocktailscart.composeapp.generated.resources.discover
+import cocktailscart.composeapp.generated.resources.favourite_drinks
+import cocktailscart.composeapp.generated.resources.profile
+import cocktailscart.composeapp.generated.resources.search
 import com.devphill.cocktails.data.manager.FirstLaunchManager
 import com.devphill.cocktails.data.platform.UrlOpener
 import com.devphill.cocktails.data.preferences.UserPreferencesManager
@@ -124,8 +127,8 @@ fun App() {
     val startDestination = NavigationRoutes.SPLASH
 
     CompositionLocalProvider(
-        LocalLanguage provides currentLanguage
-    ){
+        LocalLanguage provides currentLanguage,
+    ) {
         CocktailsTheme(useDarkTheme = currentTheme == ThemeMode.DARK) {
             NavHost(
                 navController = navController,
@@ -244,8 +247,8 @@ private fun MainApp(onNavigateToAuth: () -> Unit) {
                                     restoreState = true
                                 }
                             },
-                            icon = { Icon(screen.icon, contentDescription = stringResource( screen.title)) },
-                            label = { CocktailLabel(stringResource( screen.title)) },
+                            icon = { Icon(screen.icon, contentDescription = stringResource(screen.title)) },
+                            label = { CocktailLabel(stringResource(screen.title)) },
                             colors =
                                 NavigationBarItemDefaults.colors(
                                     selectedIconColor = MaterialTheme.colorScheme.primary,

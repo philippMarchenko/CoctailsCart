@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.asStateFlow
 /**
  * Manages the current language state throughout the app
  */
-class LocalizationManager(
+open class LocalizationManager(
     private val userPreferencesManager: UserPreferencesManager,
-    private val localeConfiguration: LocaleConfiguration
+    private val localeConfiguration: LocaleConfiguration,
 ) {
     private val _currentLanguage = MutableStateFlow(getInitialLanguage())
     val currentLanguage: StateFlow<Language> = _currentLanguage.asStateFlow()
@@ -18,6 +18,7 @@ class LocalizationManager(
     init {
         initialize()
     }
+
     private fun getInitialLanguage(): Language {
         val savedLanguageCode = userPreferencesManager.getLanguage()
         return Language.fromCode(savedLanguageCode) ?: Language.ENGLISH

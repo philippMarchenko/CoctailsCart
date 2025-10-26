@@ -34,7 +34,7 @@ class NotificationsViewModel(
                     val unreadCount = notificationInteractor.getUnreadCount()
                     _uiState.value =
                         _uiState.value.copy(
-                            notifications = notifications, // Already sorted in interactor
+                            notifications = notifications,
                             isLoading = false,
                             unreadCount = unreadCount,
                             error = null,

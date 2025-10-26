@@ -151,12 +151,13 @@ class AuthViewModel(
             authState = AuthState.Loading
             try {
                 // Create a lightweight guest user representation
-                val guestUser = User(
-                    uid = "guest",
-                    email = null,
-                    displayName = "Guest",
-                    photoUrl = null,
-                )
+                val guestUser =
+                    User(
+                        uid = "guest",
+                        email = null,
+                        displayName = "Guest",
+                        photoUrl = null,
+                    )
 
                 // Persist minimal user info and mark as logged in
                 saveUserData(guestUser)

@@ -118,6 +118,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.compose.ui.test.junit4)
             implementation(libs.compose.ui.test.manifest)
+            implementation(libs.mockk)
         }
 
         androidInstrumentedTest.dependencies {
@@ -126,6 +127,8 @@ kotlin {
             implementation(libs.compose.ui.test.junit4)
             implementation(libs.compose.ui.test.manifest)
             implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.mockito)
+            implementation(libs.mockk)
         }
     }
 
@@ -138,14 +141,14 @@ kotlin {
             minSdk = libs.versions.android.minSdk.get().toInt()
             // noinspection OldTargetApi
             targetSdk = libs.versions.android.targetSdk.get().toInt()
-            versionCode = 1
-            versionName = "1.0"
+            versionCode = 2
+            versionName = "1.0.1"
 
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
         packaging {
             resources {
-                excludes += "/META-INF/{AL2.0,LGPL2.1}"
+                excludes += "/META-INF/{AL2.0,LGPL2.1,LICENSE.md,LICENSE-notice.md}"
             }
         }
         buildTypes {

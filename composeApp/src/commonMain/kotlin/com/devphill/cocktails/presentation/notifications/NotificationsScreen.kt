@@ -1,21 +1,60 @@
 package com.devphill.cocktails.presentation.notifications
 
-import androidx.compose.animation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.LocalBar
+import androidx.compose.material.icons.filled.LocalOffer
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material3.Badge
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.devphill.cocktails.domain.model.Notification
 import com.devphill.cocktails.domain.model.NotificationType
-import com.devphill.cocktails.presentation.theme.*
+import com.devphill.cocktails.presentation.theme.CenteredTitle
+import com.devphill.cocktails.presentation.theme.CocktailBodyText
+import com.devphill.cocktails.presentation.theme.CocktailCardTitle
+import com.devphill.cocktails.presentation.theme.CocktailLabel
+import com.devphill.cocktails.presentation.theme.CocktailSectionHeader
+import com.devphill.cocktails.presentation.theme.CocktailSubtitle
+import com.devphill.cocktails.presentation.theme.ErrorText
 import com.devphill.cocktails.utils.formatToEuropeanDateTime
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -195,8 +234,9 @@ private fun NotificationItem(
                         Surface(
                             shape = RoundedCornerShape(50),
                             color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier
-                                .size(8.dp)
+                            modifier =
+                                Modifier
+                                    .size(8.dp),
                         ) {}
                     }
                 }

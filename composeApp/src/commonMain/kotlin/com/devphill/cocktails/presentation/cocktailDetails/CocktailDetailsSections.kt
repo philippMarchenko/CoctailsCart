@@ -33,13 +33,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import cocktailscart.composeapp.generated.resources.Res
+import cocktailscart.composeapp.generated.resources.learn_how_to_make
+import cocktailscart.composeapp.generated.resources.watch_tutorial
 import com.devphill.cocktails.domain.model.AlcoholStrength
 import com.devphill.cocktails.domain.model.ComplexityLevel
 import com.devphill.cocktails.presentation.theme.CocktailBodyText
 import com.devphill.cocktails.presentation.theme.CocktailCardTitle
 import com.devphill.cocktails.presentation.theme.CocktailSectionHeader
-import cocktailscart.composeapp.generated.resources.Res
-import cocktailscart.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 
 object CocktailDetailsTestTags {

@@ -1,7 +1,7 @@
 package com.devphill.cocktails.presentation.auth
 
 import androidx.activity.ComponentActivity
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
@@ -65,14 +65,17 @@ fun GoogleSignInHandler(
                         when {
                             e.type == "android.credentials.GetCredentialException.TYPE_NO_CREDENTIAL" -> {
                                 if (e.message?.contains("Cannot find a matching credential") == true) {
-                                    "No Google accounts found on this device. Please add a Google account in Settings > Accounts."
+                                    "No Google accounts found on this device. Please add a Google account in" +
+                                        " Settings > Accounts."
                                 } else {
                                     "No Google accounts available on this device"
                                 }
                             }
                             e.message?.contains("User canceled") == true -> "Sign-in canceled by user"
                             e.message?.contains("16") == true -> "User dismissed the sign-in dialog"
-                            e.message?.contains("10") == true -> "Developer configuration error - check Firebase setup"
+                            e.message?.contains("10") == true ->
+                                "Developer configuration error - " +
+                                    "check Firebase setup"
                             else -> "Google Sign-In failed: ${e.message}"
                         }
                     onSignInResult(Result.failure(Exception(errorMessage)))
